@@ -6,6 +6,7 @@ import java.io.IOException;
 public class Notifications {
 
 //	public static void main(String [] args){
+//		System.getenv("SendGridKey");
 //		try {
 //			SendEmail("savoyvv@outlook.com", "Sevak", "dipesh@gmail.com", "Dipesh", "0.125", 
 //					"http://www.ebay.com/itm/HP-DeskJet-2132-All-in-One-Color-Inkjet-Photo-Printer"
@@ -32,7 +33,7 @@ public class Notifications {
     				+ "</body> </html>");
     Mail mail = new Mail(from, subject, to, content);
 
-    SendGrid sg = new SendGrid("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");
+    SendGrid sg = new SendGrid("SendGridKey");
     Request request = new Request();
     try {
       request.method = Method.POST;
