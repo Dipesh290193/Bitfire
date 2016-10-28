@@ -4,11 +4,17 @@ create sequence hibernate_sequence start 1 increment 1
         address_id int4 not null,
         USD int default 0 not null,
         address varchar(255),
+        archived boolean not null,
         bitcoins int default 0 not null,
-        is_primay boolean,
         label varchar(255),
+        is_primary boolean,
         wallet_id varchar(255) not null,
         primary key (address_id)
+    )
+
+    create table authorities (
+        user_id int4 not null,
+        role varchar(255)
     )
 
     create table transactions (
@@ -30,9 +36,11 @@ create sequence hibernate_sequence start 1 increment 1
     create table users (
         user_id int4 not null,
         email varchar(255) not null,
-        is_active boolean,
+        enabled boolean,
         name varchar(255) not null,
         password varchar(255) not null,
+        phone varchar(255),
+        username varchar(255) not null,
         wallet_id varchar(255),
         primary key (user_id)
     )
@@ -48,10 +56,18 @@ create sequence hibernate_sequence start 1 increment 1
     alter table users 
         add constraint UK_6dotkott2kjsp8vw4d0m25fb7 unique (email)
 
+    alter table users 
+        add constraint UK_r43af9ap4edm43mmtq01oddj6 unique (username)
+
     alter table addresses 
         add constraint FKf46h3157sftlhw1o20jdept2h 
         foreign key (wallet_id) 
         references wallets
+
+    alter table authorities 
+        add constraint FKk91upmbueyim93v469wj7b2qh 
+        foreign key (user_id) 
+        references users
 
     alter table transactions 
         add constraint FKklnj7dcrd7k9wlr96hv619mc4 
