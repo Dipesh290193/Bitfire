@@ -1,5 +1,12 @@
 package bitfire.web.controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.security.Security;
+import java.text.DecimalFormat;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -8,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import bitfire.model.Address;
+import bitfire.model.Notifications;
 import bitfire.model.Transaction;
 import bitfire.model.User;
 import bitfire.model.dao.AddressDao;
@@ -28,7 +36,11 @@ public class TransactionController {
 	private AddressDao addressDao;
 	
 	@RequestMapping(value ={"/user/send.html"}, method = RequestMethod.GET)
-	public String send(){
+	public String send(ModelMap map, HttpServletRequest request){
+		if(request.getParameter("to") != null)
+			map.put("to", request.getParameter("to"));
+		if(request.getParameter("amount") != null)
+			map.put("amount", request.getParameter("amount"));
 		return "/user/send";
 	}
 	
@@ -37,16 +49,55 @@ public class TransactionController {
 		User receiverUser=userDao.getUserByUsername(email);
 		Address receiverAddress=addressDao.getPrimaryAddress(receiverUser.getWallet());
 		Address senderAddress=addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet());
-		if(senderAddress.getBitcoinsActual()>(btc*100000000))
+		if(senderAddress.getBitcoinsActual()>=(int)(btc*100000000))
 		{
 			tranfer(senderAddress, receiverAddress, btc);
 			return "redirect:/user/transactions.html";
+		}
+		else if(receiverAddress == null){
+			map.put("error", "Invalid email addres.");
+			return "/user/send";
+		}
+		else if(receiverAddress.getAddress().equals(senderAddress.getAddress())){
+			map.put("selftranfererror", "You can not send BTC to yourself. \n If you want to transfer BTC between "
+					+ "you addresses, please use the following link: ");
+			return "/user/send";
 		}
 		else
 		{
 			map.put("error", "You don't have enough funds in your primary address " +senderAddress.getAddress());
 			return "/user/send";
 		}
+		
+	}
+	
+	@RequestMapping(value ={"/user/request.html"}, method = RequestMethod.GET)
+	public String send(){
+		return "/user/request";
+	}
+	
+	@RequestMapping(value ={"/user/request.html"}, method = RequestMethod.POST)
+	public String request(@RequestParam String email, @RequestParam Double btc, @RequestParam String reason, ModelMap map){
+		User sender = SecurityUtils.getUser();
+		User receiver = userDao.getUserByUsername(email);
+		
+		if(receiver == null){
+			map.put("error", email + " does not have a bitfire account. Please check the email address and try again.");
+			return "user/request";
+		}
+		
+//		DecimalFormat format=new DecimalFormat("#0.00000000");
+//		String amount = format.format(btc/100000000.0);
+		
+		try {
+			Notifications.SendEmail(email, receiver.getName(), sender.getUsername(), sender.getName(), btc.toString(), reason);
+			map.put("message", "Successfully requested " + btc.toString() + " BTC from " + email);
+		} catch (IOException e) {
+			map.put("error", "We were not able to send your request at this time. Please try again");
+			e.printStackTrace();
+		}
+		
+		return "user/request";
 		
 	}
 	
@@ -61,11 +112,15 @@ public class TransactionController {
 	public String selftransfer(@RequestParam int from, @RequestParam int to, @RequestParam Double amount, ModelMap map)
 	{			
 		if(from == to){
-			map.put("message", "From address can not be the same as TO address");
+			map.put("error", "From address can not be the same as TO address");
+			map.put("addresses", addressDao.getAddresses(SecurityUtils.getUser().getWallet()));
+			return "/user/selftransfer";
 		}
-		else if(addressDao.getAddress(from).getBitcoinsActual()< (amount*100000000))
+		else if(addressDao.getAddress(from).getBitcoinsActual()< (int)(amount*100000000))
 		{
-			map.put("message", "You don't have enough funds in "+addressDao.getAddress(from).getAddress());
+			System.out.println("FROM: " + addressDao.getAddress(from).getBitcoinsActual());
+			System.out.println("Amount: " + (int)(amount*100000000));
+			map.put("error", "You don't have enough funds in "+addressDao.getAddress(from).getAddress());
 			map.put("addresses", addressDao.getAddresses(SecurityUtils.getUser().getWallet()));
 			return "/user/selftransfer";
 		}
@@ -73,7 +128,9 @@ public class TransactionController {
 			Address senderAddress=addressDao.getAddress(from);
 			Address receiverAddress=addressDao.getAddress(to);
 			tranfer(senderAddress,receiverAddress, amount);
-			map.put("message", "Successfully tranferred " + amount + " BTC from " + addressDao.getAddress(from).getAddress() + 
+			DecimalFormat format=new DecimalFormat("#0.00000000");
+		    String actualAmount = format.format(amount);
+			map.put("message", "Successfully tranferred " + actualAmount + " BTC from " + addressDao.getAddress(from).getAddress() + 
 					" to " + addressDao.getAddress(to).getAddress());
 			map.put("addresses", addressDao.getAddresses(SecurityUtils.getUser().getWallet()));
 		}

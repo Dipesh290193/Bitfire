@@ -42,6 +42,8 @@
 					<li class = "active"><a href="<c:url value='/user/transactions.html' />">Transactions</a></li>
 					<li><a href="<c:url value='/user/send.html' />">Send
 							Bitcoin</a></li>
+					<li><a href="<c:url value='/user/request.html' />">Request
+							Bitcoin</a></li>
 					<li><a href="<c:url value='/user/wallet.html' />">Wallet</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -76,7 +78,7 @@
 		</c:if> 
  	</c:if>
 	<td>${trans.date}</td>
-	<td>${trans.senderUser.username}</td>
+	<td>${trans.receiverUser.username}</td>
 	<td>${trans.txId}</td>
 	<td>${trans.bitcoin}</td>
 	<td>${trans.USD}</td>
