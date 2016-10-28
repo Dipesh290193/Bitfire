@@ -43,6 +43,8 @@
 					<li><a href="<c:url value='/user/transactions.html' />">Transactions</a></li>
 					<li><a href="<c:url value='/user/send.html' />">Send
 							Bitcoin</a></li>
+					<li><a href="<c:url value='/user/request.html' />">Request
+							Bitcoin</a></li>
 					<li class="active"><a href="<c:url value='/user/wallet.html' />">Wallet</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -98,8 +100,8 @@
 			onclick='location.href="<c:url value ='/user/selftransfer.html' />"'
 			value="Self Transfer" class = "btn btn-danger">
 		</form>
-	
-		<p>${message}</p>
+		<br>
+		<div style = "color: red;">${message}</div>
 	</div>
 </body>
 </html>

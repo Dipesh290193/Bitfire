@@ -49,6 +49,8 @@
 					<li><a href="<c:url value='/user/transactions.html' />">Transactions</a></li>
 					<li><a href="<c:url value='/user/send.html' />">Send
 							Bitcoin</a></li>
+					<li><a href="<c:url value='/user/request.html' />">Request
+							Bitcoin</a></li>
 					<li><a href="<c:url value='/user/wallet.html' />">Wallet</a></li>
 				</ul></security:authorize>
 				<ul class="nav navbar-nav navbar-right">
@@ -242,7 +244,7 @@
 													<div class="col-md-1">
 														<a href="https://blockchain.info/tx/${trans.txId }">TX</a>
 													</div>
-													<div class="col-md-3">${trans.bitcoin } BTC</div>
+													<div class="col-md-3">${trans.bitcoin} BTC</div>
 													<div class="col-md-2">${trans.USD}</div>
 													<div class="col-md-3"><strong>Confirmations:</strong> ${trans.confirmations }</div>
 												</div>

@@ -1,12 +1,9 @@
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Address</title>
-
+<title>Bitfire:Request</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -19,7 +16,7 @@
 <body>
 
 	<!-- Static navbar -->
-	<nav class="navbar navbar-default navbar-fixed-top">
+	<nav class="navbar navbar-default navbar-fixed-top" >
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed"
@@ -29,7 +26,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="<c:url value ='/index.html'/>">
+				<a class="navbar-brand" href="../index.html">
 					<div class="logo text-center">
 						<img src="../assets/img/fire.png" alt=""
 							style="width: 50px; height: 50px;">
@@ -42,9 +39,9 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="<c:url value='../index.html' />">Profile</a></li>
+					<li><a href="../index.html">Profile</a></li>
 					<li><a href="<c:url value='/user/transactions.html' />">Transactions</a></li>
-					<li><a href="<c:url value='/user/send.html' />">Send
+					<li class="active"><a href="<c:url value='/user/send.html' />">Send
 							Bitcoin</a></li>
 					<li><a href="<c:url value='/user/request.html' />">Request
 							Bitcoin</a></li>
@@ -57,35 +54,24 @@
 			<!--/.nav-collapse -->
 		</div>
 	</nav>
-
-<div class = "container">
-<div class = "page-header">
-	<h1>Addresses</h1>
-</div>
 <div class = "well">
-<form:form modelAttribute="address" class="form">
-<table class="table table-condensed table-striped">
-
-<tr><th>Label</th><th>Address</th><th>USD</th><th>BTC</th><th>Primary</th></tr>
-<tr>
-	<td><form:input path = "label" class = "form-control"/></td>
-	<td>${address.address}</td>
-	<td>${address.USD}</td>
-	<td>${address.bitcoins}</td>
-	
-	<c:if test="${not address.primary }">
-		<td><input class = "form-control checkbox" type="checkbox"  name = "primary" id="primary" /></td>
-	</c:if>
-	
-	<c:if test="${address.primary }">
-		<td>Primary</td>
-	</c:if>
-</tr>
-
-</table>
-<input type = "submit" name = "save" value = "Save" class="btn btn-md btn-danger" /> 
-</form:form>
+<div class = "container" style="margin-top:100px">
+<h2 class = "web-font">Request Bitcoin</h2>
+<form class = "form" action = "<c:url value='/user/request.html' />" method = "post"><br>
+		<input class = "form-control" type = "email" name = "email" placeholder = "email address"/><br>
+		<input class = "form-control" type = "text" name = "btc" placeholder = "amount of BTC"/><br>
+		<input class = "form-control" type = "text" name = "reason" placeholder = "reason for request"/><br>
+	<input class = "btn btn-danger btn-block" type ="submit" value = "Request" />
+</form>
+<br/>
+<div style="color:red">
+<h4>${error}</h4>
+</div>
+<div style="color:green">
+<h4>${message}</h4>
 </div>
 </div>
+</div>
+
 </body>
 </html>

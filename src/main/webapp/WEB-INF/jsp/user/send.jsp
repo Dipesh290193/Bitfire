@@ -43,6 +43,8 @@
 					<li><a href="<c:url value='/user/transactions.html' />">Transactions</a></li>
 					<li class="active"><a href="<c:url value='/user/send.html' />">Send
 							Bitcoin</a></li>
+					<li><a href="<c:url value='/user/request.html' />">Request
+							Bitcoin</a></li>
 					<li><a href="<c:url value='/user/wallet.html' />">Wallet</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -56,13 +58,27 @@
 <div class = "container" style="margin-top:100px">
 <h2 class = "web-font">Send Bitcoin</h2>
 <form class = "form" action = "<c:url value='/user/send.html' />" method = "post"><br>
-	<input class = "form-control" type = "email" name = "email" placeholder = "recepeient's email"/><br>
-	<input class = "form-control" type ="text" name = "btc" placeholder ="amout of BTC to send"/><br>
+	<c:if test="${empty to || empty amount}">
+		<input class = "form-control" type = "email" name = "email" placeholder = "recepient's email address"/><br>
+		<input class = "form-control" type = "text" name = "btc" placeholder = "amount of BTC"/><br>
+	</c:if>
+	
+	<c:if test="${not empty to && not empty amount}">
+		<input class = "form-control" type = "email" name = "email" value = ${ to } /><br>
+		<input class = "form-control" type ="text" name = "btc" value =${amount } /><br>
+	</c:if>
+	
 	<input class = "btn btn-danger btn-block" type ="submit" value = "Send" />
 </form>
+<br/>
 <div style="color:red">
-${error}
+<h4> ${error} </h4>
 </div>
+<c:if test = "${not empty selftranfererror }">
+<div style="color:red">
+<h4> ${selftranfererror } <a href = "<c:url value ='/user/selftransfer.html' />">Self Transfer</a></h4>
+</div>
+</c:if>
 </div>
 </div>
 

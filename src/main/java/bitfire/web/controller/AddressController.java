@@ -69,7 +69,7 @@ public class AddressController {
 		Address address = addressDao.getAddress(id);
 		if(address.isPrimary() || address.getBitcoinsActual() > 0 )
 		{
-			map.put("message", "Can't archieve primary address or address have balance");
+			map.put("message", "Can't archive addresses which are primary or have a non-zero balance.");
 		}
 		else
 		{

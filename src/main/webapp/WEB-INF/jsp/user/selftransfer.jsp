@@ -43,6 +43,8 @@
 							All Transactions</a></li>
 					<li><a href="<c:url value='/user/send.html' />">Send
 							Bitcoin</a></li>
+					<li><a href="<c:url value='/user/request.html' />">Request
+							Bitcoin</a></li>
 					<li class="active"><a href="<c:url value='/user/wallet.html' />">Wallet</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -87,8 +89,16 @@ TO:
 <br />
 <input  class = "btn btn-danger" type = "submit" value ="Transfer" />
 </form>
+<br>
+<div style="color: green;"><strong>${message}</strong></div>
 
-<div style="color: red">${message}</div>
+<p>${selftranfererror}</p>
+<c:if test = "${selftranfererror ne null}">
+<div style="color: red">${selftranfererror} <a href="<c:url value ='/user/selftransfer.html' />">Self Transfer</a></div>
+</c:if>
+
+<div style = "color: red;"><strong>${error}</strong></div>
+
 </div>
 </div>
 </body>
