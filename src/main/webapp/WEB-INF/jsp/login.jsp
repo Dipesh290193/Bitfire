@@ -45,7 +45,7 @@
 			<form action="login" method="post">
 				<div class = "form_group">
 					<label class = "white" for = "email_field"> Email Address </label>
-					<input type = "email" class = "form-control" id = "email_field" name = "username" placeholder = "Enter email">
+					<input type = "text" class = "form-control" id = "text" name = "username" placeholder = "Enter email">
 				</div><br>
 				<div class = "form_group">
 					<label class = "white" for = "password_field"> Password </label>

@@ -5,7 +5,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
@@ -21,6 +24,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements Serializable, UserDetails{
 
 	private static final long serialVersionUID = 1L;
+	
+	public static final String ROLE_ADMIN = "ROLE_ADMIN";
+
+	public static final String ROLE_USER = "ROLE_USER";
 
 	@Id
 	@GeneratedValue
@@ -29,6 +36,9 @@ public class User implements Serializable, UserDetails{
 	
 	@Column(unique=true, nullable=false)
 	String username;
+	
+	@Column(unique=true, nullable=false)
+	String email;
 	
 	@Column(nullable=false)
 	String name;
@@ -41,55 +51,28 @@ public class User implements Serializable, UserDetails{
 	Wallet wallet;
 
 	@Column(name="enabled")
-	Boolean isActive;
+	Boolean enabled;
+	
+	@ElementCollection
+	@CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
+	@Column(name = "role")
+	private Set<String> roles;
+	
+	private String phone;
 	
 	public User()
 	{
-		this.isActive=true;
+		this.enabled=true;
+		this.roles=new HashSet<String>();
 	}
 	
-	public int getUserId() {
-		return userId;
-	}
-	
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-
-	public void setEmail(String username) {
-		this.username = username;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Boolean getIsActive() {
-		return isActive;
-	}
-
-	public void setIsActive(Boolean isActive) {
-		this.isActive = isActive;
-	}
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-
+        for(String role: this.roles)
+        {
+        	authorities.add(new SimpleGrantedAuthority(role));
+        }
         return authorities;
 	}
 
@@ -119,6 +102,38 @@ public class User implements Serializable, UserDetails{
 		return true;
 	}
 
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public Wallet getWallet() {
 		return wallet;
 	}
@@ -127,6 +142,29 @@ public class User implements Serializable, UserDetails{
 		this.wallet = wallet;
 	}
 
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public Set<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
 	public void setUsername(String username) {
 		this.username = username;

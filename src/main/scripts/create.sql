@@ -7,10 +7,17 @@ create table wallets(
 create table users(
 	user_id integer primary key,
 	username varchar(255) not null unique,
+	email varchar(255) not null unique,
 	name varchar(255),
 	password varchar(255) not null,
+	phone varchar(255) not null,
 	enabled boolean not null default 't',
 	wallet_id varchar(255) not null references wallets(wallet_id)
+);
+
+create table authorities (
+    user_id bigint not null references users(user_id),
+    role    varchar(255)
 );
 
 create table addresses(
@@ -43,15 +50,24 @@ insert into wallets(wallet_id) values ('sevak123wallet');
 insert into wallets(wallet_id) values ('dipesh123wallet');
 insert into wallets(wallet_id) values ('carlos123wallet');
 insert into wallets(wallet_id) values ('daxesh123wallet');
+insert into wallets(wallet_id) values ('admin123wallet');
 
-insert into users(user_id, username, name, password, wallet_id) values
-(1, 'sevak@gmail.com', 'Sevak', 'Sevak123', 'sevak123wallet');
-insert into users(user_id, username, name, password, wallet_id) values
-(2, 'dipesh@gmail.com', 'Dipesh', 'Dipesh123', 'dipesh123wallet');
-insert into users(user_id, username, name, password, wallet_id) values
-(3, 'carlos@gmail.com', 'Carlos', 'Carlos123', 'carlos123wallet');
-insert into users(user_id, username, name, password, wallet_id) values
-(4, 'daxesh@gmail.com', 'Daxesh', 'Daxesh123', 'daxesh123wallet');
+insert into users(user_id, username, email, name, password,phone, wallet_id) values
+(1, 'sevak' ,'sevak@gmail.com', 'Sevak', 'Sevak123', '8186011574','sevak123wallet');
+insert into users(user_id, username, email, name, password,phone, wallet_id) values
+(2,'dipesh', 'dipesh@gmail.com', 'Dipesh', 'Dipesh123', '8186011574' ,'dipesh123wallet');
+insert into users(user_id, username, email, name, password,phone, wallet_id) values
+(3, 'carlos','carlos@gmail.com', 'Carlos', 'Carlos123','8186011574' ,'carlos123wallet');
+insert into users(user_id, username, email, name, password,phone, wallet_id) values
+(4, 'daxesh','daxesh@gmail.com', 'Daxesh', 'Daxesh123','8186011574' ,'daxesh123wallet');
+insert into users(user_id, username, email, name, password,phone, wallet_id) values
+(100,'admin', 'admin@gmail.com', 'Admin', 'Admin123', '8186011574' ,'admin123wallet');
+
+insert into authorities values(100, 'ROLE_ADMIN');
+insert into authorities values(1, 'ROLE_USER');
+insert into authorities values(2, 'ROLE_USER');
+insert into authorities values(3, 'ROLE_USER');
+insert into authorities values(4, 'ROLE_USER');
 
 insert into addresses(address_id, address, is_primary,label, USD, bitcoins, wallet_id) values
 (100, 'sevakAddress123', true, 'Saving', 10000, 158800 , 'sevak123wallet');
@@ -65,6 +81,8 @@ insert into addresses(address_id, address, is_primary,label, USD, bitcoins, wall
 (104, 'dipeshAddress234', false,'business' , 1010 , 16040 ,  'dipesh123wallet'); 
 insert into addresses(address_id, address, is_primary,label, USD, bitcoins, wallet_id) values
 (105, 'dipeshAddress345', true, 'Personal', 2888,45870, 'dipesh123wallet'); 
+insert into addresses(address_id, address, is_primary,label, USD, bitcoins, wallet_id) values
+(106, 'admin123', true, 'Admin', 2888,45870, 'admin123wallet'); 
 
 insert into transactions(transaction_id, tx_id, USD, bitcoin, confirmations, trans_date, sender_address_id, receiver_address_id, sender_user_id, receiver_user_id, notified_sender, notified_receiver) values
 (1000, 'trans1000', 100,10, 1,TIMESTAMP '2016-08-15 15:36:38',100,104,1,2,false,false);

@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User getUserByUsername(String email) {
-        String query = "from User user "
+        String query = "from User user left join fetch user.roles "
                 + "where lower(username) = :username";
 
             List<User> users = entityManager.createQuery( query, User.class )
