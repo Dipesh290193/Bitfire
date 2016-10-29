@@ -99,7 +99,7 @@ public class User implements Serializable, UserDetails{
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return this.enabled;
 	}
 
 	public int getUserId() {
@@ -142,14 +142,6 @@ public class User implements Serializable, UserDetails{
 		this.wallet = wallet;
 	}
 
-	public Boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-
 	public Set<String> getRoles() {
 		return roles;
 	}
@@ -168,6 +160,14 @@ public class User implements Serializable, UserDetails{
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 }

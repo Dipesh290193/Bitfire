@@ -40,5 +40,18 @@ public class UserDaoImpl implements UserDao {
             System.out.println("ROLE IS: " + users.get( 0 ).getRoles().iterator().next());
             return users.size() == 0 ? null : users.get( 0 );
 	}
-    
+
+	@Override
+	public List<User> getUsers() {
+		
+		String query="from User u where 'ROLE_USER' IN elements(u.roles) ";
+		return entityManager.createQuery(query, User.class)
+				.getResultList();
+	}
+	
+	@Override
+	public List<User> getAllUsers()
+	{
+		return entityManager.createQuery("from User",User.class).getResultList();
+	}
 }

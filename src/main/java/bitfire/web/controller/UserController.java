@@ -3,10 +3,15 @@ package bitfire.web.controller;
 import java.security.Security;
 import java.text.DecimalFormat;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.Set;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +20,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -59,6 +66,7 @@ public class UserController {
 			for (Address ad : addresses) {
 				sum += ad.getBitcoinsActual();
 			}
+
 
 			DecimalFormat format = new DecimalFormat("#0.00000000");
 			String total = format.format(sum / 100000000.0);
@@ -161,5 +169,61 @@ public class UserController {
 		userDao.saveUser(user);
 		status.setComplete();
 		return "redirect:login.html";
+	}
+	
+	@RequestMapping(value={"/admin/users"}, method=RequestMethod.GET)
+	public String geUsers(ModelMap map)
+	{
+		List<User> users=userDao.getAllUsers();
+		User currentUser=SecurityUtils.getUser();
+		for(int i=0;i<users.size();i++)
+		{
+			if(users.get(i).getUserId()==currentUser.getUserId())
+			{
+				users.remove(i);
+			}
+		}
+		map.put("users",users);
+		return "/admin/users";
+	}
+	
+	@RequestMapping("/admin/disableUser")
+	public String disableUser(@RequestParam int id)
+	{
+		User user=userDao.getUser(id);
+		user.setEnabled(false);
+		userDao.saveUser(user);
+		return "redirect:/admin/users.html";
+	}
+	
+	@RequestMapping("/admin/enableUser")
+	public String enableUser(@RequestParam int id)
+	{
+		User user=userDao.getUser(id);
+		user.setEnabled(true);
+		userDao.saveUser(user);
+		return "redirect:/admin/users.html";
+	}
+	
+	@RequestMapping("/admin/makeAdmin")
+	public String makeAdmin(@RequestParam int id)
+	{
+		User user=userDao.getUser(id);
+		Set<String> role=new HashSet<String>();
+		role.add(User.ROLE_ADMIN);
+		user.setRoles(role);
+		userDao.saveUser(user);
+		return "redirect:/admin/users.html";
+	}
+	
+	@RequestMapping("/admin/makeUser")
+	public String makeUser(@RequestParam int id)
+	{
+		User user=userDao.getUser(id);
+		Set<String> role=new HashSet<String>();
+		role.add(User.ROLE_USER);
+		user.setRoles(role);
+		userDao.saveUser(user);
+		return "redirect:/admin/users.html";
 	}
 }

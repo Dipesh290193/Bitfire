@@ -1,8 +1,6 @@
 package bitfire.web.controller;
 
 import java.io.IOException;
-import java.net.URL;
-import java.security.Security;
 import java.text.DecimalFormat;
 
 import javax.servlet.http.HttpServletRequest;
