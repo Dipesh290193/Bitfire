@@ -41,9 +41,12 @@
 								<input style="text-align: center;" id="confNum" type="text"
 									class="form-control" name="confirmation"
 									placeholder="Confirmation Number"> <br>
-
+								<div>
+								<center>
 								<button id="call" style="margin: 0 auto;" class="btn btn-info"
 									data-dismiss="modal">Confirm and Save</button>
+									</center>
+								</div>
 						</form>
 
 
