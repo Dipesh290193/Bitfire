@@ -37,7 +37,7 @@ public class UserDaoImpl implements UserDao {
                 .setParameter( "username", email.toLowerCase() )
                 .getResultList();
             
-            System.out.println("ROLE IS: " + users.get( 0 ).getRoles().iterator().next());
+//            System.out.println("ROLE IS: " + users.get( 0 ).getRoles().iterator().next());
             return users.size() == 0 ? null : users.get( 0 );
 	}
 
@@ -53,5 +53,18 @@ public class UserDaoImpl implements UserDao {
 	public List<User> getAllUsers()
 	{
 		return entityManager.createQuery("from User",User.class).getResultList();
+	}
+
+	@Override
+	public User getUserByEmail(String email) {
+        String query = "from User user left join fetch user.roles "
+                + "where lower(email) = :email";
+
+            List<User> users = entityManager.createQuery( query, User.class )
+                .setParameter( "email", email.toLowerCase() )
+                .getResultList();
+            
+//            System.out.println("ROLE IS: " + users.get( 0 ).getRoles().iterator().next());
+            return users.size() == 0 ? null : users.get( 0 );
 	}
 }

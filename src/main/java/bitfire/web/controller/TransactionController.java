@@ -77,7 +77,7 @@ public class TransactionController {
 	@RequestMapping(value ={"/user/request.html"}, method = RequestMethod.POST)
 	public String request(@RequestParam String email, @RequestParam Double btc, @RequestParam String reason, ModelMap map){
 		User sender = SecurityUtils.getUser();
-		User receiver = userDao.getUserByUsername(email);
+		User receiver = userDao.getUserByEmail(email);
 		
 		if(receiver == null){
 			map.put("error", email + " does not have a bitfire account. Please check the email address and try again.");
