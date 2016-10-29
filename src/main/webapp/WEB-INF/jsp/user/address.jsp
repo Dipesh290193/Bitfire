@@ -49,6 +49,7 @@
 					<li><a href="<c:url value='/user/request.html' />">Request
 							Bitcoin</a></li>
 					<li><a href="<c:url value='/user/wallet.html' />">Wallet</a></li>
+					<li><a href="<c:url value='/user/profile.html' />">User Panel</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="<c:url value='/logout' />">Logout</a></li>

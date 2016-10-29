@@ -36,6 +36,8 @@ public class UserDaoImpl implements UserDao {
             List<User> users = entityManager.createQuery( query, User.class )
                 .setParameter( "username", email.toLowerCase() )
                 .getResultList();
+            
+            System.out.println("ROLE IS: " + users.get( 0 ).getRoles().iterator().next());
             return users.size() == 0 ? null : users.get( 0 );
 	}
     
