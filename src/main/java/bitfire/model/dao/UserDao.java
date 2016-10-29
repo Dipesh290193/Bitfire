@@ -1,5 +1,7 @@
 package bitfire.model.dao;
 
+import java.util.List;
+
 import bitfire.model.User;
 
 public interface UserDao {
@@ -9,4 +11,8 @@ public interface UserDao {
 	User saveUser(User user);
 	
 	User getUserByUsername(String email);
+	
+	List<User> getUsers();
+	
+	List<User> getAllUsers();
 }

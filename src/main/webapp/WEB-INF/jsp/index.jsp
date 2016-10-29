@@ -53,6 +53,11 @@
 							Bitcoin</a></li>
 					<li><a href="<c:url value='/user/wallet.html' />">Wallet</a></li>
 				</ul></security:authorize>
+				<security:authorize access="hasRole('ROLE_ADMIN')">
+					<ul class="nav navbar-nav">
+					<li><a href="<c:url value='/admin/users.html' />">Users</a></li>
+					</ul>
+				</security:authorize>
 				<ul class="nav navbar-nav navbar-right">
 					<li><security:authorize access="anonymous">
 							<a href="<c:url value='/login.html' />">Login</a>

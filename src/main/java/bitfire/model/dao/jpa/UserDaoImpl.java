@@ -1,7 +1,10 @@
 package bitfire.model.dao.jpa;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.jws.soap.SOAPBinding.Use;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -38,5 +41,18 @@ public class UserDaoImpl implements UserDao {
                 .getResultList();
             return users.size() == 0 ? null : users.get( 0 );
 	}
-    
+
+	@Override
+	public List<User> getUsers() {
+		
+		String query="from User u where 'ROLE_USER' IN elements(u.roles) ";
+		return entityManager.createQuery(query, User.class)
+				.getResultList();
+	}
+	
+	@Override
+	public List<User> getAllUsers()
+	{
+		return entityManager.createQuery("from User",User.class).getResultList();
+	}
 }
