@@ -1,10 +1,7 @@
 package bitfire.model.dao.jpa;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import javax.jws.soap.SOAPBinding.Use;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
