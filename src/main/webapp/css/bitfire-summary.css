@@ -49,31 +49,8 @@ h1{
 	color: rgb(255,255,255);
 }
 
-
-.navbar-default{
-	background: rgba(47,79,79,.7);
-	border: none;
-	box-shadow: 0 4px 10px 4px #000000;
-	margin: 0;
-	
-}
-
-.nav.navbar-nav.navbar-right li a,
-#navbar li a{
-    color: rgb(255,255,255);
-    font-size: 120%;
-}	
-
-.active a{
-	background: none !important;
-	border-bottom: 4px solid #cc6633;
-	border-right: 1px solid #cc6633;
-	border-radius: 0 0 20px 0;
-	color: rgb(255,255,255);
-}
-
 .jumbotron{
-	background: rgba(42,71,77,1);
+	background: rgba(42,71,77,.9);
 	color: rgb(211,211,211);
 	margin:0;
 }
@@ -144,4 +121,10 @@ h1{
 
 .panel-default > .trans:hover{
 	border-left: 2px solid #2A474D;
+}
+
+/* Creates scroll pane	*/
+.panel-default > .scroll-panel {
+   height: 400px;
+   overflow: auto;
 }
