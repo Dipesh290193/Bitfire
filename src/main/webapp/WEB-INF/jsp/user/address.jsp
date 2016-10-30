@@ -52,7 +52,7 @@
 			<!--  Collapses when screen is too small -->
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="index.html">Summary</a></li>
+					<li><a href="../index.html">Summary</a></li>
 					<li><a href="<c:url value='/user/transactions.html' />">Transactions</a></li>
 					<li><a href="<c:url value='/user/send.html' />">Send
 							Bitcoin</a></li>
