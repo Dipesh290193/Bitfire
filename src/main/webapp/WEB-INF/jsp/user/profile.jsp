@@ -93,7 +93,7 @@
 			<input type="submit" value="Edit Profile" class="btn btn-md btn-danger" />
 		</form>
 		<div style="color: #00ff00; text-align:center" >
-			<h4>${message}</h4>
+			<h4>${message}${param.message }</h4>
 		</div>
 	</div>
 	<br>

@@ -143,7 +143,7 @@ public class UserController {
 		userDao.saveUser(user);
 		map.put("message", "Successfully updated your profile.");
 		status.setComplete();
-		return "/user/profile";
+		return "redirect:/user/profile.html";
 	}
 	
 
