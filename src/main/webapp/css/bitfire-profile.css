@@ -1,0 +1,19 @@
+.well{
+	max-width: 600px;
+	min-width: 300px;
+	margin: 100px auto;
+	background: rgba(47,79,79,1);
+	border: 2px solid #cc6633;
+}
+
+label{
+	color: #ffffff;
+	font-size: 120%;
+	font-weight: none;
+}
+
+.logo > img,
+.logo > h2 {
+    display: inline-block;
+    margin: 0;
+}

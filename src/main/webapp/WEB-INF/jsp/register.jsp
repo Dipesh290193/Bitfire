@@ -5,13 +5,20 @@
 <meta charset="UTF-8">
 <title>Bitfire</title>
 
-<!-- Latest compiled and minified CSS -->
+<!-- Favicon for Bitfire -->
+<link rel="shortcut icon" href="../assets/img/favicon.ico" type="image/x-icon" />
+
+<!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-<link href="https://fonts.googleapis.com/css?family=Exo+2|Rokkitt" rel="stylesheet">
-<link href="css/bitfire.css" rel="stylesheet">
-<link href="css/animate.css" rel="stylesheet">
 
+<!-- Google Fonts -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Exo+2|Rokkitt">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" href="css/bitfire-base.css">
+<link rel="stylesheet" href="css/bitfire-nav.css">
+<link rel="stylesheet" href="css/bitfire.css">
 
 </head>
 <body>

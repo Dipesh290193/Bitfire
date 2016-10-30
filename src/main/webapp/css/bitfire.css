@@ -1,28 +1,5 @@
-@CHARSET "UTF-8";
-
-*{
-	font-family: 'Rokkitt', serif;
-}
-
-html, body {
-	background: url("../assets/img/bitcoin.jpg") no-repeat center center fixed;
-	background-size: cover;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-
-h1{
-	font-size: 300%;
-}
-
-.logo > img,
-.logo > h1 {
-    display: inline-block;
-    margin: 50px 0;
+body > .container{
+	margin-top: 60px;
 }
 
 .well{
@@ -31,18 +8,6 @@ h1{
 	margin: 0 auto;
 	background: rgba(47,79,79,.95);
 	border: 2px solid #cc6633;
-}
-
-.web-font{
-	font-family: 'Exo 2', sans-serif;
-}
-
-.ignite{
-	color: rgb(255,0,0);
-}
-
-.white{
-	color: rgb(255,255,255);
 }
 
 #password-recovery > a:hover,
@@ -55,17 +20,4 @@ h1{
 
 #password-recovery > a:hover{
 	color: rgb(180,180,180);
-}
-
-.navbar-default{
-	background: rgba(47,79,79,.8);
-	border: none;
-}
-
-.nav.navbar-nav.navbar-right li a {
-    color: rgb(255,255,255);
-}	
-
-.active a{
-	background: rgba(214,102,45,1) !important;
 }
