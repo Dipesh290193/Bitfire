@@ -73,6 +73,8 @@ public class TransactionController {
 					emails.add(mail);
 				}
 			}
+			map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
+
 			map.put("emails", emails);
 			map.put("user", SecurityUtils.getUser());
 			return "/user/send";
@@ -91,6 +93,8 @@ public class TransactionController {
 					emails.add(mail);
 				}
 			}
+			map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
+
 			map.put("emails", emails);
 			map.put("user", SecurityUtils.getUser());
 			return "/user/send";
@@ -113,6 +117,8 @@ public class TransactionController {
 					emails.add(mail);
 				}
 			}
+			map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
+
 			map.put("emails", emails);
 			map.put("user", SecurityUtils.getUser());
 			return "/user/send";
