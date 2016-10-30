@@ -128,7 +128,16 @@ public class TransactionController {
 	}
 	
 	@RequestMapping(value ={"/user/request.html"}, method = RequestMethod.GET)
-	public String send(){
+	public String send(ModelMap map){
+		List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
+		List<String> emails = new ArrayList<>();
+		for(Transaction t: trans){
+			String mail =t.getReceiverUser().getEmail();
+			if(!emails.contains(mail)){
+				emails.add(mail);
+			}
+		}
+		map.put("emails", emails);
 		return "/user/request";
 	}
 	
@@ -139,6 +148,15 @@ public class TransactionController {
 		
 		if(receiver == null){
 			map.put("error", email + " does not have a bitfire account. Please check the email address and try again.");
+			List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
+			List<String> emails = new ArrayList<>();
+			for(Transaction t: trans){
+				String mail =t.getReceiverUser().getEmail();
+				if(!emails.contains(mail)){
+					emails.add(mail);
+				}
+			}
+			map.put("emails", emails);
 			return "user/request";
 		}
 		
@@ -148,6 +166,15 @@ public class TransactionController {
 		try {
 			Notifications.SendInvoice(email, receiver.getName(), sender.getEmail(), sender.getName(), btc.toString(), reason);
 			map.put("message", "Successfully requested " + btc.toString() + " BTC from " + email);
+			List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
+			List<String> emails = new ArrayList<>();
+			for(Transaction t: trans){
+				String mail =t.getReceiverUser().getEmail();
+				if(!emails.contains(mail)){
+					emails.add(mail);
+				}
+			}
+			map.put("emails", emails);
 		} catch (IOException e) {
 			map.put("error", "We were not able to send your request at this time. Please try again");
 			e.printStackTrace();
