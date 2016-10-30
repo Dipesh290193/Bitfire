@@ -72,7 +72,7 @@
 			<br>
 	Phone: <form:input path="phone" class="form-control" />
 			<br>
-			<input type="submit" class="btn btn-success" />
+			<input type="submit" class="btn btn-success" value ="Save Changes"/>
 		</form:form>
 	</div>
 	</div>

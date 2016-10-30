@@ -17,23 +17,23 @@ public class Notifications {
 	public static HashMap<String, Integer> codes= new HashMap<>();
 
 	/***************************** TEST ***********************************************/
-//	 public static void main(String [] args){
-//	 sendMessage("8186011574", "hi");
-//	
-//	 String key = System.getenv("SendGridKey");
-//	 
-//	 try {
-//	 SendEmail("sevakmnatsakanyan@yahoo.com", "Sevak", "dipesh@gmail.com", "Dipesh",
-//	 "0.125",
-//	 "http://www.ebay.com/itm/HP-DeskJet-2132-All-in-One-Color-Inkjet-Photo-Printer"
-//	 +
-//	 "-Copier-and-Scanner-/351873190667?_trkparms=5373%3A0%7C5374%3AFeatured");
-//	 } catch (IOException e) {
-//	
-//	 // TODO Auto-generated catch block
-//	 e.printStackTrace();
-//	 }
-//	 }
+
+	 public static void main(String [] args){
+	// sendMessage("8186011574", "hi");
+	//
+	// System.getenv("SendGridKey");
+	 try {
+	 SendEmail("smnatsa2@calstatela.edu", "Sevak", "dipesh@gmail.com", "Dipesh",
+	 "0.125",
+	 "http://www.ebay.com/itm/HP-DeskJet-2132-All-in-One-Color-Inkjet-Photo-Printer"
+	 +
+	 "-Copier-and-Scanner-/351873190667?_trkparms=5373%3A0%7C5374%3AFeatured");
+	 } catch (IOException e) {
+	
+	 // TODO Auto-generated catch block
+	 e.printStackTrace();
+	 }
+	 }
 
 	/****************************** END OF TEST******************************************/
 	
@@ -87,6 +87,9 @@ public class Notifications {
 		Mail mail = new Mail(from, subject, to, content);
 
 		SendGrid sg = new SendGrid(System.getenv("SendGridKey"));
+
+		//SendGrid sg = new SendGrid("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");
+
 		Request request = new Request();
 		try {
 			request.method = Method.POST;

@@ -44,7 +44,7 @@ public class TransactionController {
 	
 	@RequestMapping(value ={"/user/send.html"}, method = RequestMethod.POST)
 	public String send(@RequestParam String email, @RequestParam Double btc, ModelMap map){
-		User receiverUser=userDao.getUserByUsername(email);
+		User receiverUser=userDao.getUserByEmail(email);
 		Address receiverAddress=addressDao.getPrimaryAddress(receiverUser.getWallet());
 		Address senderAddress=addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet());
 		if(senderAddress.getBitcoinsActual()>=(int)(btc*100000000))
@@ -77,7 +77,7 @@ public class TransactionController {
 	@RequestMapping(value ={"/user/request.html"}, method = RequestMethod.POST)
 	public String request(@RequestParam String email, @RequestParam Double btc, @RequestParam String reason, ModelMap map){
 		User sender = SecurityUtils.getUser();
-		User receiver = userDao.getUserByUsername(email);
+		User receiver = userDao.getUserByEmail(email);
 		
 		if(receiver == null){
 			map.put("error", email + " does not have a bitfire account. Please check the email address and try again.");
@@ -88,7 +88,7 @@ public class TransactionController {
 //		String amount = format.format(btc/100000000.0);
 		
 		try {
-			Notifications.SendEmail(email, receiver.getName(), sender.getUsername(), sender.getName(), btc.toString(), reason);
+			Notifications.SendEmail(email, receiver.getName(), sender.getEmail(), sender.getName(), btc.toString(), reason);
 			map.put("message", "Successfully requested " + btc.toString() + " BTC from " + email);
 		} catch (IOException e) {
 			map.put("error", "We were not able to send your request at this time. Please try again");

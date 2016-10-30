@@ -10,7 +10,8 @@ public interface UserDao {
 	
 	User saveUser(User user);
 	
-	User getUserByUsername(String email);
+	User getUserByUsername(String username);
+	User getUserByEmail(String email);
 	
 	List<User> getUsers();
 	
