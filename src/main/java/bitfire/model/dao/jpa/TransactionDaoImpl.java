@@ -32,8 +32,10 @@ public class TransactionDaoImpl implements TransactionDao{
 	}
 
 	@Override
-	public List<Transaction> getSenderTransacations(int senderUserId) {
-		// TODO Auto-generated method stub
+	public List<Transaction> getSenderTransacations(User user) {
+//		return entityManager.createQuery("from Transactions where senderUser = :sender", Transaction.class)
+//				.setParameter("sender", user)
+//				.getResultList();
 		return null;
 	}
 
@@ -57,9 +59,9 @@ public class TransactionDaoImpl implements TransactionDao{
 
 	@Override
 	public List<Transaction> getAllTransactions(User user) {
-		return entityManager.createQuery("from Transaction where senderUser = :senderId or receiverUser = :receiverId", Transaction.class)
-		.setParameter("senderId", user)
-		.setParameter("receiverId", user)
+		return entityManager.createQuery("from Transaction where senderUser = :sender or receiverUser = :receiver", Transaction.class)
+		.setParameter("sender", user)
+		.setParameter("receiver", user)
 		.getResultList();
 
 	}
