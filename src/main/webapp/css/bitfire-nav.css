@@ -1,0 +1,44 @@
+/* default navbar styling */
+.navbar-default{
+	background: rgba(47,79,79,.7);
+	border: none;
+	box-shadow: 0 4px 10px 4px #000000;
+	margin: 0;
+	font-size: 130%;
+}
+
+.nav.navbar-nav.navbar-right li a,
+#navbar li a{
+    color: rgb(255,255,255);
+    border-radius: 0 0 20px 20px;
+    margin-left: 2px;
+}
+
+.nav.navbar-nav.navbar-right li a:hover,
+#navbar li a:hover{
+	background: rgba(87,159,160,.6);
+}
+
+
+/* Drop down styling */
+.navbar-nav > li > .dropdown-menu{
+	font-size: 100%;
+	background: rgba(47,79,79,.9);
+}
+
+.divider{
+	color: #ffffff;
+}
+		
+
+/* Styling for active page navigation bar */
+.active a{
+	background: none !important;
+	border-bottom: 4px solid #cc6633;
+	border-right: 1px solid #cc6633;
+	color: rgb(255,255,255);
+}
+
+.active a:hover{
+	background: rgba(87,159,160,.6) !important;
+}
