@@ -134,46 +134,6 @@ function updateText(type) {
 			</c:if>
 		</div>
 	</div>
-
-	<div class="well">
-		<div class="container" style="margin-top: 100px">
-			<h2 class="web-font">Send Bitcoin</h2>
-			<form class="form" action="<c:url value='/user/send.html' />"
-				method="post">
-				<br>
-				<c:if test="${empty to || empty amount}">
-					<input class="form-control" type="email" name="email"
-						placeholder="recepient's email address" />
-					<br>
-					<input class="form-control" type="text" name="btc"
-						placeholder="amount of BTC" />
-					<br>
-				</c:if>
-
-				<c:if test="${not empty to && not empty amount}">
-					<input class="form-control" type="email" name="email" value=${ to } />
-					<br>
-					<input class="form-control" type="text" name="btc" value=${amount } />
-					<br>
-				</c:if>
-
-				<input class="btn btn-danger btn-block" type="submit" value="Send" />
-			</form>
-			<br />
-			<div style="color: red">
-				<h4>${error}</h4>
-			</div>
-			<c:if test="${not empty selftranfererror }">
-				<div style="color: red">
-					<h4>
-						${selftranfererror } <a
-							href="<c:url value ='/user/selftransfer.html' />">Self
-							Transfer</a>
-					</h4>
-				</div>
-			</c:if>
-		</div>
-	</div>
 	
 	<!-- Javascript and jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
