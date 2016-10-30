@@ -62,6 +62,7 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><security:authorize access="anonymous">
 							<a href="<c:url value='/login.html' />">Login</a>
+							
 						</security:authorize> <security:authorize access="authenticated">
 							<a href="<c:url value='/logout' />">Logout</a>
 						</security:authorize></li>
@@ -217,7 +218,7 @@
 																<c:if
 																	test="${ trans.senderUser.userId eq trans.receiverUser.userId}">
 																	<td><span class="glyphicon glyphicon-plus"
-																		style="color: #3ea134" aria-hidden="true"></span>
+																		style="color: #3ea134; top: 4px;" aria-hidden="true"></span>
 																		${trans.bitcoin}</td>
 																</c:if>
 
@@ -225,13 +226,13 @@
 																	test="${ trans.senderUser.userId ne trans.receiverUser.userId}">
 																	<c:if test="${user.userId eq trans.senderUser.userId}">
 																		<td><span class="glyphicon glyphicon-minus"
-																			style="color: #ff0000" aria-hidden="true"></span>
+																			style="color: #ff0000; top: 4px;" aria-hidden="true"></span>
 																			${trans.bitcoin}</td>
 																	</c:if>
 																	<c:if
 																		test="${ user.userId eq trans.receiverUser.userId}">
 																		<td><span class="glyphicon glyphicon-plus"
-																			style="color: #3ea134" aria-hidden="true"></span>
+																			style="color: #3ea134; top: 4px;" aria-hidden="true"></span>
 																			${trans.bitcoin}</td>
 																	</c:if>
 																</c:if>

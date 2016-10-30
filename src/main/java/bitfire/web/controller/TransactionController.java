@@ -88,7 +88,7 @@ public class TransactionController {
 //		String amount = format.format(btc/100000000.0);
 		
 		try {
-			Notifications.SendEmail(email, receiver.getName(), sender.getEmail(), sender.getName(), btc.toString(), reason);
+			Notifications.SendInvoice(email, receiver.getName(), sender.getEmail(), sender.getName(), btc.toString(), reason);
 			map.put("message", "Successfully requested " + btc.toString() + " BTC from " + email);
 		} catch (IOException e) {
 			map.put("error", "We were not able to send your request at this time. Please try again");
