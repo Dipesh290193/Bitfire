@@ -2,6 +2,8 @@ package bitfire.web.controller;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,32 +41,88 @@ public class TransactionController {
 			map.put("to", request.getParameter("to"));
 		if(request.getParameter("amount") != null)
 			map.put("amount", request.getParameter("amount"));
+		
+		List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
+		List<String> emails = new ArrayList<>();
+		for(Transaction t: trans){
+			String mail =t.getReceiverUser().getEmail();
+			if(!emails.contains(mail)){
+				emails.add(mail);
+			}
+		}
+		map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
+		map.put("emails", emails);
+		map.put("user", SecurityUtils.getUser());
 		return "/user/send";
 	}
 	
 	@RequestMapping(value ={"/user/send.html"}, method = RequestMethod.POST)
 	public String send(@RequestParam String email, @RequestParam Double btc, ModelMap map){
 		User receiverUser=userDao.getUserByEmail(email);
-		Address receiverAddress=addressDao.getPrimaryAddress(receiverUser.getWallet());
-		Address senderAddress=addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet());
-		if(senderAddress.getBitcoinsActual()>=(int)(btc*100000000))
+		
+		
+//		System..println("Sender add: " + senderAddress.getAddress() + " : " + "Rec add: " + receiverAddress.getAddress());
+		
+		 if(receiverUser == null){
+			map.put("error", email + " is not registered on BitFire. Please check the email address and try again.");
+			List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
+			List<String> emails = new ArrayList<>();
+			for(Transaction t: trans){
+				String mail =t.getReceiverUser().getEmail();
+				if(!emails.contains(mail)){
+					emails.add(mail);
+				}
+			}
+			map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
+
+			map.put("emails", emails);
+			map.put("user", SecurityUtils.getUser());
+			return "/user/send";
+			
+		}
+		 Address receiverAddress=addressDao.getPrimaryAddress(receiverUser.getWallet());
+			Address senderAddress=addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet());
+		  if(receiverAddress.getAddress().equals(senderAddress.getAddress())){
+			map.put("selftranfererror", "You can not send BTC to yourself. \n If you want to transfer BTC between "
+					+ "your addresses, please use the following link: ");
+			List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
+			List<String> emails = new ArrayList<>();
+			for(Transaction t: trans){
+				String mail =t.getReceiverUser().getEmail();
+				if(!emails.contains(mail)){
+					emails.add(mail);
+				}
+			}
+			map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
+
+			map.put("emails", emails);
+			map.put("user", SecurityUtils.getUser());
+			return "/user/send";
+		}
+		else if(senderAddress.getBitcoinsActual()>=(int)(btc*100000000))
 		{
 			tranfer(senderAddress, receiverAddress, btc);
 			return "redirect:/user/transactions.html";
 		}
-		else if(receiverAddress == null){
-			map.put("error", "Invalid email addres.");
-			return "/user/send";
-		}
-		else if(receiverAddress.getAddress().equals(senderAddress.getAddress())){
-			map.put("selftranfererror", "You can not send BTC to yourself. \n If you want to transfer BTC between "
-					+ "you addresses, please use the following link: ");
-			return "/user/send";
-		}
+
+
 		else
 		{
 			map.put("error", "You don't have enough funds in your primary address " +senderAddress.getAddress());
+			List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
+			List<String> emails = new ArrayList<>();
+			for(Transaction t: trans){
+				String mail =t.getReceiverUser().getEmail();
+				if(!emails.contains(mail)){
+					emails.add(mail);
+				}
+			}
+			map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
+
+			map.put("emails", emails);
+			map.put("user", SecurityUtils.getUser());
 			return "/user/send";
+		
 		}
 		
 	}
@@ -88,7 +146,7 @@ public class TransactionController {
 //		String amount = format.format(btc/100000000.0);
 		
 		try {
-			Notifications.SendEmail(email, receiver.getName(), sender.getEmail(), sender.getName(), btc.toString(), reason);
+			Notifications.SendInvoice(email, receiver.getName(), sender.getEmail(), sender.getName(), btc.toString(), reason);
 			map.put("message", "Successfully requested " + btc.toString() + " BTC from " + email);
 		} catch (IOException e) {
 			map.put("error", "We were not able to send your request at this time. Please try again");

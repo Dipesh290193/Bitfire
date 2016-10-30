@@ -11,7 +11,7 @@ public interface TransactionDao {
 	
 	Transaction getTransaction(int id);
 		
-	List<Transaction> getSenderTransacations(int senderUserId);
+	List<Transaction> getSenderTransacations(User user);
 	
 	List<Transaction> getReceiverTransacations(int receiverUserId);
 	

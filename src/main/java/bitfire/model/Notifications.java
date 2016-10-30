@@ -1,6 +1,7 @@
 package bitfire.model;
 
 import com.sendgrid.*;
+import java.util.UUID;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ public class Notifications {
 	public static final String MY_NUMBER = "+18182104092";
 	
 	public static HashMap<String, Integer> codes= new HashMap<>();
+	public static HashMap<String, String> securityTokens= new HashMap<>();
 
 	/***************************** TEST ***********************************************/
 
@@ -23,11 +25,14 @@ public class Notifications {
 	//
 	// System.getenv("SendGridKey");
 	 try {
-	 SendEmail("smnatsa2@calstatela.edu", "Sevak", "dipesh@gmail.com", "Dipesh",
-	 "0.125",
-	 "http://www.ebay.com/itm/HP-DeskJet-2132-All-in-One-Color-Inkjet-Photo-Printer"
-	 +
-	 "-Copier-and-Scanner-/351873190667?_trkparms=5373%3A0%7C5374%3AFeatured");
+		 String token = UUID.randomUUID().toString().replaceAll("\\-","" );
+		 System.out.println("Token: " + token);
+		 SendPasswordResetLink("savoyvv@outlook.com", "Sevak", token);
+//	 SendInvoice("smnatsa2@calstatela.edu", "Sevak", "dipesh@gmail.com", "Dipesh",
+//	 "0.125",
+//	 "http://www.ebay.com/itm/HP-DeskJet-2132-All-in-One-Color-Inkjet-Photo-Printer"
+//	 +
+//	 "-Copier-and-Scanner-/351873190667?_trkparms=5373%3A0%7C5374%3AFeatured");
 	 } catch (IOException e) {
 	
 	 // TODO Auto-generated catch block
@@ -48,8 +53,63 @@ public class Notifications {
 		Message message = Message.creator(new PhoneNumber(to), new PhoneNumber(MY_NUMBER), text).create();
 		
 	}
+	
+	public static void SendPasswordResetLink(String toEmail, String toName, String securityToken) throws IOException {
+		System.out.println("sending mail to " + toEmail);
+		securityTokens.put(securityToken, toEmail);
+		Email from = new Email("noreply@bitfire.com");
+		String subject = "BitFire password reset";
+		Email to = new Email(toEmail);
+		Content content = new Content();
+		content.setType("text/html");
+		content.setValue(
+				"<html>"
+				+ "<body style = 'background: rgb(87,159,160);border-radius: 10px; color: #000000'>"
+				+ "		<div style = 'margin: 5px; padding: 20px;'>"
+				+ "			<div>"
+				+ "				<img src='https://www.emergencyreporting.com/wp-content/uploads/2015/03/Fire.png' alt='' style='width: 50px; height: 50px; display: inline-block;'>"
+				+ "				<h1 style = \"font-family: monospace; display: inline-block; font-size: 35px;\">"
+				+ "					<span style = 'color: rgb(139,0,0);'>BIT</span><span style='color: rgb(255,255,255);'>FIRE</span>"
+				+ "				</h1>"
+				+ "			</div>"
+				+ "			<div style = 'border: 1px solid #AAAAAA; border-radius: 25px; background: rgb(255,255,255)'>"
+				+ "				<div style = 'padding: 50px'>"
+				+ "					<h1 style = 'border-bottom: 2px solid #999999;'><strong>Reset Password</strong></h1>"
+				+ "					<h3>Dear " + toName + ",</h3>" 
+				+ "					<p>You have requested to reset your BitFire account password.<p>"
+				+ "					<p>Please follow the link below to reset your password.</p><br>"	
+					
+				+ "					<a style='display: block;max-width: 100px; color: #ffffff;background: rgb(247,97,22); padding: "
+				+ "					10px 15px; margin-top:10px; border-radius: 5px; text-decoration: none; text-align:center; font-weight:bold;' href = "
+				+ "					'http://localhost:8080/bitfire/passwordreset.html?token=" + securityToken +"'>Reset Password</a><br>"
+				+ "					<p>Sincerely,</p>"
+				+ "					<p>Team Bitfire</p>"
+				+ "				</div>" 
+				+ "			</div>"
+				+ "		</div>"
+				+ "</body> "
+				+ "</html>");
+		Mail mail = new Mail(from, subject, to, content);
 
-	public static void SendEmail(String toEmail, String toName, String fromEmail, String fromName, String amount,
+//		SendGrid sg = new SendGrid(System.getenv("SendGridKey"));
+
+		SendGrid sg = new SendGrid("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");
+
+		Request request = new Request();
+		try {
+			request.method = Method.POST;
+			request.endpoint = "mail/send";
+			request.body = mail.build();
+			Response response = sg.api(request);
+			System.out.println(response.statusCode);
+			System.out.println(response.body);
+			System.out.println(response.headers);
+		} catch (IOException ex) {
+			throw ex;
+		}
+	}
+
+	public static void SendInvoice(String toEmail, String toName, String fromEmail, String fromName, String amount,
 			String reason) throws IOException {
 		Email from = new Email("noreply@bitfire.com");
 		String subject = "Invoice from " + fromName;
@@ -78,7 +138,7 @@ public class Notifications {
 				+ "					</div>"
 				+ "					<a style='display: block;max-width: 100px; color: #ffffff;background: rgb(247,97,22); padding: 10px 15px; margin-top:10px; border-radius: 5px; text-decoration: none; text-align:center; font-weight:bold;' href = 'http://localhost:8080/bitfire/user/send.html" + "?to=" + fromEmail + "&amount=" + amount + "'>Pay</a><br>"
 				+ "					<p>Sincerely,</p>"
-				+ "					<p>&nbsp;&nbsp;&nbsp;&nbsp;Bitfire</p>"
+				+ "					<p>Team Bitfire</p>"
 				+ "				</div>" 
 				+ "			</div>"
 				+ "		</div>"
@@ -86,9 +146,9 @@ public class Notifications {
 				+ "</html>");
 		Mail mail = new Mail(from, subject, to, content);
 
-		SendGrid sg = new SendGrid(System.getenv("SendGridKey"));
+//		SendGrid sg = new SendGrid(System.getenv("SendGridKey"));
 
-		//SendGrid sg = new SendGrid("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");
+		SendGrid sg = new SendGrid("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");
 
 		Request request = new Request();
 		try {
