@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Bitfire: Address</title>
+<title>Bitfire: Edit Address</title>
 
 <!-- Favicon for Bitfire -->
 <link rel="shortcut icon" href="../assets/img/favicon.ico" type="image/x-icon" />
@@ -82,7 +82,7 @@
 
 	<div class="container">
 		<div class="page-header">
-			<h1>Addresses</h1>
+			<h1>Edit Address</h1>
 		</div>
 		<div class="well">
 			<form:form modelAttribute="address" class="form">

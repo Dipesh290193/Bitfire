@@ -1,0 +1,14 @@
+body >.container{
+	margin-top: 100px;
+}
+
+.well{
+	border: 2px solid #cc6633;
+	min-height: 500 px;
+}
+
+.logo > img,
+.logo > h2 {
+    display: inline-block;
+    margin: 0;
+}

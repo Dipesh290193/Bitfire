@@ -1,8 +1,6 @@
 package bitfire.web.controller;
 
-import java.io.IOException;
 import java.security.Security;
-import java.util.UUID;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.HashSet;
@@ -27,8 +25,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-
-import com.twilio.rest.api.v2010.account.call.Notification;
 
 import bitfire.model.Address;
 import bitfire.model.Notifications;
@@ -83,67 +79,12 @@ public class UserController {
 		}
 		return "index";
 	}
-	
 
 	@RequestMapping(value = { "/register.html" }, method = RequestMethod.GET)
 	public String register(ModelMap maps) {
 		maps.put("userRegister", new User());
 		return "register";
 	}
-	
-	@RequestMapping(value = { "/reset.html" }, method = RequestMethod.POST)
-	public String passwordResetConfirm(ModelMap maps, @RequestParam String password1, @RequestParam String password2, @RequestParam String token,
-			HttpServletRequest request) {
-		if(!password1.equals(password2) && password1 != null && password2 !=null && !password1.isEmpty() && !password2.isEmpty()){
-			System.err.println("Passwords do NOT match");
-			maps.put("error", "Two passwords do not match. Please try again.");
-			return "redirect:" + request.getHeader("Referer");
-		}
-		
-		for(String key: Notifications.securityTokens.keySet()){
-			System.out.println(key + " : " + Notifications.securityTokens.get(key));
-		}
-		
-		String email = Notifications.securityTokens.get(token);
-
-		User user = userDao.getUserByEmail(email);
-		user.setPassword(password1);
-		userDao.saveUser(user);
-		maps.put("message", "You password has successfully been reset. You can now log in.");
-		Notifications.securityTokens.remove(token);
-		return "login";
-	}
-	
-	@RequestMapping(value = { "/passwordreset.html" }, method = RequestMethod.POST)
-	public String passwordReset(ModelMap maps, @RequestParam String email) {
-		User user = userDao.getUserByEmail(email);
-		if(user == null){
-			maps.put("error", "We could not find user " + email + " in our records. Please check your email address and try again.");
-			return "login";
-		}
-		maps.put("message", "We just sent instructions on how to reset your password to " + email);
-		String securityToken = UUID.randomUUID().toString().replaceAll("\\-","" );
-		try {
-			Notifications.SendPasswordResetLink(email, userDao.getUserByEmail(email).getName(), securityToken);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return "login";
-	}
-	
-	@RequestMapping(value = { "/passwordreset.html" }, method = RequestMethod.GET)
-	public String passwordReset(HttpServletRequest request, ModelMap map) {
-		if(request.getParameter("token") == null){
-			System.out.println("no parameter token");
-			return "login";
-		}
-		if(!Notifications.securityTokens.containsKey(request.getParameter("token"))){
-			System.out.println("didnt find token on hashmap");
-			return "login";
-		}
-		return "passwordreset";
-	}
-
 
 	@RequestMapping(value = { "/user/profile.html" }, method = RequestMethod.GET)
 	public String userPanel(ModelMap map, HttpServletRequest request) {
