@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
 <html>
@@ -8,14 +9,18 @@
 <title>Bitfire: Summary</title>
 
 <!-- Favicon for Bitfire -->
-<link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="assets/img/favicon.ico"
+	type="image/x-icon" />
 
 <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 
 <!-- Google Fonts -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Exo+2|Rokkitt">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Exo+2|Rokkitt">
 
 <!-- Custom CSS -->
 <link rel="stylesheet" href="css/bitfire-base.css">
@@ -48,7 +53,7 @@
 					</div>
 				</a>
 			</div>
-			
+
 			<!--  Collapses when screen is too small -->
 			<div id="navbar" class="navbar-collapse collapse">
 				<security:authorize access="authenticated">
@@ -87,7 +92,7 @@
 			</div>
 		</div>
 	</nav>
-	
+
 	<!-- Will only be shown if user is authenticated -->
 	<security:authorize access="authenticated">
 		<div class="jumbotron">
@@ -116,8 +121,10 @@
 								</p>
 
 								<ul style="list-style: none;">
-									<li><a href="<c:url value='/user/send.html' />">Send Bitcoin</a></li>
-									<li><a href="<c:url value='/user/request.html' />">Request Bitcoin</a></li>
+									<li><a href="<c:url value='/user/send.html' />">Send
+											Bitcoin</a></li>
+									<li><a href="<c:url value='/user/request.html' />">Request
+											Bitcoin</a></li>
 								</ul>
 							</div>
 						</div>
@@ -214,7 +221,20 @@
 
 											<div class="panel-body">
 												<div class="row">
-													<div class="col-md-3">${trans.senderUser.username}</div>
+													<c:if
+														test="${ trans.senderUser.userId eq trans.receiverUser.userId}">
+														<div class="col-md-3">${trans.receiverUser.username}</div>
+
+													</c:if>
+													<c:if
+														test="${ trans.senderUser.userId ne trans.receiverUser.userId}">
+														<c:if test="${user.userId eq trans.senderUser.userId}">
+															<div class="col-md-3">${trans.receiverUser.username}</div>
+														</c:if>
+														<c:if test="${ user.userId eq trans.receiverUser.userId}">
+															<div class="col-md-3">${trans.senderUser.username}</div>
+														</c:if>
+													</c:if>
 													<div class="col-md-1">
 														<a href="https://blockchain.info/tx/${trans.txId }">TX</a>
 													</div>
@@ -231,7 +251,8 @@
 							</c:forEach>
 						</div>
 						<div class="panel-footer text-center">
-							<a href="<c:url value='/user/transactions.html' />">View All Transactions</a>
+							<a href="<c:url value='/user/transactions.html' />">View All
+								Transactions</a>
 						</div>
 					</div>
 				</div>
@@ -240,8 +261,10 @@
 	</security:authorize>
 
 	<!-- Javascript and jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </body>
 </html>
