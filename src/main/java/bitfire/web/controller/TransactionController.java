@@ -37,22 +37,14 @@ public class TransactionController {
 	
 	@RequestMapping(value ={"/user/send.html"}, method = RequestMethod.GET)
 	public String send(ModelMap map, HttpServletRequest request){
-		String userEmail = SecurityUtils.getUser().getEmail();
 		if(request.getParameter("to") != null)
 			map.put("to", request.getParameter("to"));
 		if(request.getParameter("amount") != null)
 			map.put("amount", request.getParameter("amount"));
 		
-		List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
-		List<String> emails = new ArrayList<>();
-		for(Transaction t: trans){
-			String mail =t.getReceiverUser().getEmail();
-			if(!emails.contains(mail)  && !mail.equals(userEmail)){
-				emails.add(mail);
-			}
-		}
+
 		map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
-		map.put("emails", emails);
+		map.put("emails", getTransactionEmails());
 		map.put("user", SecurityUtils.getUser());
 		return "/user/send";
 	}
@@ -60,23 +52,15 @@ public class TransactionController {
 	@RequestMapping(value ={"/user/send.html"}, method = RequestMethod.POST)
 	public String send(@RequestParam String email, @RequestParam Double btc, ModelMap map){
 		User receiverUser=userDao.getUserByEmail(email);
-		String userEmail = SecurityUtils.getUser().getEmail();
-		
+
 //		System..println("Sender add: " + senderAddress.getAddress() + " : " + "Rec add: " + receiverAddress.getAddress());
 		
 		 if(receiverUser == null){
 			map.put("error", email + " is not registered on BitFire. Please check the email address and try again.");
-			List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
-			List<String> emails = new ArrayList<>();
-			for(Transaction t: trans){
-				String mail =t.getReceiverUser().getEmail();
-				if(!emails.contains(mail) && !mail.equals(userEmail)){
-					emails.add(mail);
-				}
-			}
+
 			map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
 
-			map.put("emails", emails);
+			map.put("emails", getTransactionEmails());
 			map.put("user", SecurityUtils.getUser());
 			return "/user/send";
 			
@@ -86,17 +70,10 @@ public class TransactionController {
 		  if(receiverAddress.getAddress().equals(senderAddress.getAddress())){
 			map.put("selftranfererror", "You can not send BTC to yourself. \n If you want to transfer BTC between "
 					+ "your addresses, please use the following link: ");
-			List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
-			List<String> emails = new ArrayList<>();
-			for(Transaction t: trans){
-				String mail =t.getReceiverUser().getEmail();
-				if(!emails.contains(mail) && !mail.equals(userEmail)){
-					emails.add(mail);
-				}
-			}
+
 			map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
 
-			map.put("emails", emails);
+			map.put("emails", getTransactionEmails());
 			map.put("user", SecurityUtils.getUser());
 			return "/user/send";
 		}
@@ -110,17 +87,10 @@ public class TransactionController {
 		else
 		{
 			map.put("error", "You don't have enough funds in your primary address " +senderAddress.getAddress());
-			List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
-			List<String> emails = new ArrayList<>();
-			for(Transaction t: trans){
-				String mail =t.getReceiverUser().getEmail();
-				if(!emails.contains(mail)  && !mail.equals(userEmail)){
-					emails.add(mail);
-				}
-			}
+
 			map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
 
-			map.put("emails", emails);
+			map.put("emails", getTransactionEmails());
 			map.put("user", SecurityUtils.getUser());
 			return "/user/send";
 		
@@ -130,36 +100,20 @@ public class TransactionController {
 	
 	@RequestMapping(value ={"/user/request.html"}, method = RequestMethod.GET)
 	public String send(ModelMap map){
-		String userEmail = SecurityUtils.getUser().getEmail();
-		List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
-		List<String> emails = new ArrayList<>();
-		for(Transaction t: trans){
-			String mail =t.getReceiverUser().getEmail();
-			if(!emails.contains(mail)  && !mail.equals(userEmail)){
-				emails.add(mail);
-			}
-		}
-		map.put("emails", emails);
+
+		map.put("emails", getTransactionEmails());
 		return "/user/request";
 	}
 	
 	@RequestMapping(value ={"/user/request.html"}, method = RequestMethod.POST)
 	public String request(@RequestParam String email, @RequestParam Double btc, @RequestParam String reason, ModelMap map){
-		String userEmail = SecurityUtils.getUser().getEmail();
 		User sender = SecurityUtils.getUser();
 		User receiver = userDao.getUserByEmail(email);
 		
 		if(receiver == null){
 			map.put("error", email + " does not have a bitfire account. Please check the email address and try again.");
-			List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
-			List<String> emails = new ArrayList<>();
-			for(Transaction t: trans){
-				String mail =t.getReceiverUser().getEmail();
-				if(!emails.contains(mail) && !mail.equals(userEmail)){
-					emails.add(mail);
-				}
-			}
-			map.put("emails", emails);
+
+			map.put("emails", getTransactionEmails());
 			return "user/request";
 		}
 		
@@ -169,15 +123,8 @@ public class TransactionController {
 		try {
 			Notifications.SendInvoice(email, receiver.getName(), sender.getEmail(), sender.getName(), btc.toString(), reason);
 			map.put("message", "Successfully requested " + btc.toString() + " BTC from " + email);
-			List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
-			List<String> emails = new ArrayList<>();
-			for(Transaction t: trans){
-				String mail =t.getReceiverUser().getEmail();
-				if(!emails.contains(mail)  && !mail.equals(userEmail)){
-					emails.add(mail);
-				}
-			}
-			map.put("emails", emails);
+
+			map.put("emails", getTransactionEmails());
 		} catch (IOException e) {
 			map.put("error", "We were not able to send your request at this time. Please try again");
 			e.printStackTrace();
@@ -250,5 +197,18 @@ public class TransactionController {
 		transaction.setReceiverUser(receiverAddress.getWallet().getUser());
 		transaction.setTxId("trans"+Math.random());
 		transDao.saveTransaction(transaction);
+	}
+	
+	public List<String> getTransactionEmails(){
+		String userEmail = SecurityUtils.getUser().getEmail();
+		List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
+		List<String> emails = new ArrayList<>();
+		for(Transaction t: trans){
+			String mail =t.getReceiverUser().getEmail();
+			if(!emails.contains(mail)  && !mail.equals(userEmail)){
+				emails.add(mail);
+			}
+		}
+		return emails;
 	}
 }
