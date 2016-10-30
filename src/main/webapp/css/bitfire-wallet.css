@@ -1,26 +1,5 @@
-@CHARSET "UTF-8";
-
-*{
-	font-family: 'Rokkitt', serif;
-}
-
-html, body {
-	background: url("../assets/img/bitcoin.jpg") no-repeat center center fixed;
-	background-size: cover;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-
 body{
 	padding-top: 60px;
-}
-
-h1{
-	font-size: 300%;
 }
 
 .logo > img,
@@ -32,41 +11,6 @@ h1{
 .well{
 	border: 2px solid #cc6633;
 	min-height: 500 px;
-}
-
-.web-font{
-	font-family: 'Exo 2', sans-serif;
-}
-
-.ignite{
-	color: rgb(255,0,0);
-}
-
-.white{
-	color: rgb(255,255,255);
-}
-
-
-.navbar-default{
-	background: rgba(47,79,79,.7);
-	border: none;
-	box-shadow: 0 4px 10px 4px #000000;
-	margin: 0;
-	
-}
-
-.nav.navbar-nav.navbar-right li a,
-#navbar li a{
-    color: rgb(255,255,255);
-    font-size: 120%;
-}	
-
-.active a{
-	background: none !important;
-	border-bottom: 4px solid #cc6633;
-	border-right: 1px solid #cc6633;
-	border-radius: 0 0 20px 0;
-	color: rgb(255,255,255);
 }
 
 .jumbotron{
