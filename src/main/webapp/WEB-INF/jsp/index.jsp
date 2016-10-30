@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Bitfire:Profile</title>
+<title>Bitfire: Summary</title>
 
 <!-- Favicon for Bitfire -->
 <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon" />
