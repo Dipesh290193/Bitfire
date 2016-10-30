@@ -95,14 +95,12 @@
 			<form class="form" action="<c:url value='/user/request.html' />"
 				method="post">
 				<br> <select onchange="updateText()" id="sel">
+					<option value="">Select Email</option>
 					<c:forEach items="${emails}" var="email">
 						<option value="${email }">${email }</option>
 					</c:forEach>
-				</select> 
-				<br>
-				<br>
-				<input class="form-control" type="email" id = "email" name="email"
-					placeholder="email address" /><br> <input
+				</select> <br> <br> <input class="form-control" type="email"
+					id="email" name="email" placeholder="email address" /><br> <input
 					class="form-control" type="text" name="btc"
 					placeholder="amount of BTC" /><br> <input
 					class="form-control" type="text" name="reason"

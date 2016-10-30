@@ -37,6 +37,7 @@ public class TransactionController {
 	
 	@RequestMapping(value ={"/user/send.html"}, method = RequestMethod.GET)
 	public String send(ModelMap map, HttpServletRequest request){
+		String userEmail = SecurityUtils.getUser().getEmail();
 		if(request.getParameter("to") != null)
 			map.put("to", request.getParameter("to"));
 		if(request.getParameter("amount") != null)
@@ -46,7 +47,7 @@ public class TransactionController {
 		List<String> emails = new ArrayList<>();
 		for(Transaction t: trans){
 			String mail =t.getReceiverUser().getEmail();
-			if(!emails.contains(mail)){
+			if(!emails.contains(mail)  && !mail.equals(userEmail)){
 				emails.add(mail);
 			}
 		}
@@ -59,7 +60,7 @@ public class TransactionController {
 	@RequestMapping(value ={"/user/send.html"}, method = RequestMethod.POST)
 	public String send(@RequestParam String email, @RequestParam Double btc, ModelMap map){
 		User receiverUser=userDao.getUserByEmail(email);
-		
+		String userEmail = SecurityUtils.getUser().getEmail();
 		
 //		System..println("Sender add: " + senderAddress.getAddress() + " : " + "Rec add: " + receiverAddress.getAddress());
 		
@@ -69,7 +70,7 @@ public class TransactionController {
 			List<String> emails = new ArrayList<>();
 			for(Transaction t: trans){
 				String mail =t.getReceiverUser().getEmail();
-				if(!emails.contains(mail)){
+				if(!emails.contains(mail) && !mail.equals(userEmail)){
 					emails.add(mail);
 				}
 			}
@@ -89,7 +90,7 @@ public class TransactionController {
 			List<String> emails = new ArrayList<>();
 			for(Transaction t: trans){
 				String mail =t.getReceiverUser().getEmail();
-				if(!emails.contains(mail)){
+				if(!emails.contains(mail) && !mail.equals(userEmail)){
 					emails.add(mail);
 				}
 			}
@@ -113,7 +114,7 @@ public class TransactionController {
 			List<String> emails = new ArrayList<>();
 			for(Transaction t: trans){
 				String mail =t.getReceiverUser().getEmail();
-				if(!emails.contains(mail)){
+				if(!emails.contains(mail)  && !mail.equals(userEmail)){
 					emails.add(mail);
 				}
 			}
@@ -129,11 +130,12 @@ public class TransactionController {
 	
 	@RequestMapping(value ={"/user/request.html"}, method = RequestMethod.GET)
 	public String send(ModelMap map){
+		String userEmail = SecurityUtils.getUser().getEmail();
 		List<Transaction> trans = transDao.getAllTransactions(SecurityUtils.getUser());
 		List<String> emails = new ArrayList<>();
 		for(Transaction t: trans){
 			String mail =t.getReceiverUser().getEmail();
-			if(!emails.contains(mail)){
+			if(!emails.contains(mail)  && !mail.equals(userEmail)){
 				emails.add(mail);
 			}
 		}
@@ -143,6 +145,7 @@ public class TransactionController {
 	
 	@RequestMapping(value ={"/user/request.html"}, method = RequestMethod.POST)
 	public String request(@RequestParam String email, @RequestParam Double btc, @RequestParam String reason, ModelMap map){
+		String userEmail = SecurityUtils.getUser().getEmail();
 		User sender = SecurityUtils.getUser();
 		User receiver = userDao.getUserByEmail(email);
 		
@@ -152,7 +155,7 @@ public class TransactionController {
 			List<String> emails = new ArrayList<>();
 			for(Transaction t: trans){
 				String mail =t.getReceiverUser().getEmail();
-				if(!emails.contains(mail)){
+				if(!emails.contains(mail) && !mail.equals(userEmail)){
 					emails.add(mail);
 				}
 			}
@@ -170,7 +173,7 @@ public class TransactionController {
 			List<String> emails = new ArrayList<>();
 			for(Transaction t: trans){
 				String mail =t.getReceiverUser().getEmail();
-				if(!emails.contains(mail)){
+				if(!emails.contains(mail)  && !mail.equals(userEmail)){
 					emails.add(mail);
 				}
 			}

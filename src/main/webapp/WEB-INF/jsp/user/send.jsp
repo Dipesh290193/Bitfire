@@ -95,7 +95,8 @@ function updateText(type) {
 			<form class="form" action="<c:url value='/user/send.html' />"
 				method="post">
 				<br> <select onchange="updateText()" id ="sel">
-					<c:forEach items="${emails}" var="email">						
+					<option value="">Select Email</option>			
+					<c:forEach items="${emails}" var="email">			
 							<option value="${email }">${email }</option>						
 					</c:forEach>
 				</select>
