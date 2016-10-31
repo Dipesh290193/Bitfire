@@ -50,14 +50,18 @@
 		<div class = "well well-lg">
 			<!-- Login Form -->
 			<!-- action needs to be updated -->
-			<form:form modelAttribute="userRegister">
+			<form:form modelAttribute="user">
 				<div class = "form_group">
 					<label class = "white" for = "name_field"> Name </label>
 					<form:input type = "text" path="name"  class = "form-control" id = "name_field" placeholder = "Enter your full name" />
 				</div><br>
 				<div class = "form_group">
 					<label class = "white" for = "email_field"> Email Address </label>
-					<form:input type = "email" path="username" class = "form-control" id = "email_field" placeholder = "Enter email" />
+					<form:input type = "email" path="email" class = "form-control" id = "email_field" placeholder = "Enter email" />
+				</div><br>
+				<div class = "form_group">
+					<label class = "white" for = "email_field"> Username </label>
+					<form:input type = "text" path="username" class = "form-control" id = "email_field" placeholder = "Enter Username" />
 				</div><br>
 				<div class = "form_group">
 					<label class = "white" for = "password_field"> Password </label>
@@ -67,7 +71,10 @@
 					<label class = "white" for = "re-password_field"> Password Re-entry </label>
 					<input type = "password" class = "form-control" id = "re-password_field" placeholder = "Re-enter password" />
 				</div><br>
-			
+				<div class = "form_group">
+					<label class = "white" for = "email_field"> Phone </label>
+					<form:input type = "text" path="phone" class = "form-control" id = "email_field" placeholder = "Enter Phone" />
+				</div><br>
 				<button type = "submit" class = "btn btn-primary btn-block">Register</button>
 			</form:form>
 		</div>

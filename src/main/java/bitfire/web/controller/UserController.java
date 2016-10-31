@@ -1,7 +1,6 @@
 package bitfire.web.controller;
 
 import java.io.IOException;
-import java.security.Security;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.HashSet;
@@ -39,7 +38,7 @@ import bitfire.model.dao.WalletDao;
 import bitfire.security.SecurityUtils;
 
 @Controller
-@SessionAttributes(names = { "userRegister", "address", "user" })
+@SessionAttributes(names = { "address", "user" })
 public class UserController {
 
 	@Autowired
@@ -136,14 +135,13 @@ public class UserController {
 
 	@RequestMapping(value = { "/register.html" }, method = RequestMethod.GET)
 	public String register(ModelMap maps) {
-		maps.put("userRegister", new User());
+		maps.put("user", new User());
 		return "register";
 	}
 
 	@RequestMapping(value = { "/user/profile.html" }, method = RequestMethod.GET)
 	public String userPanel(ModelMap map, HttpServletRequest request) {
 		map.put("user", SecurityUtils.getUser());
-		System.out.println("User name is: " + SecurityUtils.getUser().getName());
 		return "/user/profile";
 	}
 

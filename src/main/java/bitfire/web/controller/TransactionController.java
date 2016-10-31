@@ -41,8 +41,15 @@ public class TransactionController {
 			map.put("to", request.getParameter("to"));
 		if(request.getParameter("amount") != null)
 			map.put("amount", request.getParameter("amount"));
-		
-
+		User user=SecurityUtils.getUser();
+		List<Transaction> trans = transDao.getAllTransactions(user);
+		List<String> emails = new ArrayList<>();
+		for(Transaction t: trans){
+			String mail =t.getReceiverUser().getEmail();
+			if(!emails.contains(mail) && !mail.equals(user.getEmail())){
+				emails.add(mail);
+			}
+		}
 		map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
 		map.put("emails", getTransactionEmails());
 		map.put("user", SecurityUtils.getUser());
@@ -51,8 +58,10 @@ public class TransactionController {
 	
 	@RequestMapping(value ={"/user/send.html"}, method = RequestMethod.POST)
 	public String send(@RequestParam String email, @RequestParam Double btc, ModelMap map){
-		User receiverUser=userDao.getUserByEmail(email);
-
+		
+		User receiverUser=userDao.getUserByEmail(email.toLowerCase());
+		
+		
 //		System..println("Sender add: " + senderAddress.getAddress() + " : " + "Rec add: " + receiverAddress.getAddress());
 		
 		 if(receiverUser == null){

@@ -53,15 +53,15 @@ insert into wallets(wallet_id) values ('daxesh123wallet');
 insert into wallets(wallet_id) values ('admin123wallet');
 
 insert into users(user_id, username, email, name, password,phone, wallet_id) values
-(1, 'sevak' ,'sevak@gmail.com', 'Sevak', 'Sevak123', '8186011574','sevak123wallet');
+(1, 'sevak' ,'smnatsa2@calstatela.edu', 'Sevak', 'Sevak123', '8186011574','sevak123wallet');
 insert into users(user_id, username, email, name, password,phone, wallet_id) values
-(2,'dipesh', 'dipesh@gmail.com', 'Dipesh', 'Dipesh123', '8186011574' ,'dipesh123wallet');
+(2,'dipesh', 'dipesh.290193@gmail.com', 'Dipesh', 'Dipesh123', '6572539465' ,'dipesh123wallet');
 insert into users(user_id, username, email, name, password,phone, wallet_id) values
-(3, 'carlos','carlos@gmail.com', 'Carlos', 'Carlos123','8186011574' ,'carlos123wallet');
+(3, 'carlos','cgaldamez14@gmail.com', 'Carlos', 'Carlos123','3236975964' ,'carlos123wallet');
 insert into users(user_id, username, email, name, password,phone, wallet_id) values
-(4, 'daxesh','daxesh@gmail.com', 'Daxesh', 'Daxesh123','8186011574' ,'daxesh123wallet');
+(4, 'daxesh','daxesh@gmail.com', 'Daxesh', 'Daxesh123','6196067338' ,'daxesh123wallet');
 insert into users(user_id, username, email, name, password,phone, wallet_id) values
-(100,'admin', 'admin@gmail.com', 'Admin', 'Admin123', '8186011574' ,'admin123wallet');
+(100,'admin', 'connect2dkp@gmail.com', 'Admin', 'Admin123', '6572539465' ,'admin123wallet');
 
 insert into authorities values(100, 'ROLE_ADMIN');
 insert into authorities values(1, 'ROLE_USER');
@@ -83,6 +83,11 @@ insert into addresses(address_id, address, is_primary,label, USD, bitcoins, wall
 (105, 'dipeshAddress345', true, 'Personal', 2888,45870, 'dipesh123wallet'); 
 insert into addresses(address_id, address, is_primary,label, USD, bitcoins, wallet_id) values
 (106, 'admin123', true, 'Admin', 2888,45870, 'admin123wallet'); 
+insert into addresses(address_id, address, is_primary,label, USD, bitcoins, wallet_id) values
+(107, 'carlosAddress123', true, 'Personal', 2888,45870, 'carlos123wallet');
+insert into addresses(address_id, address, is_primary,label, USD, bitcoins, wallet_id) values
+(108, 'daxeshAddress123', true, 'Personal', 2888,45870, 'daxesh123wallet');
+
 
 insert into transactions(transaction_id, tx_id, USD, bitcoin, confirmations, trans_date, sender_address_id, receiver_address_id, sender_user_id, receiver_user_id, notified_sender, notified_receiver) values
 (1000, 'trans1000', 100,10, 1,TIMESTAMP '2016-08-15 15:36:38',100,104,1,2,false,false);
