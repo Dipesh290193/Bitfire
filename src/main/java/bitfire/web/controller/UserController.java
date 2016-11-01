@@ -216,8 +216,12 @@ public class UserController {
 		address.setWallet(wallet);
 		addressDao.saveAddress(address);
 
+		Set<String> roles=new HashSet<String>();
+		roles.add(User.ROLE_USER);
+
 		// Add User
 		user.setWallet(wallet);
+		user.setRoles(roles);
 		userDao.saveUser(user);
 		status.setComplete();
 		return "redirect:login.html";
