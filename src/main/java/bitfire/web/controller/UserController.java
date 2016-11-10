@@ -207,13 +207,16 @@ public class UserController {
 
 
 	@RequestMapping(value = { "/register.html" }, method = RequestMethod.POST)
-	public String register(@ModelAttribute User user, @RequestParam(value="re-password") String password, SessionStatus status, BindingResult result) {
+	public String register(@ModelAttribute User user, @RequestParam(value="re-password") String password, SessionStatus status, BindingResult result, ModelMap map) {
 		
 		userValidator.setPassword(password);
 		userValidator.setUserDao(userDao);
 		userValidator.validate(user, result);
 		
-		if(result.hasErrors()) return "register";
+		if(result.hasErrors()){
+			map.put("errors", true);
+			return "register";
+		}
 		
 		// Add wallet
 		Wallet wallet = new Wallet();
