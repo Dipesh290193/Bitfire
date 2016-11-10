@@ -6,7 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import bitfire.model.User;
 
-public class SecurityUtils {
+public class SecurityUtils{
 
     private static AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
 

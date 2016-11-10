@@ -1,4 +1,4 @@
-﻿create sequence hibernate_sequence minvalue 10000;
+create sequence hibernate_sequence minvalue 10000;
 
 create table wallets(
 	wallet_id varchar(255) primary key
