@@ -26,7 +26,15 @@
 <link rel="stylesheet" href="css/bitfire-base.css">
 <link rel="stylesheet" href="css/bitfire-summary.css">
 <link rel="stylesheet" href="css/bitfire-nav.css">
-
+<script>
+  (function(b,i,t,C,O,I,N) {
+    window.addEventListener('load',function() {
+      if(b.getElementById(C))return;
+      I=b.createElement(i),N=b.getElementsByTagName(i)[0];
+      I.src=t;I.id=C;N.parentNode.insertBefore(I, N);
+    },false)
+  })(document,'script','https://widgets.bitcoin.com/widget.js','btcwdgt');
+</script>
 
 </head>
 <body>
@@ -89,9 +97,11 @@
 							</ul></li>
 					</security:authorize>
 				</ul>
+				
 			</div>
 		</div>
 	</nav>
+<div style ="height: 2px;"class="btcwdgt-price"></div>
 
 	<!-- Will only be shown if user is authenticated -->
 	<security:authorize access="authenticated">

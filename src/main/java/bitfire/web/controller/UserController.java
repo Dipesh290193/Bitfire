@@ -55,8 +55,52 @@ public class UserController {
 	@Autowired
 	private TransactionDao transDao;
 	
+
 	@Autowired
 	private UserValidator userValidator;
+
+	@RequestMapping(value = { "/register.html" }, method = RequestMethod.GET)
+	public String register(ModelMap maps) {
+		maps.put("user", new User());
+		return "register";
+	}
+	
+	@RequestMapping(value = { "/register.html" }, method = RequestMethod.POST)
+	public String register(@ModelAttribute User user, @RequestParam(value="re-password") String password, SessionStatus status, BindingResult result, ModelMap map) {
+		
+		userValidator.setPassword(password);
+		userValidator.setUserDao(userDao);
+		userValidator.validate(user, result);
+		
+		if(result.hasErrors()){
+			map.put("errors", true);
+			return "register";
+		}
+		
+		// Add wallet
+		Wallet wallet = new Wallet();
+		wallet.setWalletId(user.getName() + "123wallet");
+		walletDao.saveWallet(wallet);
+
+		// Add Address
+		Address address = new Address();
+		address.setAddress(user.getName() + "Address123");
+		address.setLabel("default");
+		address.setPrimary(true);
+		address.setWallet(wallet);
+		addressDao.saveAddress(address);
+
+		Set<String> roles=new HashSet<String>();
+		roles.add(User.ROLE_USER);
+
+		// Add User
+		user.setWallet(wallet);
+		user.setRoles(roles);
+		userDao.saveUser(user);
+		status.setComplete();
+		return "redirect:login.html";
+	}
+
 
 	@RequestMapping("/index.html")
 	public String index(ModelMap map) {
@@ -139,11 +183,6 @@ public class UserController {
 		return "passwordreset";
 	}
 
-	@RequestMapping(value = { "/register.html" }, method = RequestMethod.GET)
-	public String register(ModelMap maps) {
-		maps.put("user", new User());
-		return "register";
-	}
 
 	@RequestMapping(value = { "/user/profile.html" }, method = RequestMethod.GET)
 	public String userPanel(ModelMap map, HttpServletRequest request) {
@@ -206,41 +245,8 @@ public class UserController {
 	
 
 
-	@RequestMapping(value = { "/register.html" }, method = RequestMethod.POST)
-	public String register(@ModelAttribute User user, @RequestParam(value="re-password") String password, SessionStatus status, BindingResult result, ModelMap map) {
-		
-		userValidator.setPassword(password);
-		userValidator.setUserDao(userDao);
-		userValidator.validate(user, result);
-		
-		if(result.hasErrors()){
-			map.put("errors", true);
-			return "register";
-		}
-		
-		// Add wallet
-		Wallet wallet = new Wallet();
-		wallet.setWalletId(user.getName() + "123wallet");
-		walletDao.saveWallet(wallet);
 
-		// Add Address
-		Address address = new Address();
-		address.setAddress(user.getName() + "Address123");
-		address.setLabel("default");
-		address.setPrimary(true);
-		address.setWallet(wallet);
-		addressDao.saveAddress(address);
 
-		Set<String> roles=new HashSet<String>();
-		roles.add(User.ROLE_USER);
-
-		// Add User
-		user.setWallet(wallet);
-		user.setRoles(roles);
-		userDao.saveUser(user);
-		status.setComplete();
-		return "redirect:login.html";
-	}
 	
 	@RequestMapping(value={"/admin/users"}, method=RequestMethod.GET)
 	public String geUsers(ModelMap map)
