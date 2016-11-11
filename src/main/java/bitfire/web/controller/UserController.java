@@ -16,6 +16,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,6 +37,7 @@ import bitfire.model.dao.TransactionDao;
 import bitfire.model.dao.UserDao;
 import bitfire.model.dao.WalletDao;
 import bitfire.security.SecurityUtils;
+import bitfire.web.validator.UserValidator;
 
 @Controller
 @SessionAttributes(names = { "address", "user" })
@@ -52,11 +54,15 @@ public class UserController {
 
 	@Autowired
 	private TransactionDao transDao;
+	
+	@Autowired
+	private UserValidator userValidator;
 
 	@RequestMapping("/index.html")
 	public String index(ModelMap map) {
 
 		User user = SecurityUtils.getUser();
+		
 		if (user != null) {
 			List<Address> addresses = addressDao.getAddresses(user.getWallet());
 			map.put("user", user);
@@ -201,8 +207,17 @@ public class UserController {
 
 
 	@RequestMapping(value = { "/register.html" }, method = RequestMethod.POST)
-	public String register(@ModelAttribute User user, SessionStatus status) {
-
+	public String register(@ModelAttribute User user, @RequestParam(value="re-password") String password, SessionStatus status, BindingResult result, ModelMap map) {
+		
+		userValidator.setPassword(password);
+		userValidator.setUserDao(userDao);
+		userValidator.validate(user, result);
+		
+		if(result.hasErrors()){
+			map.put("errors", true);
+			return "register";
+		}
+		
 		// Add wallet
 		Wallet wallet = new Wallet();
 		wallet.setWalletId(user.getName() + "123wallet");

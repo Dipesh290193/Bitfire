@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>    
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,6 +57,12 @@
 		<div class="well well-lg">
 			<!-- Login Form -->
 			<!-- action needs to be updated -->
+			<c:if test="${not empty param.error}">
+    			<div class="alert alert-danger" role="alert">
+  					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  					&nbsp;Invalid Username and/or Password
+				</div>
+			</c:if>
 			<form action="login" method="post">
 				<div class="form_group">
 					<label class="white" for="email_field"> Email Address </label> <input
@@ -74,7 +82,6 @@
 			</form>
 
 			<!-- For password recovery modal -->
-			\
 			<div id="password-recovery">
 				<a href="#" data-toggle="modal" data-target="#reset-password">Having
 					trouble logging in?</a><br> <br>

@@ -89,5 +89,10 @@
 			<artifactId>twilio</artifactId>
 			<version>7.1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.5.1</version>
+		</dependency>
 	</dependencies>
 </project>

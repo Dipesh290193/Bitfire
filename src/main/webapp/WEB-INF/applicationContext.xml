@@ -45,7 +45,9 @@
         <security:intercept-url pattern="/user/**" access="authenticated" />
          <security:intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
          <security:csrf disabled="true" />
-        <security:form-login login-page="/login.html"/>
+        <security:form-login login-page="/login.html"
+        			         authentication-failure-url="/login.html?error=invalid"
+        />
         <security:logout logout-success-url="/" />
     </security:http>
     
