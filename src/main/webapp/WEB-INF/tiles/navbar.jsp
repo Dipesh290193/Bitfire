@@ -1,5 +1,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@ taglib prefix="tilesx" uri="http://tiles.apache.org/tags-tiles-extras" %>
 
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container">
@@ -13,8 +15,7 @@
 			</button>
 			<a class="navbar-brand" href="<c:url value ='/index.html'/>">
 				<div class="logo text-center">
-					<!--<img src='<tiles:insertAttribute name='logo' />' alt=""
-							style="width: 50px; height: 50px;">-->
+					<img src="<tiles:insertAttribute name='logo' />" alt="" style="width: 50px; height: 50px;">
 					<h2 class="web-font">
 						<span class="ignite web-font">BIT</span><span
 							class="white web-font">FIRE</span>

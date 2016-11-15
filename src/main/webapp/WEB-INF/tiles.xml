@@ -4,15 +4,29 @@
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
+
+
+    <definition  name = "nav.template" template="/WEB-INF/tiles/navbar.jsp">
+    	<put-attribute name="logo" value="${logo}" />
+    </definition>
+    
 	<definition name = "basic.template" template = "/WEB-INF/tiles/template.basic.jsp">
 		<put-attribute name="title" value = "" />
-		<put-attribute name="navbar" value = "/WEB-INF/tiles/navbar.jsp" />
+		<put-attribute name="navbar" value = "nav.template" />
 		<put-attribute name="content" value = "" />
 		<put-list-attribute name="cssUrls">
 			<add-attribute value = "${bootstrap.min}" />
 			<add-attribute value = "${bootstrap.min.theme}" />
 			<add-attribute value = "${bitfire.base}" />
 			<add-attribute value = "${bitfire.nav}" />
+		</put-list-attribute>
+		<put-list-attribute name="jsUrls">
+			<add-attribute value = "${jquery.min}" />
+			<add-attribute value = "${bootstrap.js}" />
+		</put-list-attribute>
+		<put-list-attribute name="fontUrls">
+			<add-attribute value = "${google.font.exo2}" />
+			<add-attribute value = "${google.font.rokkitt}" />
 		</put-list-attribute>
 	</definition>
 	
