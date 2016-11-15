@@ -101,4 +101,35 @@
 		</put-list-attribute>
 	</definition>
 	
+	<definition name="/user/send" extends="basic.template">
+		<put-attribute name="title" value="Bitfire: Send" />
+		<put-attribute name="content" value="/WEB-INF/jsp/user/send.jsp" />
+		<put-list-attribute name="cssUrls">
+			<add-attribute value="${bitfire.wallet}" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="/user/request" extends="basic.template">
+		<put-attribute name="title" value="Bitfire: Request" />
+		<put-attribute name="content" value="/WEB-INF/jsp/user/request.jsp" />
+		<put-list-attribute name="cssUrls">
+			<add-attribute value="${bitfire.wallet}" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="/user/selftransfer" extends="basic.template">
+		<put-attribute name="title" value="Bitfire: Self-Transfer" />
+		<put-attribute name="content" value="/WEB-INF/jsp/user/selftransfer.jsp" />
+		<put-list-attribute name="cssUrls">
+			<add-attribute value="${bitfire.wallet}" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="/user/transactions" extends="basic.template">
+		<put-attribute name="title" value="Bitfire: Transactions" />
+		<put-attribute name="content" value="/WEB-INF/jsp/user/transactions.jsp" />
+		<put-list-attribute name="cssUrls">
+			<add-attribute value="${bitfire.wallet}" />
+		</put-list-attribute>
+	</definition>
 </tiles-definitions>
