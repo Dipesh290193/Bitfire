@@ -29,9 +29,13 @@ public class Confirmations {
 		JsonObject element = parseResponse(getData(latestBlockURL));
 		int latestBlockNumber = Integer.parseInt(element.get("height").toString());
 		System.out.println(latestBlockNumber);
-		
+		int transactionBlockNumber =0;
 		JsonObject element2 = parseResponse(getData(txURL));
-		int transactionBlockNumber = Integer.parseInt(element2.get("block_height").toString());
+		try{
+			 transactionBlockNumber = Integer.parseInt(element2.get("block_height").toString());
+		}catch(Exception e){
+			return 0;
+		}
 		System.out.println(transactionBlockNumber);
 		
 		return latestBlockNumber - transactionBlockNumber + 1;

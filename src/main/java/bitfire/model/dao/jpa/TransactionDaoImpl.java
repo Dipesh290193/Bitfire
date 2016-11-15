@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import bitfire.model.Invoice;
 import bitfire.model.Transaction;
 import bitfire.model.User;
 import bitfire.model.dao.TransactionDao;
@@ -64,6 +65,29 @@ public class TransactionDaoImpl implements TransactionDao{
 		.setParameter("receiver", user)
 		.getResultList();
 
+	}
+
+	@Override
+	public List<Invoice> getAllInvoices(User user) {
+		return entityManager.createQuery("from Invoice where senderUser = :sender or receiverUser = :receiver", Invoice.class)
+		.setParameter("sender", user)
+		.setParameter("receiver", user)
+		.getResultList();
+	}
+
+	@Override
+	public Invoice getInvoice(int invoiceId) {
+		List<Invoice> invoice= entityManager.createQuery("from Invoice where invoiceId = :id", Invoice.class)
+		.setParameter("id", invoiceId)
+		.getResultList();
+		return invoice.size()==0 ? null: invoice.get(0);
+	}
+
+	
+	@Override
+	@Transactional
+	public Invoice saveInvoice(Invoice invoice) {
+		return entityManager.merge(invoice);
 	}
 	
 	

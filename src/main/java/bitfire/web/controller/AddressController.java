@@ -58,7 +58,8 @@ public class AddressController {
 				for(bitfire.model.Address userAddress: userAddresses){
 					if(userAddress.getAddress().equals(apiAddress.getAddress())){
 						userAddress.setBitcoins((int)apiAddress.getBalance());
-						userAddress.setUSD(ExchangeRates.getUSD()*apiAddress.getBalance());
+						userAddress.setUSD((long)(100.0 *(ExchangeRates.getUSD() * 1.0 )*(apiAddress.getBalance()/100000000.0)));
+						System.out.println("ADDRESS BALANE: " + 100.0*((ExchangeRates.getUSD() * 1.0 )*(apiAddress.getBalance()/100000000.0)));
 						addressDao.saveAddress(userAddress);
 						break;
 					}

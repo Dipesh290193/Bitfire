@@ -101,7 +101,7 @@ public class HttpClient implements HttpClientInterface {
                 conn.getOutputStream().write(postBytes);
                 conn.getOutputStream().close();
             }
-
+            System.out.println("Message " + conn.getResponseMessage() + " CODE: " + conn.getResponseCode());
             if (conn.getResponseCode() != 200) {
                 apiException = new APIException(inputStreamToString(conn.getErrorStream()));
             } else {

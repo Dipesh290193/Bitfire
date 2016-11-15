@@ -2,6 +2,7 @@ package bitfire.model.dao;
 
 import java.util.List;
 
+import bitfire.model.Invoice;
 import bitfire.model.Transaction;
 import bitfire.model.User;
 
@@ -20,4 +21,10 @@ public interface TransactionDao {
 	List<Transaction> getTransactionReceiverAddress(int receiverAddressId);
 	
 	List<Transaction> getAllTransactions(User user);
+	
+	List<Invoice> getAllInvoices(User user);
+	
+	Invoice getInvoice(int invoiceId);
+	
+	Invoice saveInvoice(Invoice invoice);
 }

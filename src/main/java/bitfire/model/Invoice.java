@@ -14,26 +14,15 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="transactions")
-public class Transaction implements Serializable{
+@Table(name="invoices")
+public class Invoice implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-
-	@Column(unique=true,name="tx_id")
-	String txId;
 	
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
 	@Id
 	@GeneratedValue
-	@Column(name="transaction_id")
-	int transactionId;
+	@Column(name="invoice_id")
+	int invoiceId;
 	
 	@OneToOne
 	@JoinColumn(name="sender_address_id")
@@ -55,33 +44,57 @@ public class Transaction implements Serializable{
 	
 	int bitcoin;
 	
-	int confirmations;
+	boolean paid;
 	
 	String message;
 	
+	
+	public int getInvoiceId() {
+		return invoiceId;
+	}
+
+
+	public void setInvoiceId(int invoiceId) {
+		this.invoiceId = invoiceId;
+	}
+
+
+	public String getMessage() {
+		return message;
+	}
+
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+
+	public boolean isPaid() {
+		return paid;
+	}
+
+
+	public void setPaid(boolean paid) {
+		this.paid = paid;
+	}
+
 	@Column(name="notified_sender")
 	Boolean notifiedSender;
 	
 	@Column(name="notified_receiver")
 	Boolean notifiedReceiver;
 
-	@Column(name="trans_date")
+	@Column(name="invoice_date")
 	Date date;
 	
-	public Transaction()
+	public Invoice()
 	{
 		date=new Date();
-		confirmations=0;
-
+		notifiedReceiver=true;
+		notifiedSender=true;
+		paid = false;
 	}
 	
-	public int getConfirmations() {
-		return confirmations;
-	}
-
-	public void setConfirmations(int confirmations) {
-		this.confirmations = confirmations;
-	}
 
 	public Date getDate() {
 		return date;
@@ -91,20 +104,13 @@ public class Transaction implements Serializable{
 		this.date = date;
 	}
 	
-	public String getTxId() {
-		return txId;
-	}
-
-	public void setTxId(String txId) {
-		this.txId = txId;
-	}
 
 	public int getTransactionId() {
-		return transactionId;
+		return invoiceId;
 	}
 
-	public void setTransactionId(int transactionId) {
-		this.transactionId = transactionId;
+	public void setTransactionId(int invoiceId) {
+		this.invoiceId = invoiceId;
 	}
 
 	public String getUSD() {

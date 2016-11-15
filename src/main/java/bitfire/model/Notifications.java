@@ -109,8 +109,8 @@ public class Notifications {
 		}
 	}
 
-	public static void SendInvoice(String toEmail, String toName, String fromEmail, String fromName, String amount,
-			String reason) throws IOException {
+	public static void SendInvoice(String toEmail, String toName, String fromEmail, String fromName, String amount, 
+			String reason, int id) throws IOException {
 		Email from = new Email("noreply@bitfire.com");
 		String subject = "Invoice from " + fromName;
 		Email to = new Email(toEmail);
@@ -136,7 +136,7 @@ public class Notifications {
 				+ "						<p>"+ reason + "</p>"
 				+ "						<p>If you want to pay for this product/service now, please click the following link below.</p>"
 				+ "					</div>"
-				+ "					<a style='display: block;max-width: 100px; color: #ffffff;background: rgb(247,97,22); padding: 10px 15px; margin-top:10px; border-radius: 5px; text-decoration: none; text-align:center; font-weight:bold;' href = 'http://localhost:8080/bitfire/user/send.html" + "?to=" + fromEmail + "&amount=" + amount + "'>Pay</a><br>"
+				+ "					<a style='display: block;max-width: 100px; color: #ffffff;background: rgb(247,97,22); padding: 10px 15px; margin-top:10px; border-radius: 5px; text-decoration: none; text-align:center; font-weight:bold;' href = 'http://localhost:8080/bitfire/user/invoices/pay.html?" + "id=" + id + "'>Pay</a><br>"
 				+ "					<p>Sincerely,</p>"
 				+ "					<p>Team Bitfire</p>"
 				+ "				</div>" 
@@ -160,7 +160,118 @@ public class Notifications {
 			System.out.println(response.body);
 			System.out.println(response.headers);
 		} catch (IOException ex) {
-			throw ex;
+			System.err.println("ERROR lol");
+		}
+	}
+	
+	public static void sendReceiverTranactionNotification(String toEmail, String toName, String fromEmail, String fromName, String amount, 
+			String reason) throws IOException {
+		Email from = new Email("noreply@bitfire.com");
+		String subject = "New transaction";
+		Email to = new Email(toEmail);
+		Content content = new Content();
+		content.setType("text/html");
+		content.setValue(
+				"<html>"
+				+ "<body style = 'background: rgb(87,159,160);border-radius: 10px; color: #000000'>"
+				+ "		<div style = 'margin: 5px; padding: 20px;'>"
+				+ "			<div>"
+				+ "				<img src='https://www.emergencyreporting.com/wp-content/uploads/2015/03/Fire.png' alt='' style='width: 50px; height: 50px; display: inline-block;'>"
+				+ "				<h1 style = \"font-family: monospace; display: inline-block; font-size: 35px;\">"
+				+ "					<span style = 'color: rgb(139,0,0);'>BIT</span><span style='color: rgb(255,255,255);'>FIRE</span>"
+				+ "				</h1>"
+				+ "			</div>"
+				+ "			<div style = 'border: 1px solid #AAAAAA; border-radius: 25px; background: rgb(255,255,255)'>"
+				+ "				<div style = 'padding: 50px'>"
+				+ "					<h1 style = 'border-bottom: 2px solid #999999;'><strong>You've just received BTC</strong></h1>"
+				+ "					<h3>Dear " + toName + ",</h3>" 
+				+ "					<p>" + fromName + " has sent you " + amount + " BTC for the following product/service.</p> " 
+				+ "					<div style = 'padding: 5px 25px; border-radius: 5px; background: rgb(255,250,205)'>"				
+				+ "						<p><strong>Product/service:<strong><p>" 
+				+ "						<p>"+ reason + "</p>"
+				
+				+ "					</div>"
+				+ "					<p>Sincerely,</p>"
+				+ "					<p>Team Bitfire</p>"
+				+ "				</div>" 
+				+ "			</div>"
+				+ "		</div>"
+				+ "</body> "
+				+ "</html>");
+		Mail mail = new Mail(from, subject, to, content);
+
+//		SendGrid sg = new SendGrid(System.getenv("SendGridKey"));
+
+		SendGrid sg = new SendGrid("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");
+
+		Request request = new Request();
+		try {
+			request.method = Method.POST;
+			request.endpoint = "mail/send";
+			request.body = mail.build();
+			Response response = sg.api(request);
+			System.out.println(response.statusCode);
+			System.out.println(response.body);
+			System.out.println(response.headers);
+		} catch (IOException ex) {
+			System.err.println("ERROR lol");
+		}
+	}
+	
+	public static void sendSenderTranactionNotification(String toEmail, String toName, String fromEmail, String fromName, String amount, 
+			String reason) throws IOException {
+		Email from = new Email("noreply@bitfire.com");
+		String subject = "New transaction";
+		Email to = new Email(fromEmail);
+		Content content = new Content();
+		content.setType("text/html");
+		content.setValue(
+				"<html>"
+				+ "<body style = 'background: rgb(87,159,160);border-radius: 10px; color: #000000'>"
+				+ "		<div style = 'margin: 5px; padding: 20px;'>"
+				+ "			<div>"
+				+ "				<img src='https://www.emergencyreporting.com/wp-content/uploads/2015/03/Fire.png' alt='' style='width: 50px; height: 50px; display: inline-block;'>"
+				+ "				<h1 style = \"font-family: monospace; display: inline-block; font-size: 35px;\">"
+				+ "					<span style = 'color: rgb(139,0,0);'>BIT</span><span style='color: rgb(255,255,255);'>FIRE</span>"
+				+ "				</h1>"
+				+ "			</div>"
+				+ "			<div style = 'border: 1px solid #AAAAAA; border-radius: 25px; background: rgb(255,255,255)'>"
+				+ "				<div style = 'padding: 50px'>"
+				+ "					<h1 style = 'border-bottom: 2px solid #999999;'><strong>You've just sent BTC</strong></h1>"
+				+ "					<h3>Dear " + fromName + ",</h3>" 
+				+ "					<p>You just sent " + amount + " BTC to " + toName + " for the following product/service.</p> " 
+				+ "					<div style = 'padding: 5px 25px; border-radius: 5px; background: rgb(255,250,205)'>"				
+				+ "						<p><strong>Product/service:<strong><p>" 
+				+ "						<p>"+ reason + "</p>"
+				
+				+ "					</div>"
+				+ "					<p>Sincerely,</p>"
+				+ "					<p>Team Bitfire</p>"
+				+ "				</div>" 
+				+ "			</div>"
+				+ "		</div>"
+				+ "</body> "
+				+ "</html>");
+		System.out.println(content.getValue());
+		
+		Mail mail = new Mail(from, subject, to, content);
+		
+
+//		SendGrid sg = new SendGrid(System.getenv("SendGridKey"));
+
+		SendGrid sg = new SendGrid("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");
+
+		Request request = new Request();
+		try {
+			request.method = Method.POST;
+			request.endpoint = "mail/send";
+			request.body = mail.build();
+			Response response = sg.api(request);
+			System.out.println(response.statusCode);
+			System.out.println(response.body);
+			System.out.println(response.headers);
+		} catch (IOException ex) {
+			System.err.println("ERROR lol");
 		}
 	}
 }

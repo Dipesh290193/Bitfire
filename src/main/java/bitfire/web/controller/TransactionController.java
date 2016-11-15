@@ -4,7 +4,10 @@ import java.io.IOException;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,8 +17,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import bitfire.model.Address;
+import bitfire.model.Invoice;
 import bitfire.model.Notifications;
 import bitfire.model.Transaction;
 import bitfire.model.User;
@@ -55,6 +60,35 @@ public class TransactionController {
 				emails.add(mail);
 			}
 		}
+		
+
+		
+		bitfire.model.Wallet userWallet = user.getWallet();
+		System.out.println("WALLET: " + userWallet.getWalletId());
+		Set<bitfire.model.Address> userAddresses = new HashSet<bitfire.model.Address>(addressDao.getAddresses(userWallet));
+		Wallet wallet = new Wallet("http://localhost:3000/", 
+				"fd592284-ed09-4910-ab9f-06129b3a4054",
+    			user.getWallet().getWalletId(),
+    			user.getPassword());
+		
+		List<info.blockchain.api.wallet.Address> apiAddresses;
+		try {
+			apiAddresses = wallet.listAddresses(0);
+			
+			for(info.blockchain.api.wallet.Address apiAddress: apiAddresses){
+				for(bitfire.model.Address userAddress: userAddresses){
+					if(userAddress.getAddress().equals(apiAddress.getAddress())){
+						userAddress.setBitcoins((int)apiAddress.getBalance());
+						userAddress.setUSD((long)(100.0 *(ExchangeRates.getUSD() * 1.0 )*(apiAddress.getBalance()/100000000.0)));
+						System.out.println("ADDRESS BALANE: " + 100.0*((ExchangeRates.getUSD() * 1.0 )*(apiAddress.getBalance()/100000000.0)));
+						addressDao.saveAddress(userAddress);
+						break;
+					}
+				}
+			}
+				
+		} catch (Exception e) {
+		}
 		map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
 		map.put("emails", getTransactionEmails());
 		map.put("user", SecurityUtils.getUser());
@@ -62,10 +96,10 @@ public class TransactionController {
 	}
 	
 	@RequestMapping(value ={"/user/send.html"}, method = RequestMethod.POST)
-	public String send(@RequestParam String email, @RequestParam Double btc, ModelMap map){
+	public String send(@RequestParam String email, @RequestParam Double btc, ModelMap map, String reason){
 		
 		User receiverUser=userDao.getUserByEmail(email.toLowerCase());
-		
+		User senderUser = SecurityUtils.getUser();
 		
 //		System..println("Sender add: " + senderAddress.getAddress() + " : " + "Rec add: " + receiverAddress.getAddress());
 		
@@ -94,7 +128,22 @@ public class TransactionController {
 		else if(senderAddress.getBitcoinsActual()>=(int)(btc*100000000))
 		{
 			try {
-				tranfer(senderAddress, receiverAddress, btc);
+				Transaction trans = tranfer(senderAddress, receiverAddress, btc, reason);
+				///send email
+				int btcValue = (int)(btc *100000000);
+
+				
+				DecimalFormat format=new DecimalFormat("#0.00000000");
+				String amount = format.format(btcValue/100000000.0);
+				
+				Notifications.sendSenderTranactionNotification(email, receiverUser.getName(), senderUser.getEmail(), senderUser.getName(), 
+						amount, reason);
+				
+				Notifications.sendReceiverTranactionNotification(email, receiverUser.getName(), senderUser.getEmail(), senderUser.getName(), 
+						amount, reason);
+				
+				trans.setNotifiedReceiver(true);
+				trans.setNotifiedReceiver(true);
 			} catch (APIException | IOException e) {
 				map.put("error", "We were not able to transfer your BTC at this time. Please try again later.");
 				e.printStackTrace();
@@ -125,9 +174,13 @@ public class TransactionController {
 	}
 	
 	@RequestMapping(value ={"/user/request.html"}, method = RequestMethod.POST)
-	public String request(@RequestParam String email, @RequestParam Double btc, @RequestParam String reason, ModelMap map){
+	public String request(@RequestParam String email, @RequestParam Double btc, @RequestParam String reason, ModelMap map) throws APIException, IOException{
 		User sender = SecurityUtils.getUser();
 		User receiver = userDao.getUserByEmail(email);
+		int btcValue = (int)(btc *100000000);
+		
+//		String btcStr = btcValue * 
+//		System.out.println("BTC: " + btcValue);
 		
 		if(receiver == null){
 			map.put("error", email + " does not have a bitfire account. Please check the email address and try again.");
@@ -136,12 +189,30 @@ public class TransactionController {
 			return "user/request";
 		}
 		
-//		DecimalFormat format=new DecimalFormat("#0.00000000");
-//		String amount = format.format(btc/100000000.0);
+		DecimalFormat format=new DecimalFormat("#0.00000000");
+		String amount = format.format(btcValue/100000000.0);
+		
+		System.out.println("AMOUNT " + amount);
+		
+		Address receiverAddress=addressDao.getPrimaryAddress(receiver.getWallet());
+		Address senderAddress=addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet());
+		
+		Invoice invoice= new Invoice();
+//		invoice.setSenderAddress(senderAddress);
+//		invoice.setReceiverAddress(receiverAddress);
+		invoice.setBitcoin((int) (btc*100000000));
+		invoice.setUSD((long)(ExchangeRates.getUSD()*btc*100));
+		invoice.setSenderUser(SecurityUtils.getUser());
+		invoice.setReceiverUser(receiverAddress.getWallet().getUser());
+		invoice.setPaid(false);
+		invoice.setMessage(reason);
+		
+		Invoice sendInvoice = transDao.saveInvoice(invoice);
+		
 		
 		try {
-			Notifications.SendInvoice(email, receiver.getName(), sender.getEmail(), sender.getName(), btc.toString(), reason);
-			map.put("message", "Successfully requested " + btc.toString() + " BTC from " + email);
+			Notifications.SendInvoice(email, receiver.getName(), sender.getEmail(), sender.getName(), amount, reason, sendInvoice.getInvoiceId());
+			map.put("message", "Successfully requested " + amount + " BTC from " + email);
 
 			map.put("emails", getTransactionEmails());
 		} catch (IOException e) {
@@ -181,7 +252,7 @@ public class TransactionController {
 			Address senderAddress=addressDao.getAddress(from);
 			Address receiverAddress=addressDao.getAddress(to);
 			try {
-				tranfer(senderAddress,receiverAddress, amount);
+				tranfer(senderAddress,receiverAddress, amount, "Self tranfer");
 			} catch (APIException | IOException e) {
 				e.printStackTrace();
 				map.put("error", "We were not able to transfer your BTC at thist time. Please try again later.");
@@ -215,8 +286,90 @@ public class TransactionController {
 		map.put("user", SecurityUtils.getUser());
 		return "/user/transactions";
 	}
+	
+	@RequestMapping(value ={"/user/invoices.html"}, method = RequestMethod.GET)
+	public String invoices(ModelMap map){
+		User user = SecurityUtils.getUser();
+		map.put("invoices", transDao.getAllInvoices(user));
+		map.put("user", user);
+		return "/user/invoice";
+	}
+	
+	@RequestMapping(value ={"/user/invoices/pay.html"}, method = RequestMethod.GET)
+	public String payInvoice(ModelMap map, HttpServletRequest request){
+		User user = SecurityUtils.getUser();
+		if(request.getParameter("id") ==null){
+			return "redirect:/user/invoices.html";
+		}
+		
+		Invoice invoice = transDao.getInvoice(Integer.parseInt(request.getParameter("id")));
+		if(invoice == null){
+			System.out.println("NO SUCH INVOICE");
+			return "redirect:/user/invoices.html";
+		}
+		
+		map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
+		map.put("user", user);
+		map.put("invoice", invoice);
+		return "/user/invoice/pay";
+	}
+	
+	@RequestMapping(value ={"/user/invoices/pay.html"}, method = RequestMethod.POST)
+	public String payInvoice(ModelMap map, @RequestParam int id, @RequestParam String email, @RequestParam Double btc, 
+			 @RequestParam String reason, RedirectAttributes attrs){
+		System.out.println("Id: " + id);
+		User receiverUser=userDao.getUserByEmail(email.toLowerCase());
+		
 
-	private void tranfer(Address senderAddress, Address receiverAddress, double btc ) throws APIException, IOException{
+		 Address receiverAddress=addressDao.getPrimaryAddress(receiverUser.getWallet());
+			Address senderAddress=addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet());
+			
+
+	 if(senderAddress.getBitcoinsActual()>=(int)(btc*100000000))
+		{
+			try {
+				
+				tranfer(senderAddress, receiverAddress, btc, reason);
+				Invoice invoice = transDao.getInvoice(id);
+				invoice.setReceiverAddress(receiverAddress);
+				invoice.setSenderAddress(senderAddress);
+				invoice.setPaid(true);
+				transDao.saveInvoice(invoice);
+				
+				
+				
+			} catch (APIException | IOException e) {
+				map.put("error", "We were not able to transfer your BTC at this time. Please try again later.");
+				e.printStackTrace();
+			}
+		
+	}
+	 
+		else
+		{
+			attrs.addFlashAttribute("error", "You don't have enough funds in your primary address " +senderAddress.getAddress());
+
+//			try {
+//				tranfer(senderAddress, receiverAddress, btc, reason);
+//				Invoice invoice = transDao.getInvoice(id);
+//				invoice.setReceiverAddress(receiverAddress);
+//				invoice.setSenderAddress(senderAddress);
+//				invoice.setPaid(true);
+//				transDao.saveInvoice(invoice);
+//			} catch (APIException | IOException e) {
+//				// TODO Auto-generated catch block
+//				attrs.addFlashAttribute("error", "We were not able to send you invoice at this time. Pleas try again later.");
+//			}
+			return "redirect:/user/invoices/pay.html?id=" + id;
+		
+		}
+
+	 return "/user/invoices";
+	}
+	
+	
+
+	private Transaction tranfer(Address senderAddress, Address receiverAddress, double btc, String reason) throws APIException, IOException{
 		User user = SecurityUtils.getUser();
 //		senderAddress.setBitcoins(senderAddress.getBitcoinsActual()-(int)(btc*100000000));
 //		senderAddress.setUSD(senderAddress.getUSDActual()-(int)(650*btc*100));
@@ -226,12 +379,20 @@ public class TransactionController {
 //		receiverAddress.setBitcoins(receiverAddress.getBitcoinsActual()+(int)(btc*100000000));
 //		receiverAddress.setUSD(receiverAddress.getUSDActual()+(int)(650*btc*100));
 //		addressDao.saveAddress(receiverAddress);
-    	Wallet wallet = new Wallet("http://localhost:3000/", 
+    	Wallet wallet = new Wallet("http://localhost:3001/", 
 		"fd592284-ed09-4910-ab9f-06129b3a4054",
 		user.getWallet().getWalletId(),
 		user.getPassword());
     	
-    	PaymentResponse response =wallet.send(receiverAddress.getAddress(), (long)btc*100000000, senderAddress.getAddress(), (long)20, "");
+    	
+    	
+    	System.out.println("SENDING: " + (long)(btc*100000000.0));
+    	
+    	PaymentResponse response =wallet.send(receiverAddress.getAddress(), (long)(btc*100000000.0), senderAddress.getAddress(), null, reason);
+    	
+  
+    	
+    	System.out.println("NOTICE " + response.getNotice());
     	
     	
 		Transaction transaction= new Transaction();
@@ -242,7 +403,11 @@ public class TransactionController {
 		transaction.setSenderUser(SecurityUtils.getUser());
 		transaction.setReceiverUser(receiverAddress.getWallet().getUser());
 		transaction.setTxId(response.getTxHash());
-		transDao.saveTransaction(transaction);
+		transaction.setMessage(reason);
+		
+	
+		
+		return transDao.saveTransaction(transaction);
 	}
 	
 	public List<String> getTransactionEmails(){

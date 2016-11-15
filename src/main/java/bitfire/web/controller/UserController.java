@@ -42,6 +42,7 @@ import bitfire.web.validator.UserValidator;
 import info.blockchain.api.APIException;
 import info.blockchain.api.createwallet.CreateWallet;
 import info.blockchain.api.createwallet.CreateWalletResponse;
+import info.blockchain.api.exchangerates.ExchangeRates;
 
 @Controller
 @SessionAttributes(names = { "address", "user" })
@@ -149,7 +150,7 @@ public class UserController {
 //
 //			DecimalFormat format = new DecimalFormat("#0.00000000");
 //			String total = format.format(sum / 100000000.0);
-			info.blockchain.api.wallet.Wallet wallet = new info.blockchain.api.wallet.Wallet("http://localhost:3000/", 
+			info.blockchain.api.wallet.Wallet wallet = new info.blockchain.api.wallet.Wallet("http://localhost:3001/", 
 					"fd592284-ed09-4910-ab9f-06129b3a4054",
 	    			user.getWallet().getWalletId(),
 	    			user.getPassword());
@@ -162,6 +163,30 @@ public class UserController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			bitfire.model.Wallet userWallet = user.getWallet();
+
+			Set<bitfire.model.Address> userAddresses = new HashSet<bitfire.model.Address>(addressDao.getAddresses(userWallet));
+
+			List<info.blockchain.api.wallet.Address> apiAddresses;
+			try {
+				apiAddresses = wallet.listAddresses(0);
+				
+				for(info.blockchain.api.wallet.Address apiAddress: apiAddresses){
+					for(bitfire.model.Address userAddress: userAddresses){
+						if(userAddress.getAddress().equals(apiAddress.getAddress())){
+							userAddress.setBitcoins((int)apiAddress.getBalance());
+							userAddress.setUSD((long)(100.0 *(ExchangeRates.getUSD() * 1.0 )*(apiAddress.getBalance()/100000000.0)));
+							System.out.println("ADDRESS BALANE: " + 100.0*((ExchangeRates.getUSD() * 1.0 )*(apiAddress.getBalance()/100000000.0)));
+							addressDao.saveAddress(userAddress);
+							break;
+						}
+					}
+				}
+					
+			} catch (Exception e) {
+			}
+			
 			
 			
 			
