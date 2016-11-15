@@ -60,4 +60,29 @@
 			<add-attribute value="${bitfire.passwordreset}" />
 		</put-list-attribute>
 	</definition>
+	
+	<definition name="/user/profile" extends="basic.template">
+		<put-attribute name="title" value="Bitfire: Profile" />
+		<put-attribute name="content" value="/WEB-INF/jsp/user/profile.jsp" />
+		<put-list-attribute name="cssUrls">
+			<add-attribute value="${bitfire.profile}" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="/user/profile/edit" extends="basic.template">
+		<put-attribute name="title" value="Bitfire: Edit Profile" />
+		<put-attribute name="content" value="/WEB-INF/jsp/user/profile/edit.jsp" />
+		<put-list-attribute name="cssUrls">
+			<add-attribute value="${bitfire.profile}" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="/admin/users" extends="basic.template">
+		<put-attribute name="title" value="Bitfire: Users" />
+		<put-attribute name="content" value="/WEB-INF/jsp/admin/users.jsp" />
+		<put-list-attribute name="cssUrls">
+			<add-attribute value="${bitfire.users}" />
+		</put-list-attribute>
+	</definition>
+	
 </tiles-definitions>

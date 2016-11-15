@@ -28,7 +28,7 @@
 		<div id="navbar" class="navbar-collapse collapse">
 			<security:authorize access="authenticated">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="index.html">Summary</a></li>
+					<li><a href="<c:url value='/index.html' />">Summary</a></li>
 					<li><a href="<c:url value='/user/transactions.html' />">Transactions</a></li>
 					<li><a href="<c:url value='/user/send.html' />">Send
 							Bitcoin</a></li>
