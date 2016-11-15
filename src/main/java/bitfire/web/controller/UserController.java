@@ -202,6 +202,7 @@ public class UserController {
 	@RequestMapping(value = { "/reset.html" }, method = RequestMethod.POST)
 	public String passwordResetConfirm(ModelMap maps, @RequestParam String password1, @RequestParam String password2, @RequestParam String token,
 			HttpServletRequest request) {
+		
 		if(!password1.equals(password2) && password1 != null && password2 !=null && !password1.isEmpty() && !password2.isEmpty()){
 			System.err.println("Passwords do NOT match");
 			maps.put("error", "Two passwords do not match. Please try again.");

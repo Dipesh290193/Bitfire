@@ -8,6 +8,8 @@
 <html>
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
+<link rel="shortcut icon" href="<tiles:insertAttribute name="favicon" />" type="image/x-icon" />
+
 <title><tiles:getAsString name='title' /></title>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
