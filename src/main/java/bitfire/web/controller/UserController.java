@@ -37,7 +37,11 @@ import bitfire.model.dao.TransactionDao;
 import bitfire.model.dao.UserDao;
 import bitfire.model.dao.WalletDao;
 import bitfire.security.SecurityUtils;
+import bitfire.util.Confirmations;
 import bitfire.web.validator.UserValidator;
+import info.blockchain.api.APIException;
+import info.blockchain.api.createwallet.CreateWallet;
+import info.blockchain.api.createwallet.CreateWalletResponse;
 
 @Controller
 @SessionAttributes(names = { "address", "user" })
@@ -55,28 +59,112 @@ public class UserController {
 	@Autowired
 	private TransactionDao transDao;
 	
+
 	@Autowired
 	private UserValidator userValidator;
+
+	@RequestMapping(value = { "/register.html" }, method = RequestMethod.GET)
+	public String register(ModelMap maps) {
+		maps.put("user", new User());
+		return "register";
+	}
+	
+	@RequestMapping(value = { "/register.html" }, method = RequestMethod.POST)
+	public String register(@ModelAttribute User user, @RequestParam(value="re-password") String password, 
+			SessionStatus status, BindingResult result, ModelMap map) {
+		
+		userValidator.setPassword(password);
+		userValidator.setUserDao(userDao);
+		userValidator.validate(user, result);
+		
+		if(result.hasErrors()){
+			map.put("errors", true);
+			return "register";
+		}
+		
+		// Add wallet
+		Wallet wallet = new Wallet();
+		CreateWalletResponse wal;
+		try {
+			 wal = CreateWallet.create(
+			        "http://localhost:3000/",
+			        user.getPassword(),
+			        "fd592284-ed09-4910-ab9f-06129b3a4054");
+		} catch (Exception e) {
+			map.put("error", "Something went wrong. Please try again.");
+			return "register";		
+		}
+		wallet.setWalletId(wal.getIdentifier());
+		
+		
+
+		walletDao.saveWallet(wallet);
+
+		// Add Address
+		Address address = new Address();
+		address.setAddress(wal.getAddress());
+		address.setLabel("Label");
+		address.setPrimary(true);
+		address.setWallet(wallet);
+		addressDao.saveAddress(address);
+
+		Set<String> roles=new HashSet<String>();
+		roles.add(User.ROLE_USER);
+
+		// Add User
+		user.setWallet(wallet);
+		user.setRoles(roles);
+		userDao.saveUser(user);
+		status.setComplete();
+		return "redirect:login.html";
+	}
+
 
 	@RequestMapping("/index.html")
 	public String index(ModelMap map) {
 
 		User user = SecurityUtils.getUser();
 		
+		
+		for(Transaction trans: transDao.getAllTransactions(user)){
+			try {
+				trans.setConfirmations(Confirmations.getConfirmations(trans.getTxId()));
+				transDao.saveTransaction(trans);
+			} catch (APIException | IOException e) {
+				System.out.println("FAILED TO FETCH THE CONFIRMATIOS");
+				e.printStackTrace();
+			}
+		}
+		
 		if (user != null) {
 			List<Address> addresses = addressDao.getAddresses(user.getWallet());
 			map.put("user", user);
 			map.put("addresses", addresses);
-			int sum = 0;
-
-			for (Address ad : addresses) {
-				sum += ad.getBitcoinsActual();
-			}
-
-
+//			int sum = 0;
+//
+//			for (Address ad : addresses) {
+//				sum += ad.getBitcoinsActual();
+//			}
+//
+//
+//			DecimalFormat format = new DecimalFormat("#0.00000000");
+//			String total = format.format(sum / 100000000.0);
+			info.blockchain.api.wallet.Wallet wallet = new info.blockchain.api.wallet.Wallet("http://localhost:3000/", 
+					"fd592284-ed09-4910-ab9f-06129b3a4054",
+	    			user.getWallet().getWalletId(),
+	    			user.getPassword());
+			
 			DecimalFormat format = new DecimalFormat("#0.00000000");
-			String total = format.format(sum / 100000000.0);
-
+			String total = null;
+			try {
+				total = format.format(wallet.getBalance() / 100000000.0);
+			} catch (APIException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
 			map.put("balance", total);
 
 			List<Transaction> transactions = transDao.getAllTransactions(user);
@@ -139,11 +227,6 @@ public class UserController {
 		return "passwordreset";
 	}
 
-	@RequestMapping(value = { "/register.html" }, method = RequestMethod.GET)
-	public String register(ModelMap maps) {
-		maps.put("user", new User());
-		return "register";
-	}
 
 	@RequestMapping(value = { "/user/profile.html" }, method = RequestMethod.GET)
 	public String userPanel(ModelMap map, HttpServletRequest request) {
@@ -206,41 +289,8 @@ public class UserController {
 	
 
 
-	@RequestMapping(value = { "/register.html" }, method = RequestMethod.POST)
-	public String register(@ModelAttribute User user, @RequestParam(value="re-password") String password, SessionStatus status, BindingResult result, ModelMap map) {
-		
-		userValidator.setPassword(password);
-		userValidator.setUserDao(userDao);
-		userValidator.validate(user, result);
-		
-		if(result.hasErrors()){
-			map.put("errors", true);
-			return "register";
-		}
-		
-		// Add wallet
-		Wallet wallet = new Wallet();
-		wallet.setWalletId(user.getName() + "123wallet");
-		walletDao.saveWallet(wallet);
 
-		// Add Address
-		Address address = new Address();
-		address.setAddress(user.getName() + "Address123");
-		address.setLabel("default");
-		address.setPrimary(true);
-		address.setWallet(wallet);
-		addressDao.saveAddress(address);
 
-		Set<String> roles=new HashSet<String>();
-		roles.add(User.ROLE_USER);
-
-		// Add User
-		user.setWallet(wallet);
-		user.setRoles(roles);
-		userDao.saveUser(user);
-		status.setComplete();
-		return "redirect:login.html";
-	}
 	
 	@RequestMapping(value={"/admin/users"}, method=RequestMethod.GET)
 	public String geUsers(ModelMap map)

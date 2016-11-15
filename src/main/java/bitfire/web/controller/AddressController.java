@@ -1,6 +1,10 @@
 package bitfire.web.controller;
 
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,8 +19,13 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import bitfire.model.Address;
+import bitfire.model.User;
 import bitfire.model.dao.AddressDao;
 import bitfire.security.SecurityUtils;
+import bitfire.util.APIUpdate;
+import info.blockchain.api.APIException;
+import info.blockchain.api.exchangerates.ExchangeRates;
+import info.blockchain.api.wallet.Wallet;
 
 @Controller
 @SessionAttributes("address")
@@ -28,16 +37,63 @@ public class AddressController {
 	@RequestMapping(value ={"/user/wallet.html"}, method = RequestMethod.GET)
 	public String wallet(ModelMap maps)
 	{
+//		APIUpdate.updateAddresses();
+		
+		User user = SecurityUtils.getUser();
+		
+		bitfire.model.Wallet userWallet = user.getWallet();
+		System.out.println("WALLET: " + userWallet.getWalletId());
+		Set<bitfire.model.Address> userAddresses = new HashSet<bitfire.model.Address>(addressDao.getAddresses(userWallet));
+		
+		Wallet wallet = new Wallet("http://localhost:3000/", 
+				"fd592284-ed09-4910-ab9f-06129b3a4054",
+    			user.getWallet().getWalletId(),
+    			user.getPassword());
+		
+		List<info.blockchain.api.wallet.Address> apiAddresses;
+		try {
+			apiAddresses = wallet.listAddresses(0);
+			
+			for(info.blockchain.api.wallet.Address apiAddress: apiAddresses){
+				for(bitfire.model.Address userAddress: userAddresses){
+					if(userAddress.getAddress().equals(apiAddress.getAddress())){
+						userAddress.setBitcoins((int)apiAddress.getBalance());
+						userAddress.setUSD(ExchangeRates.getUSD()*apiAddress.getBalance());
+						addressDao.saveAddress(userAddress);
+						break;
+					}
+				}
+			}
+				
+		} catch (Exception e) {
+		}
 		maps.put("addresses",addressDao.getAddresses(SecurityUtils.getUser().getWallet()) );
 		return "/user/wallet";
 	}
 	
 	@RequestMapping(value ={"/user/addaddress.html"}, method = RequestMethod.GET)
-	public String addaddress(){
+	public String addaddress(ModelMap map){
+		User user = SecurityUtils.getUser();
 		Address address = new Address();
-		address.setAddress(SecurityUtils.getUser().getName().toLowerCase()+ "Address" + new Random().nextInt(10000) + 1000);
-		address.setWallet(SecurityUtils.getUser().getWallet());
-		addressDao.saveAddress(address);
+		
+    	Wallet wallet = new Wallet("http://localhost:3000/", 
+		"fd592284-ed09-4910-ab9f-06129b3a4054",
+		user.getWallet().getWalletId(),
+		user.getPassword());
+    	
+    	try {
+			
+			address.setAddress(wallet.newAddress("Label").getAddress());
+			address.setWallet(SecurityUtils.getUser().getWallet());
+			addressDao.saveAddress(address);
+		} catch (APIException | IOException e) {
+			e.printStackTrace();
+			map.put("error", "We were not able to genereate a new address at this time. Pleaset try again later");
+			return "redirect:/user/wallet.html";
+			
+		}
+    	
+		
 		return "redirect:/user/wallet.html";
 	}
 
