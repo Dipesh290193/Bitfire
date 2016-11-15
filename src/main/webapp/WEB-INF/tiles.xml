@@ -85,4 +85,20 @@
 		</put-list-attribute>
 	</definition>
 	
+	<definition name="/user/wallet" extends="basic.template">
+		<put-attribute name="title" value="Bitfire: Wallet" />
+		<put-attribute name="content" value="/WEB-INF/jsp/user/wallet.jsp" />
+		<put-list-attribute name="cssUrls">
+			<add-attribute value="${bitfire.wallet}" />
+		</put-list-attribute>
+	</definition>
+	
+	<definition name="/user/address" extends="basic.template">
+		<put-attribute name="title" value="Bitfire: Address" />
+		<put-attribute name="content" value="/WEB-INF/jsp/user/address.jsp" />
+		<put-list-attribute name="cssUrls">
+			<add-attribute value="${bitfire.wallet}" />
+		</put-list-attribute>
+	</definition>
+	
 </tiles-definitions>
