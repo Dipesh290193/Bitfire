@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -53,12 +54,16 @@ public class User implements Serializable, UserDetails{
 	@Column(name="enabled")
 	Boolean enabled;
 	
+	@OneToMany(mappedBy="owner")
+	Set<AddressBook> addressBook;
+	
 	@ElementCollection
 	@CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
 	@Column(name = "role")
 	private Set<String> roles;
 	
 	private String phone;
+
 	
 	public User()
 	{
@@ -168,6 +173,14 @@ public class User implements Serializable, UserDetails{
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public Set<AddressBook> getAddressBook() {
+		return addressBook;
+	}
+
+	public void setAddressBook(Set<AddressBook> addressBook) {
+		this.addressBook = addressBook;
 	}
 	
 }

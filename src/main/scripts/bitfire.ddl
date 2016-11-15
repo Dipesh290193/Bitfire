@@ -1,5 +1,13 @@
 create sequence hibernate_sequence start 1 increment 1
 
+    create table addressBook (
+        address_book_id int4 not null,
+        name varchar(255),
+        contact_id int4 not null,
+        owner_id int4 not null,
+        primary key (address_book_id)
+    )
+
     create table addresses (
         address_id int4 not null,
         USD int default 0 not null,
@@ -58,6 +66,16 @@ create sequence hibernate_sequence start 1 increment 1
 
     alter table users 
         add constraint UK_r43af9ap4edm43mmtq01oddj6 unique (username)
+
+    alter table addressBook 
+        add constraint FK35awriw8tomw4ac7k1hqc0l4v 
+        foreign key (contact_id) 
+        references users
+
+    alter table addressBook 
+        add constraint FKpuumaidrd32n1hqgqt7oxsmad 
+        foreign key (owner_id) 
+        references users
 
     alter table addresses 
         add constraint FKf46h3157sftlhw1o20jdept2h 

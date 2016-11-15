@@ -3,12 +3,15 @@
 	uri="http://www.springframework.org/security/tags"%>
 
 <script>
-function updateText(type) { 
- var id = type+'Text';
- document.getElementById("email").value = document.getElementById("sel").value;
-}
+	function updateText() {
+		var id = document.getElementById("sel").value;
+		if (id != 1)
+			document.getElementById("email").value = id;
+		else {
+			window.location.href = '<c:url value="/user/addressBook.html" />';
+		}
+	}
 </script>
-
 <div class="well">
 	<div class="container" style="margin-top: 100px">
 		<h2 class="web-font">Send Bitcoin</h2>
@@ -19,10 +22,12 @@ function updateText(type) {
 		<form class="form" action="<c:url value='/user/send.html' />"
 			method="post">
 			<br> <select onchange="updateText()" id="sel">
+
 				<option value="">Select Email</option>
-				<c:forEach items="${emails}" var="email">
-					<option value="${email }">${email }</option>
+				<c:forEach items="${addressBook}" var="addressBook">
+					<option value="${addressBook.contact.email }">${addressBook.name }</option>
 				</c:forEach>
+				<option value="1">Add New Contact</option>
 			</select> <br> <br>
 			<c:if test="${empty to || empty amount}">
 				<input class="form-control" type="email" id="email" name="email"
@@ -58,3 +63,4 @@ function updateText(type) {
 		</c:if>
 	</div>
 </div>
+

@@ -19,6 +19,7 @@ import bitfire.model.Address;
 import bitfire.model.Notifications;
 import bitfire.model.Transaction;
 import bitfire.model.User;
+import bitfire.model.dao.AddressBookDao;
 import bitfire.model.dao.AddressDao;
 import bitfire.model.dao.TransactionDao;
 import bitfire.model.dao.UserDao;
@@ -40,6 +41,9 @@ public class TransactionController {
 	@Autowired
 	private AddressDao addressDao;
 	
+	@Autowired
+	private AddressBookDao addressBookDao;
+	
 	@RequestMapping(value ={"/user/send.html"}, method = RequestMethod.GET)
 	public String send(ModelMap map, HttpServletRequest request){
 		if(request.getParameter("to") != null)
@@ -47,17 +51,11 @@ public class TransactionController {
 		if(request.getParameter("amount") != null)
 			map.put("amount", request.getParameter("amount"));
 		User user=SecurityUtils.getUser();
-		List<Transaction> trans = transDao.getAllTransactions(user);
-		List<String> emails = new ArrayList<>();
-		for(Transaction t: trans){
-			String mail =t.getReceiverUser().getEmail();
-			if(!emails.contains(mail) && !mail.equals(user.getEmail())){
-				emails.add(mail);
-			}
-		}
+		
 		map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
-		map.put("emails", getTransactionEmails());
+		map.put("addressBook", addressBookDao.getAddressBook(user));
 		map.put("user", SecurityUtils.getUser());
+		
 		return "/user/send";
 	}
 	
@@ -120,7 +118,7 @@ public class TransactionController {
 	@RequestMapping(value ={"/user/request.html"}, method = RequestMethod.GET)
 	public String send(ModelMap map){
 
-		map.put("emails", getTransactionEmails());
+		map.put("emails", addressBookDao.getAddressBook(SecurityUtils.getUser()));
 		return "/user/request";
 	}
 	

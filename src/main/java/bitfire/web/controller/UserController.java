@@ -193,7 +193,12 @@ public class UserController {
 		user.setPassword(password1);
 		userDao.saveUser(user);
 		maps.put("message", "You password has successfully been reset. You can now log in.");
-		Notifications.securityTokens.remove(token);
+		for(String key: Notifications.securityTokens.keySet()){
+			if(Notifications.securityTokens.get(key).equals(email)){
+				Notifications.securityTokens.remove(key);
+			}
+		}
+		
 		return "login";
 	}
 	
@@ -241,7 +246,8 @@ public class UserController {
 		return "redirect:/user/profile/edit.html";
 	}
 
-	@RequestMapping(value = "/user/text/confirmation.html", method = RequestMethod.GET, produces = "text/plain", headers="Accept=*/*")
+	@RequestMapping(value = "/user/text/confirmation.html", method = RequestMethod.GET,
+			produces = "text/plain", headers="Accept=*/*")
 	public @ResponseBody String getConfirmatino(@RequestParam String code) {
 //		System.out.println("Got value: " + code);
 		User user = SecurityUtils.getUser();

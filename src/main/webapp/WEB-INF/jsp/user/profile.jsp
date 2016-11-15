@@ -19,5 +19,4 @@
 		<div style="color: #00ff00; text-align:center" >
 			<h4>${message}${param.message }</h4>
 		</div>
-	</div>
-	<br>
+</div>

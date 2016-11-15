@@ -3,7 +3,6 @@ package bitfire.web.controller;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,6 @@ import bitfire.model.Address;
 import bitfire.model.User;
 import bitfire.model.dao.AddressDao;
 import bitfire.security.SecurityUtils;
-import bitfire.util.APIUpdate;
 import info.blockchain.api.APIException;
 import info.blockchain.api.exchangerates.ExchangeRates;
 import info.blockchain.api.wallet.Wallet;
@@ -135,7 +133,5 @@ public class AddressController {
 		map.put("addresses",addressDao.getAddresses(SecurityUtils.getUser().getWallet()) );
 
 		return "/user/wallet";
-		
 	}
-	
 }
