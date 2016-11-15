@@ -50,7 +50,7 @@ public class ExchangeRates {
         for (Entry<String, JsonElement> ccyKVP : ticker.entrySet()) {
             JsonObject ccy = ccyKVP.getValue().getAsJsonObject();
             Currency currency = new Currency(ccy.get("buy").getAsDouble(), ccy.get("sell").getAsDouble(), ccy.get("last").getAsDouble(), ccy.get("15m").getAsDouble(), ccy.get("symbol").getAsString());
-
+            
             resultMap.put(ccyKVP.getKey(), currency);
         }
 
@@ -63,8 +63,25 @@ public class ExchangeRates {
      * @param currency Currency code
      * @param value    Value to convert
      * @return Converted value in BTC
+     * @throws IOException 
      * @throws APIException If the server returns an error
      */
+    
+    public static long getUSD() throws APIException, IOException{
+    	long usd =0;
+    	Map<String, Currency> resultMap = new HashMap<String, Currency>();
+    	resultMap = getTicker();
+    	
+    	for(String key: resultMap.keySet()){
+    		if(key.toString().equals("USD")){
+    			usd = resultMap.get(key).getPrice15m().longValue();
+    		}
+    	}
+    	
+    	return usd;
+    }
+    
+    
     public static BigDecimal toBTC (String currency, BigDecimal value) throws APIException, IOException {
         return toBTC(currency, value, null);
     }

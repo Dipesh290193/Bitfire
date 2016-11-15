@@ -39,7 +39,7 @@ public class Address implements Serializable{
 	int bitcoins;
 	
 	@Column(nullable=false, columnDefinition="int default 0")
-	int USD;
+	long USD;
 	
 	boolean archived;
 
@@ -109,12 +109,12 @@ public class Address implements Serializable{
 		
 		return NumberFormat.getCurrencyInstance().format(USD/100.0);
 	}
-	public int getUSDActual() {
+	public long getUSDActual() {
 		
 		return USD;
 	}
 
-	public void setUSD(int uSD) {
+	public void setUSD(long uSD) {
 		USD = uSD;
 	}
 

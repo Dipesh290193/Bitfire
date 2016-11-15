@@ -40,6 +40,7 @@
 
     <context:component-scan base-package="bitfire.model" />
      <context:component-scan base-package="bitfire.security" />
+
 	
 	<security:http auto-config="true" use-expressions="true">
         <security:intercept-url pattern="/user/**" access="authenticated" />

@@ -42,6 +42,7 @@ public class Transaction {
             t.has("double_spend") ? t.get("double_spend").getAsBoolean() : false);
     }
 
+
     public Transaction (JsonObject t, long blockHeight, boolean doubleSpend) {
         this(doubleSpend, blockHeight, t.get("time").getAsLong(), t.get("lock_time").getAsLong(),
             t.get("relayed_by").getAsString(), t.get("hash").getAsString(), t.get("tx_index").getAsLong(),

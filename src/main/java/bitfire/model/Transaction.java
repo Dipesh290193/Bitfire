@@ -43,7 +43,7 @@ public class Transaction implements Serializable{
 	@JoinColumn(name="receiver_user_id")
 	User receiverUser;
 	
-	int USD;
+	long USD;
 	
 	int bitcoin;
 	
@@ -103,7 +103,7 @@ public class Transaction implements Serializable{
 		return NumberFormat.getCurrencyInstance().format(USD/100.0);
 	}
 
-	public void setUSD(int uSD) {
+	public void setUSD(long uSD) {
 		USD = uSD;
 	}
 

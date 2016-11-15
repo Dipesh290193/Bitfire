@@ -64,6 +64,6 @@ public class CreateWallet {
         return new CreateWalletResponse(
             jsonObj.get("guid").getAsString(),
             jsonObj.get("address").getAsString(),
-            jsonObj.get("label").getAsString());
+            jsonObj.get("label") == null ? "Label": jsonObj.get("label").getAsString());
     }
 }
