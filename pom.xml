@@ -32,7 +32,7 @@
 							<targetPath>WEB-INF</targetPath>
 							<includes>
 								<include>tiles.xml</include>
-								<inclucd>csns-servlet.xml</inclucd>
+								<inclucd>bitfire-servlet.xml</inclucd>
 								<include>applicationContext.xml</include>
 								<include>tiles/template.basic.jsp</include>
 							</includes>
