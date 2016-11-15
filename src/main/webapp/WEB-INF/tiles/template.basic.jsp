@@ -27,13 +27,11 @@
 </head>
 <body>
 	<tiles:insertAttribute name="navbar" />
-	<div class = "container">
-		<tiles:insertAttribute name="content" />
-	</div>
+	<tiles:insertAttribute name="content" />
 	
 	<tilesx:useAttribute id='jsUrls' name='jsUrls' />
 	<c:forEach items='${jsUrls}' var='jsUrl'>
-		<link rel="stylesheet" href='<c:url value='${jsUrl}' />' />
+		<script src='<c:url value='${jsUrl}' />' ></script>
 	</c:forEach>
 </body>
 </html>

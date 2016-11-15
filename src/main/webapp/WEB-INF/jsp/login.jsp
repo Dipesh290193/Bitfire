@@ -47,3 +47,25 @@
 		</c:if>
 	</div>
 </div>
+
+<div id="reset-password" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title web-font">Password Reset</h4>
+			</div>
+			<div class="modal-body">
+				<p>After submitting you will receive an email with instruction
+					on how to reset your password:</p>
+				<form action="<c:url value='/passwordreset.html' />" method="POST">
+					<input type="email" id="reset" name="email" class="form-control"
+						placeholder="Enter your email (eg. bitfire@gmail.com)"><br>
+
+					<input type="submit" class="btn btn-danger" value="Reset Password" />
+					<!-- data-dismiss="modal" -->
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
