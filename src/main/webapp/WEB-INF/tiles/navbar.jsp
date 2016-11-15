@@ -44,8 +44,8 @@
 			</security:authorize>
 			<ul class="nav navbar-nav navbar-right">
 				<security:authorize access="anonymous">
-					<li><a href="<c:url value='/login.html' />">Login</a></li>
-					<li><a href="<c:url value='/register.html' />">Sign Up</a></li>
+					<li class = "<tiles:getAsString name='loginActive' />"><a href="<c:url value='/login.html' />">Login</a></li>
+					<li class = "<tiles:getAsString name='registerActive' />"><a href="<c:url value='/register.html' />">Sign Up</a></li>
 				</security:authorize>
 				<security:authorize access="authenticated">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"

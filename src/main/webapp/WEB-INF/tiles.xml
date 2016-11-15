@@ -6,40 +6,46 @@
 <tiles-definitions>
 
 
-    <definition  name = "nav.template" template="/WEB-INF/tiles/navbar.jsp">
-    	<put-attribute name="logo" value="${logo}" />
-    </definition>
-    
-	<definition name = "basic.template" template = "/WEB-INF/tiles/template.basic.jsp">
-		<put-attribute name="title" value = "" />
-		<put-attribute name="navbar" value = "nav.template" />
-		<put-attribute name="content" value = "" />
+	<definition name="nav.template" template="/WEB-INF/tiles/navbar.jsp">
+		<put-attribute name="logo" value="${logo}" />
+		<put-attribute name="registerActive" value="" />
+		<put-attribute name="loginActive" value="" />
+	</definition>
+
+	<definition name="basic.template" template="/WEB-INF/tiles/template.basic.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="navbar" value="nav.template" />
+		<put-attribute name="content" value="" />
 		<put-list-attribute name="cssUrls">
-			<add-attribute value = "${bootstrap.min}" />
-			<add-attribute value = "${bootstrap.min.theme}" />
-			<add-attribute value = "${bitfire.base}" />
-			<add-attribute value = "${bitfire.nav}" />
+			<add-attribute value="" />
 		</put-list-attribute>
 		<put-list-attribute name="jsUrls">
-			<add-attribute value = "${jquery.min}" />
-			<add-attribute value = "${bootstrap.js}" />
+			<add-attribute value="${jquery.min}" />
+			<add-attribute value="${bootstrap.js}" />
 		</put-list-attribute>
 		<put-list-attribute name="fontUrls">
-			<add-attribute value = "${google.font.exo2}" />
-			<add-attribute value = "${google.font.rokkitt}" />
+			<add-attribute value="${google.font.exo2}" />
+			<add-attribute value="${google.font.rokkitt}" />
 		</put-list-attribute>
 	</definition>
-	
-	<definition name = "index" extends = "basic.template">
+
+	<definition name="index" extends="basic.template">
 		<put-attribute name="title" value="Bitfire" />
 	</definition>
-	
-	<definition name = "login" extends = "basic.template">
+
+	<definition name="login" extends="basic.template">
 		<put-attribute name="title" value="Bitfire: Login" />
-		<put-attribute name="content" value = "/WEB-INF/jsp/login.jsp" />
+		<put-attribute name="content" value="/WEB-INF/jsp/login.jsp" />
+		<put-list-attribute name="cssUrls">
+			<add-attribute value="${bitfire}" />
+		</put-list-attribute>
 	</definition>
-	
-	<definition name = "register" extends = "basic.template">
+
+	<definition name="register" extends="basic.template">
 		<put-attribute name="title" value="Bitfire: Register" />
-	</definition>	
+		<put-attribute name="content" value="/WEB-INF/jsp/register.jsp" />
+		<put-list-attribute name="cssUrls">
+			<add-attribute value="${bitfire}" />
+		</put-list-attribute>
+	</definition>
 </tiles-definitions>
