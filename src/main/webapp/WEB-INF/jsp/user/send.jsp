@@ -29,14 +29,9 @@
 				</c:forEach>
 				<option value="1">Add New Contact</option>
 			</select> <br> <br>
-			<c:if test="${empty to || empty amount}">
-				<input class="form-control" type="email" id="email" name="email"
-					placeholder="recepient's email address" />
-				<br>
-				<input class="form-control" type="text" name="btc"
-					placeholder="amount of BTC" />
-				<br>
-<<<<<<< HEAD
+			
+	
+
 				
 					<input class="form-control" type="email" id ="email" name="email"
 						placeholder="recepient's email address" />
@@ -49,17 +44,11 @@
 					placeholder="Message" /><br>
 				
 
-=======
-			</c:if>
 
-			<c:if test="${not empty to && not empty amount}">
-				<input class="form-control" type="email" id="email" name="email"
-					value=${ to } />
-				<br>
-				<input class="form-control" type="text" name="btc" value=${amount } />
-				<br>
-			</c:if>
->>>>>>> e485bf360e6fa36a026cd7700e280038a8172967
+			
+
+
+
 
 			<input class="btn btn-danger btn-block" type="submit" value="Send" />
 		</form>

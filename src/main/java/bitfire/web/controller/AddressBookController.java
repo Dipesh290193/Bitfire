@@ -39,11 +39,13 @@ public class AddressBookController {
 	public String addAddressBook(ModelMap map,@RequestParam String name, @RequestParam String email, RedirectAttributes redirAtt)
 	{
 		List<AddressBook> contacts=addressBookDao.getAddressBook(SecurityUtils.getUser());
+		
 		Map<Integer, String> contact=new HashMap<Integer, String>();
+		if(contacts != null){
 		for(AddressBook addressBook : contacts)
 		{
 			contact.put(addressBook.getContact().getUserId(), addressBook.getName().toLowerCase());
-		}
+		}}
 		User user= userDao.getUserByEmail(email);
 		if(name.trim().equals("") || name.trim().equals(null) || contact.values().contains(name.toLowerCase()))
 		{

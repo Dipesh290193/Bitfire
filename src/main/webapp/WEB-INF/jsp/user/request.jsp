@@ -17,7 +17,7 @@
 			<br> <select onchange="updateText()" id="sel">
 				<option value="">Select Email</option>
 				<c:forEach items="${emails}" var="email">
-					<option value="${email }">${email }</option>
+					<option value="${email.contact.email }">${email.name }</option>
 				</c:forEach>
 			</select> <br> <br> <input class="form-control" type="email"
 				id="email" name="email" placeholder="email address" /><br> <input
