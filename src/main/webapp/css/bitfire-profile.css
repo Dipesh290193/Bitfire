@@ -11,9 +11,3 @@ label{
 	font-size: 120%;
 	font-weight: none;
 }
-
-.logo > img,
-.logo > h2 {
-    display: inline-block;
-    margin: 0;
-}

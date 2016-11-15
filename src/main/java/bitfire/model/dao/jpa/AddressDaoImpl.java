@@ -55,10 +55,11 @@ public class AddressDaoImpl implements AddressDao{
 	@Override
 	public Address getPrimaryAddress(Wallet wallet) {
 		
-		return entityManager.createQuery("from Address where wallet = :wallet and primary = :primary",Address.class)
+		List<Address>  address=entityManager.createQuery("from Address where wallet = :wallet and primary = :primary",Address.class)
 				.setParameter("wallet", wallet)
 				.setParameter("primary", true)
-				.getSingleResult();
+				.getResultList();
+		return address.size()==0?null:address.get(0);
 	}
 
 }

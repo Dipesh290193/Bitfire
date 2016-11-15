@@ -17,4 +17,5 @@ public interface UserDao {
 	List<User> getUsers();
 	
 	List<User> getAllUsers();
+	
 }

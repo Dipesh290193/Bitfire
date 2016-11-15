@@ -1,12 +1,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Bitfire: Edit Address</title>
 
 <!-- Favicon for Bitfire -->
 <link rel="shortcut icon" href="../assets/img/favicon.ico" type="image/x-icon" />
@@ -58,7 +53,8 @@
 							Bitcoin</a></li>
 					<li><a href="<c:url value='/user/request.html' />">Request
 							Bitcoin</a></li>
-					<li class="active"><a href="<c:url value='/user/wallet.html' />">Wallet</a></li>
+					<li><a href="<c:url value='/user/wallet.html' />">Wallet</a></li>
+					<li class="active"><a href="<c:url value='/user/addressBook.html' />">Contact</a></li>
 				</ul>
 				<security:authorize access="hasRole('ROLE_ADMIN')">
 					<ul class="nav navbar-nav">
@@ -117,9 +113,3 @@
 			</form:form>
 		</div>
 	</div>
-	
-	<!-- Javascript and jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</body>
-</html>

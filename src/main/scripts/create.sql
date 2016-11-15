@@ -15,6 +15,13 @@ create table users(
 	wallet_id varchar(255) not null references wallets(wallet_id)
 );
 
+create table addressbook(
+	address_book_id integer not null primary key,
+	name varchar(255),
+	owner_id integer not null references users(user_id),
+	contact_id integer not null references users(user_id)
+);
+
 create table authorities (
     user_id bigint not null references users(user_id),
     role    varchar(255)
@@ -46,6 +53,7 @@ create table transactions(
 	notified_receiver boolean default 'f'
 );
 
+
 create table invoices(
 	invoice_id integer primary key,
 	paid boolean default 'f',
@@ -64,9 +72,9 @@ create table invoices(
 
 insert into wallets(wallet_id) values ('admin123wallet');
 
-
 insert into users(user_id, username, email, name, password,phone, wallet_id) values
 (100,'admin', 'connect2dkp@gmail.com', 'Admin', 'Admin123', '6572539465' ,'admin123wallet');
+
 
 insert into authorities values(100, 'ROLE_ADMIN');
 

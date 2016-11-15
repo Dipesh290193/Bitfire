@@ -2,12 +2,6 @@ body{
 	padding-top: 60px;
 }
 
-.logo > img,
-.logo > h2 {
-    display: inline-block;
-    margin: 0;
-}
-
 .well{
 	border: 2px solid #cc6633;
 	min-height: 500 px;

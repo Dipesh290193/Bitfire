@@ -55,6 +55,7 @@ public class Notifications {
 	}
 	
 	public static void SendPasswordResetLink(String toEmail, String toName, String securityToken) throws IOException {
+		System.out.println(securityToken);
 		System.out.println("sending mail to " + toEmail);
 		securityTokens.put(securityToken, toEmail);
 		Email from = new Email("noreply@bitfire.com");
@@ -81,7 +82,7 @@ public class Notifications {
 					
 				+ "					<a style='display: block;max-width: 100px; color: #ffffff;background: rgb(247,97,22); padding: "
 				+ "					10px 15px; margin-top:10px; border-radius: 5px; text-decoration: none; text-align:center; font-weight:bold;' href = "
-				+ "					'http://localhost:8080/bitfire/passwordreset.html?token=" + securityToken +"'>Reset Password</a><br>"
+				+ "					'https://bitfi.re/passwordreset.html?token=" + securityToken +"'>Reset Password</a><br>"
 				+ "					<p>Sincerely,</p>"
 				+ "					<p>Team Bitfire</p>"
 				+ "				</div>" 
