@@ -14,6 +14,7 @@
 
 	<definition name="basic.template" template="/WEB-INF/tiles/template.basic.jsp">
 		<put-attribute name="title" value="" />
+		<put-attribute name="favicon" value="${favicon}" />
 		<put-attribute name="navbar" value="nav.template" />
 		<put-attribute name="content" value="" />
 		<put-list-attribute name="cssUrls">
