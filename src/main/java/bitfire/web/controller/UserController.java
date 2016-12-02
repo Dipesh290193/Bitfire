@@ -92,6 +92,7 @@ public class UserController {
 			        user.getPassword(),
 			        "fd592284-ed09-4910-ab9f-06129b3a4054");
 		} catch (Exception e) {
+			System.err.print("Something went wront. Try again!");
 			map.put("error", "Something went wrong. Please try again.");
 			return "register";		
 		}

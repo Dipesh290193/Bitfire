@@ -50,7 +50,8 @@ create table transactions(
 	sender_user_id integer not null references users(user_id),
 	receiver_user_id integer not null references users(user_id),
 	notified_sender boolean default 'f',
-	notified_receiver boolean default 'f'
+	notified_receiver boolean default 'f',
+	message varchar(255)
 );
 
 
