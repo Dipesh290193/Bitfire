@@ -35,6 +35,8 @@
 					<li><a href="<c:url value='/user/request.html' />">Request
 							Bitcoin</a></li>
 					<li><a href="<c:url value='/user/wallet.html' />">Wallet</a></li>
+					<li><a href="<c:url value='/user/addressBook.html' />">Contacts</a></li>
+					<li><a href="<c:url value='/user/invoices.html' />">Invoices</a></li>
 				</ul>
 			</security:authorize>
 			<security:authorize access="hasRole('ROLE_ADMIN')">
