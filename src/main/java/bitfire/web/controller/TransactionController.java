@@ -1,7 +1,6 @@
 package bitfire.web.controller;
 
 import java.io.IOException;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import bitfire.model.Address;
@@ -51,7 +51,7 @@ public class TransactionController {
 	
 	@RequestMapping(value ={"/user/send"}, method = RequestMethod.GET)
 	public String send(ModelMap map, HttpServletRequest request){
-		if(request.getParameter("to") != null)
+		/*if(request.getParameter("to") != null)
 			map.put("to", request.getParameter("to"));
 		if(request.getParameter("amount") != null)
 			map.put("amount", request.getParameter("amount"));
@@ -96,7 +96,7 @@ public class TransactionController {
 		map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
 		map.put("addressBook", addressBookDao.getAddressBook(user));
 		map.put("user", SecurityUtils.getUser());
-		
+		*/
 		return "/user/send";
 	}
 	
@@ -426,5 +426,12 @@ public class TransactionController {
 			}
 		}
 		return emails;
+	}
+	
+	@RequestMapping(value="/user/getBTC", method=RequestMethod.POST)
+	@ResponseBody
+	public Long getUSD() throws APIException, IOException
+	{
+		return ExchangeRates.getUSD();
 	}
 }

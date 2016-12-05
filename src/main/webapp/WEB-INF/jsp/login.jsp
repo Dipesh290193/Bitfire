@@ -11,7 +11,7 @@
 		</c:if>
 		<form action="login" method="post">
 			<div class="form_group">
-				<label class="white" for="email_field"> Email Address </label> <input
+				<label class="white" for="email_field"> Username </label> <input
 					type="text" class="form-control" id="text" name="username"
 					placeholder="Enter email">
 			</div>
