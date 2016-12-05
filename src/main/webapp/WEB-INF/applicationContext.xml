@@ -17,8 +17,8 @@
     <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
         <property name="driverClassName" value="org.postgresql.Driver" />
         <property name="url" value="jdbc:postgresql://localhost:5432/bitfire" />
-        <property name="username" value="Sevak" />
-        <property name="password" value="sevakmn1515%" />
+        <property name="username" value="postgres" />
+        <property name="password" value="password" />
         <property name="initialSize" value="1" />
     </bean>
 	
@@ -46,8 +46,8 @@
         <security:intercept-url pattern="/user/**" access="authenticated" />
          <security:intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
          <security:csrf disabled="true" />
-        <security:form-login login-page="/login.html"
-        			         authentication-failure-url="/login.html?error=invalid"
+        <security:form-login login-page="/login"
+        			         authentication-failure-url="/login?error=invalid"
         />
         <security:logout logout-success-url="/" />
     </security:http>

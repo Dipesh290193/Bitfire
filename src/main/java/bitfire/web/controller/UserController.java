@@ -64,13 +64,13 @@ public class UserController {
 	@Autowired
 	private UserValidator userValidator;
 
-	@RequestMapping(value = { "/register.html" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/register" }, method = RequestMethod.GET)
 	public String register(ModelMap maps) {
 		maps.put("user", new User());
 		return "register";
 	}
 	
-	@RequestMapping(value = { "/register.html" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/register" }, method = RequestMethod.POST)
 	public String register(@ModelAttribute User user, @RequestParam(value="re-password") String password, 
 			SessionStatus status, BindingResult result, ModelMap map) {
 		
@@ -117,11 +117,11 @@ public class UserController {
 		user.setRoles(roles);
 		userDao.saveUser(user);
 		status.setComplete();
-		return "redirect:login.html";
+		return "redirect:login";
 	}
 
 
-	@RequestMapping("/index.html")
+	@RequestMapping("/index")
 	public String index(ModelMap map) {
 
 		User user = SecurityUtils.getUser();
@@ -199,7 +199,7 @@ public class UserController {
 		return "index";
 	}
 	
-	@RequestMapping(value = { "/reset.html" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/reset" }, method = RequestMethod.POST)
 	public String passwordResetConfirm(ModelMap maps, @RequestParam String password1, @RequestParam String password2, @RequestParam String token,
 			HttpServletRequest request) {
 		
@@ -228,7 +228,7 @@ public class UserController {
 		return "login";
 	}
 	
-	@RequestMapping(value = { "/passwordreset.html" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/passwordreset" }, method = RequestMethod.POST)
 	public String passwordReset(ModelMap maps, @RequestParam String email) {
 		User user = userDao.getUserByEmail(email);
 		if(user == null){
@@ -245,7 +245,7 @@ public class UserController {
 		return "login";
 	}
 	
-	@RequestMapping(value = { "/passwordreset.html" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/passwordreset" }, method = RequestMethod.GET)
 	public String passwordReset(HttpServletRequest request, ModelMap map) {
 		if(request.getParameter("token") == null){
 			System.out.println("no parameter token");
@@ -259,20 +259,20 @@ public class UserController {
 	}
 
 
-	@RequestMapping(value = { "/user/profile.html" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/user/profile" }, method = RequestMethod.GET)
 	public String userPanel(ModelMap map, HttpServletRequest request) {
 		map.put("user", SecurityUtils.getUser());
 		return "/user/profile";
 	}
 
-	@RequestMapping(value = { "/user/profile.html" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/user/profile" }, method = RequestMethod.POST)
 	public String userPanel(ModelMap map) {
 //		System.out.println("in post");
 		map.put("user", SecurityUtils.getUser());
-		return "redirect:/user/profile/edit.html";
+		return "redirect:/user/profile/edit";
 	}
 
-	@RequestMapping(value = "/user/text/confirmation.html", method = RequestMethod.GET,
+	@RequestMapping(value = "/user/text/confirmation", method = RequestMethod.GET,
 			produces = "text/plain", headers="Accept=*/*")
 	public @ResponseBody String getConfirmatino(@RequestParam String code) {
 //		System.out.println("Got value: " + code);
@@ -296,7 +296,7 @@ public class UserController {
 	
 	}
 	
-	@RequestMapping(value = "/user/text/confirmation.html", method = RequestMethod.POST, produces = "text/plain", headers="Accept=*/*")
+	@RequestMapping(value = "/user/text/confirmation", method = RequestMethod.POST, produces = "text/plain", headers="Accept=*/*")
 	public @ResponseBody String sendConfirmatino() {	
 		System.out.println("Sending message to phone");
 		
@@ -304,19 +304,19 @@ public class UserController {
 		return "success";
 	}
 
-	@RequestMapping(value = { "/user/profile/edit.html" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/user/profile/edit" }, method = RequestMethod.GET)
 	public String editProfile(ModelMap map, HttpServletRequest request) {
 		map.put("user", SecurityUtils.getUser());
 		return "/user/profile/edit";
 	}
 	
-	@RequestMapping(value = { "/user/profile/edit.html" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/user/profile/edit" }, method = RequestMethod.POST)
 	public String editProfile(@ModelAttribute User user, SessionStatus status, ModelMap map) {
 //		System.out.println("EDIt profile post");
 		userDao.saveUser(user);
 		map.put("message", "Successfully updated your profile.");
 		status.setComplete();
-		return "redirect:/user/profile.html";
+		return "redirect:/user/profile";
 	}
 	
 
@@ -346,7 +346,7 @@ public class UserController {
 		User user=userDao.getUser(id);
 		user.setEnabled(false);
 		userDao.saveUser(user);
-		return "redirect:/admin/users.html";
+		return "redirect:/admin/users";
 	}
 	
 	@RequestMapping("/admin/enableUser")
@@ -355,7 +355,7 @@ public class UserController {
 		User user=userDao.getUser(id);
 		user.setEnabled(true);
 		userDao.saveUser(user);
-		return "redirect:/admin/users.html";
+		return "redirect:/admin/users";
 	}
 	
 	@RequestMapping("/admin/makeAdmin")
@@ -366,7 +366,7 @@ public class UserController {
 		role.add(User.ROLE_ADMIN);
 		user.setRoles(role);
 		userDao.saveUser(user);
-		return "redirect:/admin/users.html";
+		return "redirect:/admin/users";
 	}
 	
 	@RequestMapping("/admin/makeUser")
@@ -377,6 +377,6 @@ public class UserController {
 		role.add(User.ROLE_USER);
 		user.setRoles(role);
 		userDao.saveUser(user);
-		return "redirect:/admin/users.html";
+		return "redirect:/admin/users";
 	}
 }

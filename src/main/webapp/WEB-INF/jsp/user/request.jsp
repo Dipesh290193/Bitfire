@@ -12,7 +12,7 @@
 <div class="well">
 	<div class="container" style="margin-top: 100px">
 		<h2 class="web-font">Request Bitcoin</h2>
-		<form class="form" action="<c:url value='/user/request.html' />"
+		<form class="form" action="<c:url value='/user/request' />"
 			method="post">
 			<br> <select onchange="updateText()" id="sel">
 				<option value="">Select Email</option>

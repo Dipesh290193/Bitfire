@@ -21,7 +21,7 @@
 					<br>
 
 					<form id="confirm"
-						action="<c:url value ='/user/text/confirmation.html' />"
+						action="<c:url value ='/user/text/confirmation' />"
 						method="post">
 						<div class="form-group col-md-5"
 							style="margin: 0 auto; float: none;">
@@ -65,7 +65,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="<c:url value ='../../index.html'/>">
+				<a class="navbar-brand" href="<c:url value ='../../index'/>">
 					<div class="logo text-center">
 						<img src="../../assets/img/fire.png" alt=""
 							style="width: 50px; height: 50px;">
@@ -80,15 +80,15 @@
 			<!--  Collapses when screen is too small -->
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="../../index.html">Summary</a></li>
-					<li><a href="<c:url value='/user/transactions.html' />">Transactions</a></li>
-					<li><a href="<c:url value='/user/send.html' />">Send Bitcoin</a></li>
-					<li><a href="<c:url value='/user/request.html' />">Request Bitcoin</a></li>
-					<li><a href="<c:url value='/user/wallet.html' />">Wallet</a></li>
+					<li><a href="../../index">Summary</a></li>
+					<li><a href="<c:url value='/user/transactions' />">Transactions</a></li>
+					<li><a href="<c:url value='/user/send' />">Send Bitcoin</a></li>
+					<li><a href="<c:url value='/user/request' />">Request Bitcoin</a></li>
+					<li><a href="<c:url value='/user/wallet' />">Wallet</a></li>
 				</ul>
 				<security:authorize access="hasRole('ROLE_ADMIN')">
 					<ul class="nav navbar-nav">
-						<li><a href="<c:url value='/admin/users.html' />">Users</a></li>
+						<li><a href="<c:url value='/admin/users' />">Users</a></li>
 					</ul>
 				</security:authorize>
 				<ul class="nav navbar-nav navbar-right">
@@ -97,7 +97,7 @@
 						aria-expanded="false"><span class="glyphicon glyphicon-cog"
 							aria-hidden="true"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="<c:url value='/user/profile.html' />">My
+							<li><a href="<c:url value='/user/profile' />">My
 									Account</a></li>
 							<li><a href="<c:url value='/logout' />">Logout</a></li>
 						</ul></li>
@@ -123,7 +123,7 @@
 						<br>
 
 						<form id="confirm"
-							action="<c:url value ='/user/text/confirmation.html' />">
+							action="<c:url value ='/user/text/confirmation' />">
 							<div class="form-group col-md-5"
 								style="margin: 0 auto; float: none;">
 								<input style="text-align: center;" id="confNum" type="text"

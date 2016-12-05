@@ -12,7 +12,7 @@
 				<h5 class="text-center">Use the form below to change your
 					password.</h5>
 				<form method="post" id="passwordForm"
-					=  action="<c:url value='/reset.html' />">
+					=  action="<c:url value='/reset' />">
 					<input type="password" class="input-lg form-control"
 						name="password1" id="password1" placeholder="New Password"
 						autocomplete="off"> <br> <input type="password"

@@ -8,7 +8,7 @@
     <display-name>BitFire</display-name>
 
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>index</welcome-file>
     </welcome-file-list>
 
     <servlet>
@@ -19,7 +19,7 @@
 
     <servlet-mapping>
         <servlet-name>bitfire</servlet-name>
-        <url-pattern>*.html</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
     <listener>

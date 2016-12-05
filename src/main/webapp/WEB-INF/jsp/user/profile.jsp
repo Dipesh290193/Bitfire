@@ -2,7 +2,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 	<div class="well">
-		<form class="form" action="<c:url value ='/user/profile.html' />" method="post">
+		<form class="form" action="<c:url value ='/user/profile' />" method="post">
 			<label for="username">Username:</label> 
 			<input type="text" name="username" value=${user.username} class="form-control" readonly disabled/> <br> 
 			<label for="email">Email:</label>

@@ -7,11 +7,16 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import bitfire.model.AddressBook;
 import bitfire.model.User;
@@ -64,7 +69,7 @@ public class AddressBookController {
 			addressBookDao.saveAddressBook(addressBook);
 			redirAtt.addFlashAttribute("success","Successfully added");
 		}
-		return "redirect:/user/addressBook.html";
+		return "redirect:/user/addressBook";
 	}
 	
 
@@ -82,7 +87,7 @@ public class AddressBookController {
 		AddressBook addressBook = addressBookDao.getAddressBook(id);
 		addressBook.setName(name);
 		addressBookDao.saveAddressBook(addressBook);
-		return "redirect:/user/addressBook.html";
+		return "redirect:/user/addressBook";
 	}
 	
 	@RequestMapping(value={"/user/deleteAddressBook"})
@@ -90,7 +95,19 @@ public class AddressBookController {
 	{
 		AddressBook addressBook = addressBookDao.getAddressBook(id);
 		addressBookDao.deleteAddressBook(addressBook);
-		return "redirect:/user/addressBook.html";
+		return "redirect:/user/addressBook";
+	}
+	
+	@RequestMapping(value={"/user/address"}, method=RequestMethod.GET)
+	@ResponseBody
+	public User getUser() throws JsonProcessingException
+	{
+		System.out.println("in /user/address page in @Response body");
+		User u=new User();
+		u.setName("Sevak");
+		u.setUserId(10000);
+		u.setEmail("Dipesh@gmail.com");
+		return u;
 	}
 		
 }

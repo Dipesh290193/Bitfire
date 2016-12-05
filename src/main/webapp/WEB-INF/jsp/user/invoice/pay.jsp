@@ -37,7 +37,7 @@
 					Primary address balance: <span style="color: green;">${balance}</span>
 					BTC
 				</h3>
-				<form class="form" action="<c:url value='/user/invoices/pay.html' />"
+				<form class="form" action="<c:url value='/user/invoices/pay' />"
 					method="post">
 
 
