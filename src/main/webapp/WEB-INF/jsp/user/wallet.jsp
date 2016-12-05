@@ -8,7 +8,7 @@
 	</div>
 
 	<div class="well well-lg">
-		<form action="<c:url value='/user/addaddress.html' />" action='GET'>
+		<form action="<c:url value='/user/addaddress' />" action='GET'>
 
 			<table class="table table-striped table-condensed">
 				<tr>
@@ -35,10 +35,10 @@
 						</c:if>
 
 						<td><a
-							href="<c:url value='/user/editaddress.html?id=${ address.addressId }' />"
+							href="<c:url value='/user/editaddress?id=${ address.addressId }' />"
 							class="btn btn-sm btn-default">Edit</a></td>
 						<td><a
-							href="<c:url value='/user/archiveaddress.html?id=${ address.addressId }' />"
+							href="<c:url value='/user/archiveaddress?id=${ address.addressId }' />"
 							class="btn btn-sm btn-default">Archive</a></td>
 
 					</tr>
@@ -46,7 +46,7 @@
 			</table>
 			<input type="submit" value="Add address" class="btn btn-danger" /> <input
 				type="button"
-				onclick='location.href="<c:url value ='/user/selftransfer.html' />"'
+				onclick='location.href="<c:url value ='/user/selftransfer' />"'
 				value="Self Transfer" class="btn btn-danger">
 		</form>
 		<br>

@@ -32,7 +32,7 @@ public class AddressController {
 	@Autowired
 	private AddressDao addressDao;
 	
-	@RequestMapping(value ={"/user/wallet.html"}, method = RequestMethod.GET)
+	@RequestMapping(value ={"/user/wallet"}, method = RequestMethod.GET)
 	public String wallet(ModelMap maps)
 	{
 //		APIUpdate.updateAddresses();
@@ -70,7 +70,7 @@ public class AddressController {
 		return "/user/wallet";
 	}
 	
-	@RequestMapping(value ={"/user/addaddress.html"}, method = RequestMethod.GET)
+	@RequestMapping(value ={"/user/addaddress"}, method = RequestMethod.GET)
 	public String addaddress(ModelMap map){
 		User user = SecurityUtils.getUser();
 		Address address = new Address();
@@ -88,22 +88,22 @@ public class AddressController {
 		} catch (APIException | IOException e) {
 			e.printStackTrace();
 			map.put("error", "We were not able to genereate a new address at this time. Pleaset try again later");
-			return "redirect:/user/wallet.html";
+			return "redirect:/user/wallet";
 			
 		}
     	
 		
-		return "redirect:/user/wallet.html";
+		return "redirect:/user/wallet";
 	}
 
-	@RequestMapping(value ={"/user/editaddress.html"}, method = RequestMethod.GET)
+	@RequestMapping(value ={"/user/editaddress"}, method = RequestMethod.GET)
 	public String address(@RequestParam int id, ModelMap maps)
 	{
 		maps.put("address", addressDao.getAddress(id));
 		return "/user/address";
 	}
 	
-	@RequestMapping(value ={"/user/editaddress.html"}, method = RequestMethod.POST)
+	@RequestMapping(value ={"/user/editaddress"}, method = RequestMethod.POST)
 	public String editaddress(  @ModelAttribute Address address, HttpServletRequest request, SessionStatus status )
 	{
 		if(request.getParameter("primary") != null){
@@ -115,10 +115,10 @@ public class AddressController {
 		addressDao.setPrimary(address, SecurityUtils.getUser().getWallet());
 		
 		status.isComplete();
-		return "redirect:/user/wallet.html";
+		return "redirect:/user/wallet";
 	}	
 	
-	@RequestMapping(value ={"/user/archiveaddress.html"}, method = RequestMethod.GET)
+	@RequestMapping(value ={"/user/archiveaddress"}, method = RequestMethod.GET)
 	public String archiveAddress(@RequestParam int id, ModelMap map)
 	{
 		Address address = addressDao.getAddress(id);

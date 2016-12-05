@@ -13,7 +13,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="<c:url value ='/index.html'/>">
+			<a class="navbar-brand" href="<c:url value ='/index '/>">
 				<div class="logo text-center">
 					<img src="<tiles:insertAttribute name='logo' />" alt="" style="width: 50px; height: 50px;">
 					<h2 class="web-font">
@@ -28,26 +28,26 @@
 		<div id="navbar" class="navbar-collapse collapse">
 			<security:authorize access="authenticated">
 				<ul class="nav navbar-nav">
-					<li><a href="<c:url value='/index.html' />">Summary</a></li>
-					<li><a href="<c:url value='/user/transactions.html' />">Transactions</a></li>
-					<li><a href="<c:url value='/user/send.html' />">Send
+					<li><a href="<c:url value='/index ' />">Summary</a></li>
+					<li><a href="<c:url value='/user/transactions ' />">Transactions</a></li>
+					<li><a href="<c:url value='/user/send ' />">Send
 							Bitcoin</a></li>
-					<li><a href="<c:url value='/user/request.html' />">Request
+					<li><a href="<c:url value='/user/request ' />">Request
 							Bitcoin</a></li>
-					<li><a href="<c:url value='/user/wallet.html' />">Wallet</a></li>
-					<li><a href="<c:url value='/user/addressBook.html' />">Contacts</a></li>
-					<li><a href="<c:url value='/user/invoices.html' />">Invoices</a></li>
+					<li><a href="<c:url value='/user/wallet ' />">Wallet</a></li>
+					<li><a href="<c:url value='/user/addressBook ' />">Contacts</a></li>
+					<li><a href="<c:url value='/user/invoices ' />">Invoices</a></li>
 				</ul>
 			</security:authorize>
 			<security:authorize access="hasRole('ROLE_ADMIN')">
 				<ul class="nav navbar-nav">
-					<li><a href="<c:url value='/admin/users.html' />">Users</a></li>
+					<li><a href="<c:url value='/admin/users ' />">Users</a></li>
 				</ul>
 			</security:authorize>
 			<ul class="nav navbar-nav navbar-right">
 				<security:authorize access="anonymous">
-					<li class = "<tiles:getAsString name='loginActive' />"><a href="<c:url value='/login.html' />">Login</a></li>
-					<li class = "<tiles:getAsString name='registerActive' />"><a href="<c:url value='/register.html' />">Sign Up</a></li>
+					<li class = "<tiles:getAsString name='loginActive' />"><a href="<c:url value='/login ' />">Login</a></li>
+					<li class = "<tiles:getAsString name='registerActive' />"><a href="<c:url value='/register ' />">Sign Up</a></li>
 				</security:authorize>
 				<security:authorize access="authenticated">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -55,7 +55,7 @@
 						aria-expanded="false"><span class="glyphicon glyphicon-cog"
 							aria-hidden="true"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="<c:url value='/user/profile.html' />">My
+							<li><a href="<c:url value='/user/profile ' />">My
 									Account</a></li>
 							<li><a href="<c:url value='/logout' />">Logout</a></li>
 						</ul></li>

@@ -8,7 +8,7 @@
 		if (id != 1)
 			document.getElementById("email").value = id;
 		else {
-			window.location.href = '<c:url value="/user/addressBook.html" />';
+			window.location.href = '<c:url value="/user/addressBook" />';
 		}
 	}
 </script>
@@ -19,7 +19,7 @@
 			Primary address balance: <span style="color: green;">${balance}</span>
 			BTC
 		</h3>
-		<form class="form" action="<c:url value='/user/send.html' />"
+		<form class="form" action="<c:url value='/user/send' />"
 			method="post">
 			<br> <select onchange="updateText()" id="sel">
 
@@ -60,7 +60,7 @@
 			<div style="color: red">
 				<h4>
 					${selftranfererror } <a
-						href="<c:url value ='/user/selftransfer.html' />">Self
+						href="<c:url value ='/user/selftransfer' />">Self
 						Transfer</a>
 				</h4>
 			</div>

@@ -38,7 +38,7 @@
 								<td>Paid</td>
 							</c:if>
 							<c:if test ="${not invoice.paid}">
-								<td><a href = "<c:url value='/user/invoices/pay.html?id=${invoice.invoiceId }' />" 
+								<td><a href = "<c:url value='/user/invoices/pay?id=${invoice.invoiceId }' />" 
 								role="button" class="btn btn-success btn-sm">   Pay  </a></td>
 							</c:if>
 						</tr>

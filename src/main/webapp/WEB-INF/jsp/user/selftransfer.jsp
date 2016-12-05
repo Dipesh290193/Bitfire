@@ -4,7 +4,7 @@
 
 <div class="container" style="margin-top: 100px">
 	<div class="well">
-		<form class="form" action="<c:url value= '/user/selftransfer.html'/>"
+		<form class="form" action="<c:url value= '/user/selftransfer'/>"
 			method="post">
 			FROM: <select class="dropdown" name="from" style="margin-left: 6px;">
 				<c:forEach items="${addresses}" var="address">
@@ -34,7 +34,7 @@
 		<p>${selftranfererror}</p>
 		<c:if test="${selftranfererror ne null}">
 			<div style="color: red">${selftranfererror}
-				<a href="<c:url value ='/user/selftransfer.html' />">Self
+				<a href="<c:url value ='/user/selftransfer' />">Self
 					Transfer</a>
 			</div>
 		</c:if>

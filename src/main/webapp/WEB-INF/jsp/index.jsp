@@ -36,9 +36,9 @@
 							</p>
 
 							<ul style="list-style: none;">
-								<li><a href="<c:url value='/user/send.html' />">Send
+								<li><a href="<c:url value='/user/send' />">Send
 										Bitcoin</a></li>
-								<li><a href="<c:url value='/user/request.html' />">Request
+								<li><a href="<c:url value='/user/request' />">Request
 										Bitcoin</a></li>
 							</ul>
 						</div>
@@ -64,7 +64,7 @@
 							</c:forEach>
 						</div>
 						<div class="panel-footer text-center">
-							<a href="<c:url value='/user/wallet.html' />">Manage Wallet</a>
+							<a href="<c:url value='/user/wallet' />">Manage Wallet</a>
 						</div>
 					</div>
 				</div>
@@ -163,7 +163,7 @@
 						</c:forEach>
 					</div>
 					<div class="panel-footer text-center">
-						<a href="<c:url value='/user/transactions.html' />">View All
+						<a href="<c:url value='/user/transactions' />">View All
 							Transactions</a>
 					</div>
 				</div>

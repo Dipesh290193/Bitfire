@@ -34,7 +34,7 @@
 		</div>
 
 		<!-- Redirect to sign up page -->
-		<a href="register.html" class="btn btn-danger btn-block">Sign Up</a> <br>
+		<a href="register" class="btn btn-danger btn-block">Sign Up</a> <br>
 		<c:if test="${not empty message }">
 			<div class="alert alert-success">
 				<h4>${message }</h4>
@@ -58,7 +58,7 @@
 			<div class="modal-body">
 				<p>After submitting you will receive an email with instruction
 					on how to reset your password:</p>
-				<form action="<c:url value='/passwordreset.html' />" method="POST">
+				<form action="<c:url value='/passwordreset' />" method="POST">
 					<input type="email" id="reset" name="email" class="form-control"
 						placeholder="Enter your email (eg. bitfire@gmail.com)"><br>
 

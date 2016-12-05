@@ -1,5 +1,57 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script>
+		function addAddressBookFunction()
+		{
+			$("#addAddressBookForm").modal('show');
+			$("#save").click(function(){
+				$.ajax({
+					url: "address",
+					method: "GET",
+					dataType: "json",
+				/* 	processData: false,
+					contentType: "application/json",
+					data: JSON.stringify({
+						name: $("#name").val(),
+						email: $("#email").val()
+					}), */
+					success: function(data)
+					{
+						alert(data.email);
+					},
+					error: function(data)
+					{
+						alert("error"+data.status);
+					}
+				});
+			});
+		}
+		
+	</script>
+	<script>
+	function editAddressBookFunction(id)
+	{
+		$("#editAddressBookForm").modal('show');
+		
+		$.ajax({
+			type: "GET",
+			url : "<c:url value='/user/editAddressBook' />",
+			data : {addressBookId: id},
+			success : function(data)
+			{
+				 $("#editName").val(data);
+				 $("#addressBookId").val(id);
+			},
+			error : function(e)
+			{
+				alert(e);
+			}
+		});
+	}
+	
+	</script>
 
 	<div class="container">
 		<div class="page-header web-font">
@@ -23,7 +75,7 @@
 							<button onclick="editAddressBookFunction('${contact.id}')" class = "btn btn-sm btn-default"> Edit </button>
 							</td>
 						<td><a
-							href="<c:url value='/user/deleteAddressBook.html?id=${ contact.id }' />" class = "btn btn-sm btn-default">Delete</a></td>
+							href="<c:url value='/user/deleteAddressBook?id=${ contact.id }' />" class = "btn btn-sm btn-default">Delete</a></td>
 
 					</tr>
 				</c:forEach>
@@ -45,7 +97,6 @@
 						<h4 class="modal-title">Add Contact</h4>
 					</div>
 					<div class="modal-body">
-						<form id="addressBook" action="<c:url value ='/user/addAddressBook.html' />" method=POST>
 							<div class="form-group col-md-5" style="margin: 0 auto; float: none;">
 								<label>Name</label><input style="text-align: center;" id="name" type="text"
 									class="form-control" name="name"
@@ -55,12 +106,11 @@
 									placeholder="Enter email" required> <br>
 								<div>
 									<center>
-									<input type="submit" name="save" value="Save" style="margin: 0 auto;" 
-									class="btn btn-info" />
+									<button id="save" style="margin: 0 auto;" 
+									class="btn btn-info">Save</button>
 									</center>
 								</div>
 							</div>
-						</form>
 					</div>
 				</div>
 			</div>
@@ -77,7 +127,7 @@
 						<h4 class="modal-title">Edit Contact</h4>
 					</div>
 					<div class="modal-body">
-						<form id="addressBook" action="<c:url value ='/user/editAddressBook.html' />" method=POST>
+						<form id="addressBook" action="<c:url value ='/user/editAddressBook' />" method=POST>
 							<div class="form-group col-md-5" style="margin: 0 auto; float: none;">
 								<label>Name</label><input style="text-align: center;" id="editName" type="text"
 									class="form-control" name="name"
@@ -100,31 +150,3 @@
 		
 	</div>
 	
-	<script>
-		function addAddressBookFunction()
-		{
-			$("#addAddressBookForm").modal('show');
-		}
-	</script>
-	<script>
-	function editAddressBookFunction(id)
-	{
-		$("#editAddressBookForm").modal('show');
-		
-		$.ajax({
-			type: "GET",
-			url : "<c:url value='/user/editAddressBook.html' />",
-			data : {addressBookId: id},
-			success : function(data)
-			{
-				 $("#editName").val(data);
-				 $("#addressBookId").val(id);
-			},
-			error : function(e)
-			{
-				alert(e);
-			}
-		});
-	}
-	
-	</script>

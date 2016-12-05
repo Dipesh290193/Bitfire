@@ -49,7 +49,7 @@ public class TransactionController {
 	@Autowired
 	private AddressBookDao addressBookDao;
 	
-	@RequestMapping(value ={"/user/send.html"}, method = RequestMethod.GET)
+	@RequestMapping(value ={"/user/send"}, method = RequestMethod.GET)
 	public String send(ModelMap map, HttpServletRequest request){
 		if(request.getParameter("to") != null)
 			map.put("to", request.getParameter("to"));
@@ -100,7 +100,7 @@ public class TransactionController {
 		return "/user/send";
 	}
 	
-	@RequestMapping(value ={"/user/send.html"}, method = RequestMethod.POST)
+	@RequestMapping(value ={"/user/send"}, method = RequestMethod.POST)
 	public String send(@RequestParam String email, @RequestParam Double btc, ModelMap map, String reason){
 		
 		User receiverUser=userDao.getUserByEmail(email.toLowerCase());
@@ -153,7 +153,7 @@ public class TransactionController {
 				map.put("error", "We were not able to transfer your BTC at this time. Please try again later.");
 				e.printStackTrace();
 			}
-			return "redirect:/user/transactions.html";
+			return "redirect:/user/transactions";
 		}
 
 
@@ -171,14 +171,14 @@ public class TransactionController {
 		
 	}
 	
-	@RequestMapping(value ={"/user/request.html"}, method = RequestMethod.GET)
+	@RequestMapping(value ={"/user/request"}, method = RequestMethod.GET)
 	public String send(ModelMap map){
 
 		map.put("emails", addressBookDao.getAddressBook(SecurityUtils.getUser()));
 		return "/user/request";
 	}
 	
-	@RequestMapping(value ={"/user/request.html"}, method = RequestMethod.POST)
+	@RequestMapping(value ={"/user/request"}, method = RequestMethod.POST)
 	public String request(@RequestParam String email, @RequestParam Double btc, @RequestParam String reason, ModelMap map) throws APIException, IOException{
 		User sender = SecurityUtils.getUser();
 		User receiver = userDao.getUserByEmail(email);
@@ -229,14 +229,14 @@ public class TransactionController {
 		
 	}
 	
-	@RequestMapping(value ={"/user/selftransfer.html"}, method = RequestMethod.GET)
+	@RequestMapping(value ={"/user/selftransfer"}, method = RequestMethod.GET)
 	public String selftransfer(ModelMap map)
 	{	
 		map.put("addresses", addressDao.getAddresses(SecurityUtils.getUser().getWallet()));
 		return "/user/selftransfer";
 	}
 	
-	@RequestMapping(value ={"/user/selftransfer.html"}, method = RequestMethod.POST)
+	@RequestMapping(value ={"/user/selftransfer"}, method = RequestMethod.POST)
 	public String selftransfer(@RequestParam int from, @RequestParam int to, @RequestParam Double amount, ModelMap map)
 	{	
 		
@@ -272,7 +272,7 @@ public class TransactionController {
 		return "/user/wallet";
 	}
 
-	@RequestMapping(value ={"/user/transactions.html"}, method = RequestMethod.GET)
+	@RequestMapping(value ={"/user/transactions"}, method = RequestMethod.GET)
 	public String transactoins(ModelMap map){
 		User user  = SecurityUtils.getUser();
 		
@@ -292,7 +292,7 @@ public class TransactionController {
 		return "/user/transactions";
 	}
 	
-	@RequestMapping(value ={"/user/invoices.html"}, method = RequestMethod.GET)
+	@RequestMapping(value ={"/user/invoices"}, method = RequestMethod.GET)
 	public String invoices(ModelMap map){
 		User user = SecurityUtils.getUser();
 		map.put("invoices", transDao.getAllInvoices(user));
@@ -300,17 +300,17 @@ public class TransactionController {
 		return "/user/invoice";
 	}
 	
-	@RequestMapping(value ={"/user/invoices/pay.html"}, method = RequestMethod.GET)
+	@RequestMapping(value ={"/user/invoices/pay"}, method = RequestMethod.GET)
 	public String payInvoice(ModelMap map, HttpServletRequest request){
 		User user = SecurityUtils.getUser();
 		if(request.getParameter("id") ==null){
-			return "redirect:/user/invoices.html";
+			return "redirect:/user/invoices";
 		}
 		
 		Invoice invoice = transDao.getInvoice(Integer.parseInt(request.getParameter("id")));
 		if(invoice == null){
 			System.out.println("NO SUCH INVOICE");
-			return "redirect:/user/invoices.html";
+			return "redirect:/user/invoices";
 		}
 		
 		map.put("balance", addressDao.getPrimaryAddress(SecurityUtils.getUser().getWallet()).getBitcoins());
@@ -319,7 +319,7 @@ public class TransactionController {
 		return "/user/invoice/pay";
 	}
 	
-	@RequestMapping(value ={"/user/invoices/pay.html"}, method = RequestMethod.POST)
+	@RequestMapping(value ={"/user/invoices/pay"}, method = RequestMethod.POST)
 	public String payInvoice(ModelMap map, @RequestParam int id, @RequestParam String email, @RequestParam Double btc, 
 			 @RequestParam String reason, RedirectAttributes attrs){
 		System.out.println("Id: " + id);
@@ -365,7 +365,7 @@ public class TransactionController {
 //				// TODO Auto-generated catch block
 //				attrs.addFlashAttribute("error", "We were not able to send you invoice at this time. Pleas try again later.");
 //			}
-			return "redirect:/user/invoices/pay.html?id=" + id;
+			return "redirect:/user/invoices/pay?id=" + id;
 		
 		}
 

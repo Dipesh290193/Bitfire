@@ -32,7 +32,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="<c:url value ='/index.html'/>">
+				<a class="navbar-brand" href="<c:url value ='/index'/>">
 					<div class="logo text-center">
 						<img src="../assets/img/fire.png" alt=""
 							style="width: 50px; height: 50px;">
@@ -47,18 +47,18 @@
 			<!--  Collapses when screen is too small -->
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="../index.html">Summary</a></li>
-					<li><a href="<c:url value='/user/transactions.html' />">Transactions</a></li>
-					<li><a href="<c:url value='/user/send.html' />">Send
+					<li><a href="../index">Summary</a></li>
+					<li><a href="<c:url value='/user/transactions' />">Transactions</a></li>
+					<li><a href="<c:url value='/user/send' />">Send
 							Bitcoin</a></li>
-					<li><a href="<c:url value='/user/request.html' />">Request
+					<li><a href="<c:url value='/user/request' />">Request
 							Bitcoin</a></li>
-					<li><a href="<c:url value='/user/wallet.html' />">Wallet</a></li>
-					<li class="active"><a href="<c:url value='/user/addressBook.html' />">Contact</a></li>
+					<li><a href="<c:url value='/user/wallet' />">Wallet</a></li>
+					<li class="active"><a href="<c:url value='/user/addressBook' />">Contact</a></li>
 				</ul>
 				<security:authorize access="hasRole('ROLE_ADMIN')">
 					<ul class="nav navbar-nav">
-						<li><a href="<c:url value='/admin/users.html' />">Users</a></li>
+						<li><a href="<c:url value='/admin/users' />">Users</a></li>
 					</ul>
 				</security:authorize>
 				<ul class="nav navbar-nav navbar-right">
@@ -67,7 +67,7 @@
 						aria-expanded="false"><span class="glyphicon glyphicon-cog"
 							aria-hidden="true"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="<c:url value='/user/profile.html' />">My
+							<li><a href="<c:url value='/user/profile' />">My
 									Account</a></li>
 							<li><a href="<c:url value='/logout' />">Logout</a></li>
 						</ul></li>

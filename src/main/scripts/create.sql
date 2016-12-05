@@ -76,6 +76,5 @@ insert into wallets(wallet_id) values ('admin123wallet');
 insert into users(user_id, username, email, name, password,phone, wallet_id) values
 (100,'admin', 'connect2dkp@gmail.com', 'Admin', 'Admin123', '6572539465' ,'admin123wallet');
 
-
 insert into authorities values(100, 'ROLE_ADMIN');
 
