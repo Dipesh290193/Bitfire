@@ -13,7 +13,7 @@ $(document).ready(function(){
 			method: "post",
 			dataType: "json",
 			success: function(data){
-				$("#btcUSD").html("1 BTC = "+data);
+				$("#btcUSD").html("1 BTC = "+data+ " USD");
 			}
 		});	
 	}
@@ -75,7 +75,7 @@ $(document).ready(function(){
 									Account</a></li>
 							<li><a href="<c:url value='/logout' />">Logout</a></li>
 						</ul></li>
-						<li id ="btcUSD" style = "border"></li>
+					<li id ="btcUSD" class = "ignite" style = "padding-top: 12px; padding-left: 10px"></li>
 				</security:authorize>
 			</ul>
 		</div>
