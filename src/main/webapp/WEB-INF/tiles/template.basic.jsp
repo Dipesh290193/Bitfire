@@ -12,12 +12,15 @@
 
 <title><tiles:getAsString name='title' /></title>
 
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
 <link rel="stylesheet" href='<c:url value="/css/bitfire-base.css" />' />
 <link rel="stylesheet" href='<c:url value='/css/bitfire-nav.css' />' />
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
 <tilesx:useAttribute id='cssUrls' name='cssUrls' />
 <c:forEach items='${cssUrls}' var='cssUrl'>
 	<link rel="stylesheet" href='<c:url value='${cssUrl}' />' />
