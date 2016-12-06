@@ -21,8 +21,7 @@
 			<add-attribute value="" />
 		</put-list-attribute>
 		<put-list-attribute name="jsUrls">
-			<add-attribute value="${jquery.min}" />
-			<add-attribute value="${bootstrap.js}" />
+			<add-attribute value="" />
 		</put-list-attribute>
 		<put-list-attribute name="fontUrls">
 			<add-attribute value="${google.font.exo2}" />

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,6 +90,7 @@ public class UserController {
 			        user.getPassword(),
 			        "fd592284-ed09-4910-ab9f-06129b3a4054");
 		} catch (Exception e) {
+			System.err.print("Something went wront. Try again!");
 			map.put("error", "Something went wrong. Please try again.");
 			return "register";		
 		}
@@ -308,12 +310,21 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = { "/user/profile/edit" }, method = RequestMethod.POST)
-	public String editProfile(@ModelAttribute User user, SessionStatus status, ModelMap map) {
+	@ResponseBody
+	public String editProfile(@RequestBody User user) {
 //		System.out.println("EDIt profile post");
-		userDao.saveUser(user);
-		map.put("message", "Successfully updated your profile.");
-		status.setComplete();
-		return "redirect:/user/profile";
+		User u = SecurityUtils.getUser();
+		u.setName(user.getName());
+		u.setEmail(user.getEmail());
+		u.setPhone(user.getPhone());
+		u.setPassword(user.getPassword());
+		u.setUsername(user.getUsername());
+		
+		userDao.saveUser(u);
+		//map.put("message", "Successfully updated your profile.");
+		//status.setComplete();
+		//return "redirect:/user/profile";
+		return "";
 	}
 	
 
