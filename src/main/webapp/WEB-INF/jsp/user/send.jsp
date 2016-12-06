@@ -12,6 +12,21 @@
 		}
 	}
 </script>
+<script type="text/javascript">
+$(function(){
+	$("#btc").keyup(function(){
+		var value= $("#btc").val();
+		$.ajax({
+			url: "getBTC",
+			method: "post",
+			dataType: "json",
+			success: function(data){
+				$("#btcValue").val(data*value);
+			}
+		});
+	});
+});
+</script>
 <div class="well">
 	<div class="container" style="margin-top: 100px">
 		<h2 class="web-font">Send Bitcoin</h2>
@@ -36,19 +51,20 @@
 					<input class="form-control" type="email" id ="email" name="email"
 						placeholder="recepient's email address" />
 					<br>
-					<input class="form-control" type="text" name="btc"
+					<div class = "row">
+						<div class = "col-md-6">
+							<input class="form-control" type="text" name="btc" id ="btc"
 						placeholder="amount of BTC" />
+						</div>
+						<div class = "col-md-6">
+						<input class = "form-control" type="text" id = "btcValue" placeholder="amount in USD" readonly/>
+						</div>
+					</div>
 					<br>
 					<input
 					class="form-control" type="text" name="reason"
 					placeholder="Message" /><br>
 				
-
-
-			
-
-
-
 
 			<input class="btn btn-danger btn-block" type="submit" value="Send" />
 		</form>

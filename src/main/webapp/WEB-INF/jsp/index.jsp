@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
-<script>
+<!-- <script>
 	(function(b, i, t, C, O, I, N) {
 		window.addEventListener('load', function() {
 			if (b.getElementById(C))
@@ -12,7 +12,7 @@
 			N.parentNode.insertBefore(I, N);
 		}, false)
 	})(document, 'script', 'https://widgets.bitcoin.com/widget.js', 'btcwdgt');
-</script>
+</script> -->
 
 <div style="height: 2px;" class="btcwdgt-price"></div>
 <security:authorize access="authenticated">

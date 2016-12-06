@@ -2,7 +2,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="tilesx" uri="http://tiles.apache.org/tags-tiles-extras" %>
-
+<script type="text/javascript">
+$(document).ready(function(){
+	update();
+	setInterval(update,5000);
+});
+	function update(){
+		$.ajax({
+			url: "/bitfire/user/getBTC",
+			method: "post",
+			dataType: "json",
+			success: function(data){
+				$("#btcUSD").html("1 BTC = "+data);
+			}
+		});	
+	}
+	
+</script>
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header">
@@ -59,6 +75,7 @@
 									Account</a></li>
 							<li><a href="<c:url value='/logout' />">Logout</a></li>
 						</ul></li>
+						<li id ="btcUSD" style = "border"></li>
 				</security:authorize>
 			</ul>
 		</div>
