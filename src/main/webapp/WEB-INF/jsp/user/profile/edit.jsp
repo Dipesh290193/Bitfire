@@ -8,7 +8,6 @@
 	<div class="modal fade" id="myModal" role="dialog">
 		<div class="modal-dialog">
 
-<<<<<<< Updated upstream
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
@@ -186,7 +185,7 @@
 			error : function(request, status, error) {
 				alert(request.responseText);
 			}
-=======
+
 
 
 	<div class="well">
@@ -232,7 +231,7 @@
 				}
 			});
 			return false;
->>>>>>> Stashed changes
+
 		});
 		return false;
 	});

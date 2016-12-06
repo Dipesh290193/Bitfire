@@ -7,23 +7,21 @@
 		{
 			$("#addAddressBookForm").modal('show');
 			$("#save").click(function(){
+				
 				$.ajax({
-					url: "address",
-					method: "GET",
-					dataType: "json",
-				/* 	processData: false,
-					contentType: "application/json",
-					data: JSON.stringify({
-						name: $("#name").val(),
-						email: $("#email").val()
-					}), */
+					url: "address/" + $("input[name='name']").val() + "/" + $("input[name='email']").val(),
+			        method: "GET",
+			        dataType: "json",
+			        processData: false,
+		
+			        
 					success: function(data)
 					{
-						alert(data.email);
+						alert("done");
 					},
-					error: function(data)
+					error: function(er)
 					{
-						alert("error"+data.status);
+						alert(er.responseText);
 					}
 				});
 			});
@@ -52,6 +50,28 @@
 	}
 	
 	</script>
+	
+	<script>
+$(function(){
+	$(".delete").click(function(){
+		event.preventDefault();
+		var id = $(this).closest("tr").attr("data-id");
+		$.ajax({
+			url: "deleteAddressBook/" + id,
+	        method: "DELETE",
+	        context: $(this),
+	        success: function(department){
+	        	
+	        	$(this).closest("tr").remove();
+	        },
+	        error: function(error){
+	        	alert(error.responseText);
+	        }
+	    });
+	});
+	
+});
+</script>
 
 	<div class="container">
 		<div class="page-header web-font">
@@ -68,14 +88,13 @@
 				</tr>
 
 				<c:forEach items="${contacts}" var="contact">
-					<tr>
+					<tr data-id = "${contact.id}">
 						<td>${contact.name}</td>
 						<td>${contact.contact.email}</td>
 						<td>
 							<button onclick="editAddressBookFunction('${contact.id}')" class = "btn btn-sm btn-default"> Edit </button>
 							</td>
-						<td><a
-							href="<c:url value='/user/deleteAddressBook?id=${ contact.id }' />" class = "btn btn-sm btn-default">Delete</a></td>
+						<td><button class = "delete btn btn-sm btn-default">Delete</button></td>
 
 					</tr>
 				</c:forEach>

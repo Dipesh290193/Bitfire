@@ -90,24 +90,27 @@ public class AddressBookController {
 		return "redirect:/user/addressBook";
 	}
 	
-	@RequestMapping(value={"/user/deleteAddressBook"})
-	public String deleteAddressBook(@RequestParam int id)
+	@RequestMapping(value={"/user/deleteAddressBook/{id}"})
+	@ResponseBody
+	public void deleteAddressBook(@PathVariable int id)
 	{
 		AddressBook addressBook = addressBookDao.getAddressBook(id);
 		addressBookDao.deleteAddressBook(addressBook);
-		return "redirect:/user/addressBook";
 	}
 	
-	@RequestMapping(value={"/user/address"}, method=RequestMethod.GET)
+	@RequestMapping(value={"/user/address/{name}/{email:.+}"}, method=RequestMethod.GET)
 	@ResponseBody
-	public User getUser() throws JsonProcessingException
+	public AddressBook getUser(@PathVariable String name, @PathVariable String email) throws JsonProcessingException
 	{
-		System.out.println("in /user/address page in @Response body");
-		User u=new User();
-		u.setName("Sevak");
-		u.setUserId(10000);
-		u.setEmail("Dipesh@gmail.com");
-		return u;
+		AddressBook addressBook = new AddressBook();
+		addressBook.setOwner(SecurityUtils.getUser());
+		System.out.println("email is: " + email);
+		User contact = userDao.getUserByEmail(email);
+		System.out.println("contact name: " + contact.getName());
+		addressBook.setContact(contact);
+		addressBook.setName(name);
+		addressBook = addressBookDao.saveAddressBook(addressBook);
+		return addressBook;
 	}
 		
 }

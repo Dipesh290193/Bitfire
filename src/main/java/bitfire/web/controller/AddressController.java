@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -71,10 +72,11 @@ public class AddressController {
 	}
 	
 	@RequestMapping(value ={"/user/addaddress"}, method = RequestMethod.GET)
-	public String addaddress(ModelMap map){
+	@ResponseBody
+    public Address getUser(){
 		User user = SecurityUtils.getUser();
 		Address address = new Address();
-		
+		Address newAddres=new Address();
     	Wallet wallet = new Wallet("http://localhost:3000/", 
 		"fd592284-ed09-4910-ab9f-06129b3a4054",
 		user.getWallet().getWalletId(),
@@ -84,16 +86,17 @@ public class AddressController {
 			
 			address.setAddress(wallet.newAddress("Label").getAddress());
 			address.setWallet(SecurityUtils.getUser().getWallet());
-			addressDao.saveAddress(address);
+			newAddres=addressDao.saveAddress(address);
 		} catch (APIException | IOException e) {
 			e.printStackTrace();
-			map.put("error", "We were not able to genereate a new address at this time. Pleaset try again later");
-			return "redirect:/user/wallet";
+//			map.put("error", "We were not able to genereate a new address at this time. Pleaset try again later");
+//			return "redirect:/user/wallet";
 			
 		}
     	
+    	System.out.println("IS IS " + newAddres.getUSD());
 		
-		return "redirect:/user/wallet";
+		return newAddres;
 	}
 
 	@RequestMapping(value ={"/user/editaddress"}, method = RequestMethod.GET)
