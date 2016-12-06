@@ -71,7 +71,7 @@ $(document).ready(function(){
 						aria-expanded="false"><span class="glyphicon glyphicon-cog"
 							aria-hidden="true"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="<c:url value='/user/profile ' />">My
+							<li><a href="<c:url value='/user/profile/edit ' />">My
 									Account</a></li>
 							<li><a href="<c:url value='/logout' />">Logout</a></li>
 						</ul></li>
