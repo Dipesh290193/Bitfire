@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -121,21 +122,23 @@ public class AddressController {
 		return "redirect:/user/wallet";
 	}	
 	
-	@RequestMapping(value ={"/user/archiveaddress"}, method = RequestMethod.GET)
-	public String archiveAddress(@RequestParam int id, ModelMap map)
+	@RequestMapping(value ={"/user/archiveaddress/{id}"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String archiveAddress(@PathVariable int id)
 	{
 		Address address = addressDao.getAddress(id);
 		if(address.isPrimary() || address.getBitcoinsActual() > 0 )
 		{
-			map.put("message", "Can't archive addresses which are primary or have a non-zero balance.");
+			return  "Can't archive addresses which are primary or have a non-zero balance.";
 		}
 		else
 		{
 			address.setArchived(true);
 			addressDao.saveAddress(address);
+			return "OK";
 		}
-		map.put("addresses",addressDao.getAddresses(SecurityUtils.getUser().getWallet()) );
+		
 
-		return "/user/wallet";
+		
 	}
 }

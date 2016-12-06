@@ -17,7 +17,7 @@ $(function(){
 			method: "post",
 			dataType: "json",
 			success: function(data){
-				$("#btcValue").val(data*value);
+				$("#btcValue").val(Number(data*value).toFixed(2));
 			}
 		});
 	});
@@ -40,7 +40,8 @@ $(function(){
 							<input class="form-control" type="text" name="btc" id ="btc"
 						placeholder="amount of BTC" />
 						</div>
-						<div class = "col-md-6">
+						<div class = "col-md-6 input-group">
+						<span class="input-group-addon">$</span>
 						<input class = "form-control" type="text" id = "btcValue" placeholder="amount in USD" readonly/>
 						</div>
 					</div>

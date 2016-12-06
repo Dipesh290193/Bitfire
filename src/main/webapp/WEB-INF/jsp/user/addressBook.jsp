@@ -4,6 +4,7 @@
 <script>
 		function addAddressBookFunction()
 		{
+			
 			$("#addAddressBookForm").modal('show');
 			$("#save").click(function(){
 				
@@ -36,10 +37,13 @@
 			type: "GET",
 			url : "<c:url value='/user/editAddressBook' />",
 			data : {addressBookId: id},
+			dataType: "text",
 			success : function(data)
+			
 			{
+
 				 $("#editName").val(data);
-				 $("#addressBookId").val(id);
+				 $("#addressBookId").html(id);
 			},
 			error : function(e)
 			{
@@ -71,7 +75,33 @@ $(function(){
 	
 });
 </script>
+<script>
+$(function(){
+	$("#editSave").click(function( event ) {
+		alert("in save edit");
+		alert($("#addressBookId").html());
+		/* alert("<c:url value='/user/editAddressBook' />" + "/" + $("#addressBookId").val() + "/"  + $("#editName").val()); */
+		$.ajax({
+			
+			url : "<c:url value='/user/editAddressBook' />" + "/" + $("#addressBookId").val() + "/"  + $("#editName").val(),
+			dataType: "json",
+			
+			success : function(data)
+			
+			{
+				alert("done");
 
+				$("tr[id ='" + data.id +"']").find("td:first").html(data.name);
+			},
+			error : function(e)
+			{
+				alert(e.responseText);
+			}
+		});
+	});
+	return false;
+});
+</script>
 	<div class="container">
 		<div class="page-header web-font">
 			<h1>Contact</h1>
@@ -145,20 +175,22 @@ $(function(){
 						<h4 class="modal-title">Edit Contact</h4>
 					</div>
 					<div class="modal-body">
-						<form id="addressBook" action="<c:url value ='/user/editAddressBook' />" method=POST>
+						<form id="addressBook" action="<c:url value ='/user/editAddressBook' />" method=GET>
 							<div class="form-group col-md-5" style="margin: 0 auto; float: none;">
 								<label>Name</label><input style="text-align: center;" id="editName" type="text"
 									class="form-control" name="name"
 									placeholder="Enter Name" required> <br>
 									<input type = "hidden" name="id" id = "addressBookId" />
 								<div>
-									<center>
-									<input type="submit" name="save" value="Save" style="margin: 0 auto;" 
-									class="btn btn-info" />
-									</center>
+									
+									
+									
 								</div>
 							</div>
 						</form>
+						<center>
+						<button id = "editSave" style="margin: 0 auto;" class="btn btn-info">Save</button>
+						</center>
 					</div>
 				</div>
 			</div>

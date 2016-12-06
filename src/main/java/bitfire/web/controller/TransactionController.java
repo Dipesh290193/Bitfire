@@ -430,8 +430,8 @@ public class TransactionController {
 	
 	@RequestMapping(value="/user/getBTC", method=RequestMethod.POST)
 	@ResponseBody
-	public Long getUSD() throws APIException, IOException
+	public Double getUSD() throws APIException, IOException
 	{
-		return ExchangeRates.getUSD();
+		return ExchangeRates.getUSDFloat();
 	}
 }

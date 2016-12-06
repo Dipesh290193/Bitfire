@@ -78,16 +78,20 @@ public class AddressBookController {
 	public  String editAddressBook(@RequestParam int addressBookId )
 	{
 		AddressBook addressBook = addressBookDao.getAddressBook(addressBookId);
+		System.out.println("name: " + addressBook.getName());
 		return addressBook.getName();
 	}
 	
-	@RequestMapping(value={"/user/editAddressBook"}, method=RequestMethod.POST)
-	public String editAddressBook(@RequestParam int id, @RequestParam String name)
+	@RequestMapping(value={"/user/editAddressBookSave/{id}/{name}"}, method=RequestMethod.GET)
+	@ResponseBody
+	public AddressBook editAddressBook(@PathVariable int id, @PathVariable String name)
 	{
+		System.out.println("saving edit");
 		AddressBook addressBook = addressBookDao.getAddressBook(id);
 		addressBook.setName(name);
-		addressBookDao.saveAddressBook(addressBook);
-		return "redirect:/user/addressBook";
+		addressBook = addressBookDao.saveAddressBook(addressBook);
+		
+		return addressBook;
 	}
 	
 	@RequestMapping(value={"/user/deleteAddressBook/{id}"})

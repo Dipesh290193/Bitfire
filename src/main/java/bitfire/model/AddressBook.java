@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="addressbook")
 public class AddressBook implements Serializable{
@@ -21,10 +23,12 @@ public class AddressBook implements Serializable{
 	@Column(name="address_book_id")
 	private int id;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="owner_id", nullable=false)
 	private User owner;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="contact_id", nullable=false)
 	private User contact;

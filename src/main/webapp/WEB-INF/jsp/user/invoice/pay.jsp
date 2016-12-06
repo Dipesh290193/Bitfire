@@ -31,7 +31,7 @@
 				</table>
 
 
-		<br>
+			<h3>Message: ${invoice.message}</h3>
 	<br>		
 				<h3 >
 					Primary address balance: <span style="color: green;">${balance}</span>

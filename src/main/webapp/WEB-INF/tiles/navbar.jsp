@@ -13,7 +13,9 @@ $(document).ready(function(){
 			method: "post",
 			dataType: "json",
 			success: function(data){
-				$("#btcUSD").html("1 BTC = "+data);
+				$("#btcUSD").html("1 BTC = $ "+data);
+				$("#btcUSD").effect("highlight", {color: '#dadee5'}, 1000);
+				
 			}
 		});	
 	}
@@ -75,7 +77,8 @@ $(document).ready(function(){
 									Account</a></li>
 							<li><a href="<c:url value='/logout' />">Logout</a></li>
 						</ul></li>
-						<li id ="btcUSD" style = "border"></li>
+						<li id ="btcUSD" style = "font-size: 1.2em; color: white; border: 1px solid; border-radius: 6px;
+						margin: 10px; padding: 4px; padding-right: 10px; padding-left: 10px;"></li>
 				</security:authorize>
 			</ul>
 		</div>

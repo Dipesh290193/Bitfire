@@ -27,6 +27,7 @@
 <script>
 $(function(){
 $("#addButton").click(function(){
+	$("#errorDiv").html("");
 	var anim ="<div id = \"loader\" class = \"loader\"></div>" +
 	"<div id =  \"loaderText\"><h4>Generating a new address...</h4></div>";
 		
@@ -57,10 +58,8 @@ $("#addButton").click(function(){
 			"<td><a " + 
 				"href=\"<c:url value='/user/editaddress?id=${ address.addressId }' />\"" +
 				"class=\"btn btn-sm btn-default\">Edit</a></td>" +
-			"<td><a " +
-				"href=\"<c:url value='/user/archiveaddress?id=${ address.addressId }' />\"" + 
-				"class=\"btn btn-sm btn-default\">Archive</a></td>"+
-
+			"<td><button data-id = \"" +  address.addressId +"\" class=\"archive btn btn-sm btn-default\">Archive</button></td>"+
+				
 		"</tr>";
 			$("#loader").remove();
 			$("#loaderText").remove();
@@ -75,6 +74,37 @@ $("#addButton").click(function(){
 });
 });
 
+</script>
+
+
+	<script>
+$(function(){
+	$(".archive").click(function(){
+		$("#errorDiv").html("");
+		event.preventDefault();
+		var id = $(this).attr("data-id");
+		$.ajax({
+			url: "archiveaddress/" + id,
+	        method: "GET",
+	        dataType: "text",
+	        context: $(this),
+	        success: function(data){
+	       
+	        	if(data != "OK"){
+	        		
+	        		$("#errorDiv").html(data);
+	        	}
+	        	else{
+	        		$(this).closest("tr").remove();
+	        	}
+	        },
+	        error: function(error){
+	        	alert(error.responseText);
+	        }
+	    });
+	});
+	
+});
 </script>
 
 <div class="container">
@@ -112,9 +142,8 @@ $("#addButton").click(function(){
 						<td><a
 							href="<c:url value='/user/editaddress?id=${ address.addressId }' />"
 							class="btn btn-sm btn-default">Edit</a></td>
-						<td><a
-							href="<c:url value='/user/archiveaddress?id=${ address.addressId }' />"
-							class="btn btn-sm btn-default">Archive</a></td>
+						<td><button data-id = "${ address.addressId }" class="archive btn btn-sm btn-default">Archive</button></td>
+							
 
 					</tr>
 				</c:forEach>
@@ -129,5 +158,7 @@ $("#addButton").click(function(){
 		<button id = "addButton" class="btn btn-danger"> Add address</button>
 		<br>
 		<div style="color: red;">${message}</div>
+		<br>
+		<div id = "errorDiv" style="color: red; font-size: 1.2em;"></div>
 	</div>
 </div>

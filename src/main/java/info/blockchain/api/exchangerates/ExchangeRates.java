@@ -81,6 +81,20 @@ public class ExchangeRates {
     	return usd;
     }
     
+    public static double getUSDFloat() throws APIException, IOException{
+    	double usd =0.0;
+    	Map<String, Currency> resultMap = new HashMap<String, Currency>();
+    	resultMap = getTicker();
+    	
+    	for(String key: resultMap.keySet()){
+    		if(key.toString().equals("USD")){
+    			usd = resultMap.get(key).getPrice15m().doubleValue();
+    		}
+    	}
+    	
+    	return usd;
+    }
+    
     
     public static BigDecimal toBTC (String currency, BigDecimal value) throws APIException, IOException {
         return toBTC(currency, value, null);
