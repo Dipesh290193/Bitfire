@@ -80,8 +80,9 @@ $("#addButton").click(function(){
 	<script>
 $(function(){
 	$(".archive").click(function(){
-		$("#errorDiv").html("");
+		
 		event.preventDefault();
+		$("#errorDiv").html("");
 		var id = $(this).attr("data-id");
 		$.ajax({
 			url: "archiveaddress/" + id,
