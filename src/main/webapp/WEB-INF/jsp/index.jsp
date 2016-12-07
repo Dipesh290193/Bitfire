@@ -14,7 +14,8 @@
 	})(document, 'script', 'https://widgets.bitcoin.com/widget.js', 'btcwdgt');
 </script> -->
 
-<div style="height: 2px;" class="btcwdgt-price"></div>
+<!-- <div style="height: 2px;" class="btcwdgt-price"></div>-->
+
 <security:authorize access="authenticated">
 	<div class="container wrapper">
 		<div class="page-header text-center web-font">
@@ -58,7 +59,7 @@
 										</p>
 									</div>
 									<div class="col-md-7">
-										<p>${address.address}</p>
+										<p style = "overflow: hidden; text-overflow: ellipsis;">${address.address}</p>
 									</div>
 								</div>
 							</c:forEach>
