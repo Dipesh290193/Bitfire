@@ -19,16 +19,17 @@
 			        },
 			      
 			        success: function(contact){
-	
-						$("#tbl").append("<tr data-id = \"" + contact.id +"\">" +
+						var tr = "<tr data-id = \"" + contact.id +"\">" +
 						"<td>" + contact.name + "</td>" +
 						"<td>" + $("input[name ='email']").val() + "</td>"+
 							"<td><button onclick=\"editAddressBookFunction('" + contact.id + "')\" class = \"btn btn-sm btn-default\"> Edit </button>"+
 							"</td>" +
 						"<td><button onclick=\"deleteAddressBookFunction('" + contact.id + "')\" class = \"delete btn btn-sm btn-default\">Delete</button></td>" +
 
-					"</tr>");
+					"</tr>"
+						$("#tbl").append(tr);
 						$("#addAddressBookForm").modal('hide');
+						tr.effect("highlight", {color: 'red'}, 1500);
 			        },
 			        error: function (error){
 			        	
@@ -54,10 +55,11 @@
 			success : function(data)
 			
 			{
-
+					
 				 $("#editName").val(data);
 				 console.log(id);
 				 $('input[id="addressBookId"]').val(id);
+				
 				 console.log($('input[id="addressBookId"]').val());
 			},
 			error : function(e)
@@ -103,7 +105,9 @@ $(function(){
 				//alert("done");
 				console.log(data.name);
 				$("#editAddressBookForm").modal('hide');
-				$("tr[data-id ='" + data.id +"']").find("td[data-field = 'contact-name']").text(data.name);
+				var tr =$("tr[data-id ='" + data.id +"']");
+				tr.find("td[data-field = 'contact-name']").text(data.name);
+				tr.effect("highlight", {color: 'red'}, 1500);
 			},
 			error : function(e)
 			{

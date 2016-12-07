@@ -42,12 +42,15 @@ public class AddressDaoImpl implements AddressDao{
 	@Transactional
 	public Address setPrimary(Address address, Wallet wallet) {
 		
-		Address Oldaddress=entityManager.createQuery("from Address where wallet = :wallet and primary = :primary",Address.class)
+		List<Address> Oldaddress=entityManager.createQuery("from Address where wallet = :wallet and primary = :primary",Address.class)
 				.setParameter("wallet", wallet)
 				.setParameter("primary", true)
-				.getSingleResult();
-		Oldaddress.setPrimary(false);	
-		saveAddress(Oldaddress);
+				.getResultList();
+		for(Address ad: Oldaddress){
+			System.out.println(ad.getAddress());
+		}
+//		Oldaddress.setPrimary(false);	
+//		saveAddress(Oldaddress);
 
 		return saveAddress(address);
 	}
