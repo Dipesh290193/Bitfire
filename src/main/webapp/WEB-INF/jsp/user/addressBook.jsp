@@ -9,12 +9,13 @@
 			$("#save").click(function(){
 				
 				$.ajax({
-					url: "address/" + $("input[name='name']").val() + "/" + $("input[name='email']").val(),
-			        method: "GET",
+					url: "address/",
+			        method: "POST",
 			        dataType: "json",
-			        processData: false,
-		
-			        
+					data:{
+						n: $("input[name='name']").val(),
+						e: $("input[name='email']").val()
+					},
 					success: function(data)
 					{
 						alert("done");
@@ -43,7 +44,9 @@
 			{
 
 				 $("#editName").val(data);
-				 $("#addressBookId").html(id);
+				 console.log(id);
+				 $('input[id="addressBookId"]').val(id);
+				 console.log($('input[id="addressBookId"]').val());
 			},
 			error : function(e)
 			{
@@ -78,24 +81,25 @@ $(function(){
 <script>
 $(function(){
 	$("#editSave").click(function( event ) {
-		alert("in save edit");
-		alert($("#addressBookId").html());
+		//alert("in save edit");
+		//alert($("#addressBookId").val());
 		/* alert("<c:url value='/user/editAddressBook' />" + "/" + $("#addressBookId").val() + "/"  + $("#editName").val()); */
 		$.ajax({
 			
-			url : "<c:url value='/user/editAddressBook' />" + "/" + $("#addressBookId").val() + "/"  + $("#editName").val(),
+			url : "editAddressBookSave" + "/" + $("#addressBookId").val() + "/"  + $("#editName").val(),
 			dataType: "json",
 			
 			success : function(data)
 			
 			{
-				alert("done");
-
-				$("tr[id ='" + data.id +"']").find("td:first").html(data.name);
+				//alert("done");
+				console.log(data.name);
+				$("#editAddressBookForm").modal('hide');
+				$("tr[data-id ='" + data.id +"']").find("td[data-field = 'contact-name']").text(data.name);
 			},
 			error : function(e)
 			{
-				alert(e.responseText);
+				//alert(e.responseText);
 			}
 		});
 	});
@@ -118,8 +122,8 @@ $(function(){
 
 				<c:forEach items="${contacts}" var="contact">
 					<tr data-id = "${contact.id}">
-						<td>${contact.name}</td>
-						<td>${contact.contact.email}</td>
+						<td data-field = 'contact-name'>${contact.name}</td>
+						<td data-field = 'contact-email'>${contact.contact.email}</td>
 						<td>
 							<button onclick="editAddressBookFunction('${contact.id}')" class = "btn btn-sm btn-default"> Edit </button>
 							</td>
