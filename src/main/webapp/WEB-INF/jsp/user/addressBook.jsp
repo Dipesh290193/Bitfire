@@ -7,27 +7,43 @@
 			
 			$("#addAddressBookForm").modal('show');
 			$("#save").click(function(){
-				
+
 				$.ajax({
-					url: "address/" + $("input[name='name']").val() + "/" + $("input[name='email']").val(),
-			        method: "GET",
+			        url: "address",
+			        method: "POST",
 			        dataType: "json",
-			        processData: false,
-		
-			        
-					success: function(data)
-					{
-						alert("done");
-					},
-					error: function(er)
-					{
-						alert(er.responseText);
-					}
-				});
+			        data: {
+			        	name: $("input[name ='name']").val(),
+			        	email: $("input[name ='email']").val()
+			        },
+			      
+			        success: function(contact){
+			       	/* alert("<tr data-id = \"" + contact.id +"\">" +
+							"<td>" + contact.name + "</td>" +
+							"<td>" + $("input[name ='email']").val() + "</td>"+
+								"<button onclick=\"editAddressBookFunction('" + contact.id + "')\" class = \"btn btn-sm btn-default\"> Edit </button>"+
+								"</td>" +
+							"<td><button class = \"delete btn btn-sm btn-default\">Delete</button></td>"); */
+						$("#tbl").append("<tr data-id = \"" + contact.id +"\">" +
+						"<td>" + contact.name + "</td>" +
+						"<td>" + $("input[name ='email']").val() + "</td>"+
+							"<td><button onclick=\"editAddressBookFunction('" + contact.id + "')\" class = \"btn btn-sm btn-default\"> Edit </button>"+
+							"</td>" +
+						"<td><button onclick=\"deleteAddressBookFunction('" + contact.id + "')\" class = \"delete btn btn-sm btn-default\">Delete</button></td>" +
+
+					"</tr>");
+						$("#addAddressBookForm").modal('hide');
+			        },
+			        error: function (error){
+			        	
+			        	  alert(error.responseText);
+			        }
+			    });
 			});
 		}
 		
 	</script>
+	
 	<script>
 	function editAddressBookFunction(id)
 	{
@@ -55,25 +71,21 @@
 	</script>
 	
 	<script>
-$(function(){
-	$(".delete").click(function(){
-		event.preventDefault();
-		var id = $(this).closest("tr").attr("data-id");
+	function deleteAddressBookFunction(id){
 		$.ajax({
 			url: "deleteAddressBook/" + id,
 	        method: "DELETE",
 	        context: $(this),
 	        success: function(department){
-	        	
-	        	$(this).closest("tr").remove();
+	        	$("tr[data-id='" + id + "']").remove();
 	        },
 	        error: function(error){
 	        	alert(error.responseText);
 	        }
 	    });
-	});
 	
-});
+	
+}
 </script>
 <script>
 $(function(){
@@ -108,7 +120,7 @@ $(function(){
 		</div>
 		
 		<div class = "well well-lg">
-			<table class = "table table-striped table-condensed">
+			<table id = "tbl" class = "table table-striped table-condensed">
 				<tr>
 					<th>Name</th>
 					<th>Email</th>
@@ -123,7 +135,7 @@ $(function(){
 						<td>
 							<button onclick="editAddressBookFunction('${contact.id}')" class = "btn btn-sm btn-default"> Edit </button>
 							</td>
-						<td><button class = "delete btn btn-sm btn-default">Delete</button></td>
+						<td><button onclick="deleteAddressBookFunction('${contact.id}')" class = "delete btn btn-sm btn-default">Delete</button></td>
 
 					</tr>
 				</c:forEach>
@@ -132,6 +144,7 @@ $(function(){
 		<br>
 		<div style = "color: red;">${error}</div>
 		<div style = "color: green;">${success}</div>
+		
 	</div>
 	
 	<div class="container">

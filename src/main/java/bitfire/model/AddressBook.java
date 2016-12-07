@@ -34,7 +34,10 @@ public class AddressBook implements Serializable{
 	private User contact;
 	
 	String name;
-
+	
+	public AddressBook(){
+		
+	}
 	public int getId() {
 		return id;
 	}

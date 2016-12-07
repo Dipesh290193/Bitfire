@@ -42,7 +42,7 @@ $("#addButton").click(function(){
         
        	
         	var row = 
-				"<tr>" +
+				"<tr id = " + address.addressId + ">" +
 			"<td>" + address.address + "</td>" + 
 			"<td>" + address.label + "</td>" +
 			"<td>$0.00</td>" +
@@ -56,9 +56,9 @@ $("#addButton").click(function(){
 
 			row +=
 			"<td><a " + 
-				"href=\"<c:url value='/user/editaddress?id=${ address.addressId }' />\"" +
+				"href=\"<c:url value='/user/editaddress?id=" + address.addressId + "'/>\"" +
 				"class=\"btn btn-sm btn-default\">Edit</a></td>" +
-			"<td><button data-id = \"" +  address.addressId +"\" class=\"archive btn btn-sm btn-default\">Archive</button></td>"+
+			"<td><button onclick=\"archiveFunc('" + address.addressId  + "')\" data-id = \"" +  address.addressId +"\" class=\"archive btn btn-sm btn-default\">Archive</button></td>"+
 				
 		"</tr>";
 			$("#loader").remove();
@@ -78,12 +78,11 @@ $("#addButton").click(function(){
 
 
 	<script>
-$(function(){
-	$(".archive").click(function(){
-		
+function archiveFunc(id){
+		alert("archive");
 		event.preventDefault();
 		$("#errorDiv").html("");
-		var id = $(this).attr("data-id");
+		
 		$.ajax({
 			url: "archiveaddress/" + id,
 	        method: "GET",
@@ -96,16 +95,16 @@ $(function(){
 	        		$("#errorDiv").html(data);
 	        	}
 	        	else{
-	        		$(this).closest("tr").remove();
+	        		$("tr[id ='"+ id +"']").remove();
 	        	}
 	        },
 	        error: function(error){
 	        	alert(error.responseText);
 	        }
 	    });
-	});
 	
-});
+	
+};
 </script>
 
 <div class="container">
@@ -128,7 +127,7 @@ $(function(){
 				</tr>
 
 				<c:forEach items="${addresses}" var="address">
-					<tr>
+					<tr id = "${ address.addressId }">
 						<td>${address.address}</td>
 						<td>${address.label}</td>
 						<td>${address.USD}</td>
@@ -143,7 +142,7 @@ $(function(){
 						<td><a
 							href="<c:url value='/user/editaddress?id=${ address.addressId }' />"
 							class="btn btn-sm btn-default">Edit</a></td>
-						<td><button data-id = "${ address.addressId }" class="archive btn btn-sm btn-default">Archive</button></td>
+						<td><button onclick= "archiveFunc('${address.addressId}')" data-id = "${ address.addressId }" class="archive btn btn-sm btn-default">Archive</button></td>
 							
 
 					</tr>

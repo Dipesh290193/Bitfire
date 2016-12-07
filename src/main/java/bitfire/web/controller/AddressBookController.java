@@ -102,14 +102,18 @@ public class AddressBookController {
 		addressBookDao.deleteAddressBook(addressBook);
 	}
 	
-	@RequestMapping(value={"/user/address/{name}/{email:.+}"}, method=RequestMethod.GET)
+	@RequestMapping(value={"/user/address"}, method=RequestMethod.POST)
 	@ResponseBody
-	public AddressBook getUser(@PathVariable String name, @PathVariable String email) throws JsonProcessingException
+	public AddressBook getUser(@RequestParam String name, @RequestParam String email) throws JsonProcessingException
 	{
 		AddressBook addressBook = new AddressBook();
 		addressBook.setOwner(SecurityUtils.getUser());
 		System.out.println("email is: " + email);
 		User contact = userDao.getUserByEmail(email);
+		if(contact ==null){
+			System.out.println("NULL");
+			return null;
+		}
 		System.out.println("contact name: " + contact.getName());
 		addressBook.setContact(contact);
 		addressBook.setName(name);
