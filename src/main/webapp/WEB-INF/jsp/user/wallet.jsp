@@ -79,7 +79,7 @@ $("#addButton").click(function(){
 
 	<script>
 function archiveFunc(id){
-		alert("archive");
+	
 		event.preventDefault();
 		$("#errorDiv").html("");
 		

@@ -9,6 +9,7 @@
 			$("#save").click(function(){
 
 				$.ajax({
+
 			        url: "address",
 			        method: "POST",
 			        dataType: "json",
@@ -18,12 +19,7 @@
 			        },
 			      
 			        success: function(contact){
-			       	/* alert("<tr data-id = \"" + contact.id +"\">" +
-							"<td>" + contact.name + "</td>" +
-							"<td>" + $("input[name ='email']").val() + "</td>"+
-								"<button onclick=\"editAddressBookFunction('" + contact.id + "')\" class = \"btn btn-sm btn-default\"> Edit </button>"+
-								"</td>" +
-							"<td><button class = \"delete btn btn-sm btn-default\">Delete</button></td>"); */
+	
 						$("#tbl").append("<tr data-id = \"" + contact.id +"\">" +
 						"<td>" + contact.name + "</td>" +
 						"<td>" + $("input[name ='email']").val() + "</td>"+
@@ -39,6 +35,7 @@
 			        	  alert(error.responseText);
 			        }
 			    });
+
 			});
 		}
 		
@@ -59,7 +56,9 @@
 			{
 
 				 $("#editName").val(data);
-				 $("#addressBookId").html(id);
+				 console.log(id);
+				 $('input[id="addressBookId"]').val(id);
+				 console.log($('input[id="addressBookId"]').val());
 			},
 			error : function(e)
 			{
@@ -90,24 +89,25 @@
 <script>
 $(function(){
 	$("#editSave").click(function( event ) {
-		alert("in save edit");
-		alert($("#addressBookId").html());
+		//alert("in save edit");
+		//alert($("#addressBookId").val());
 		/* alert("<c:url value='/user/editAddressBook' />" + "/" + $("#addressBookId").val() + "/"  + $("#editName").val()); */
 		$.ajax({
 			
-			url : "<c:url value='/user/editAddressBook' />" + "/" + $("#addressBookId").val() + "/"  + $("#editName").val(),
+			url : "editAddressBookSave" + "/" + $("#addressBookId").val() + "/"  + $("#editName").val(),
 			dataType: "json",
 			
 			success : function(data)
 			
 			{
-				alert("done");
-
-				$("tr[id ='" + data.id +"']").find("td:first").html(data.name);
+				//alert("done");
+				console.log(data.name);
+				$("#editAddressBookForm").modal('hide');
+				$("tr[data-id ='" + data.id +"']").find("td[data-field = 'contact-name']").text(data.name);
 			},
 			error : function(e)
 			{
-				alert(e.responseText);
+				//alert(e.responseText);
 			}
 		});
 	});
@@ -130,8 +130,8 @@ $(function(){
 
 				<c:forEach items="${contacts}" var="contact">
 					<tr data-id = "${contact.id}">
-						<td>${contact.name}</td>
-						<td>${contact.contact.email}</td>
+						<td data-field = 'contact-name'>${contact.name}</td>
+						<td data-field = 'contact-email'>${contact.contact.email}</td>
 						<td>
 							<button onclick="editAddressBookFunction('${contact.id}')" class = "btn btn-sm btn-default"> Edit </button>
 							</td>

@@ -114,6 +114,7 @@ public class AddressBookController {
 			System.out.println("NULL");
 			return null;
 		}
+
 		System.out.println("contact name: " + contact.getName());
 		addressBook.setContact(contact);
 		addressBook.setName(name);
